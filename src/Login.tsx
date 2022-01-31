@@ -10,10 +10,14 @@ export default function Login() {
       <Title>Decrypto</Title>
       <Form>
         <InputContainer>
-          <label htmlFor='nickname'>닉네임</label>
-          <input value={nickname} onChange={onChangeNickname} id='nickname' />
-          <label htmlFor='room'>방 번호</label>
-          <input value={roomNumber} onChange={onChangeRoomNumber} id='room' />
+          <label htmlFor='nickname'>
+            닉네임
+            <input value={nickname} onChange={onChangeNickname} id='nickname' />
+          </label>
+          <label htmlFor='room'>
+            방 번호
+            <input value={roomNumber} onChange={onChangeRoomNumber} id='room' />
+          </label>
         </InputContainer>
         <ButtonContainer>
           <EntryButton disabled={!nickname.length}>방 만들기</EntryButton>
