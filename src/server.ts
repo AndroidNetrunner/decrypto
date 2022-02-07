@@ -1,4 +1,4 @@
-import './env.ts';
+import './env';
 
 import express from 'express';
 

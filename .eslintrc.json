@@ -5,21 +5,18 @@
   },
   "extends": [
     "airbnb-base",
+    "airbnb-typescript/base",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
+    "project": "./tsconfig.json",
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint"],
   "rules": {},
-  "ignorePatterns": ["dist/", "node_modules/"],
-  "import/extensions": [
-    "error",
-    "ignorePackages",
-    { "js": "never", "ts": "never", "json": "never" }
-  ]
+  "ignorePatterns": ["dist/", "node_modules/"]
 }
