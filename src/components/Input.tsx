@@ -1,11 +1,13 @@
 interface IProps {
-  onClick : ()=>void;
+  onClick: () => void;
 }
 
-export default function Input({onClick}:IProps){
-  return <>
+export default function Input({ onClick }: IProps) {
+  return (
+    <>
       <label></label>
-      <input/>
+      <input />
       <button onClick={onClick}></button>
     </>
+  );
 }
