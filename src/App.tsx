@@ -3,6 +3,7 @@ import BaseLayout from './Layouts/BaseLayout';
 import GameLayout from './Layouts/GameLayout';
 import Login from './Login';
 import Game from './Pages/Game';
+import './firebase';
 
 function App() {
   return (
