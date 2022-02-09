@@ -21,6 +21,7 @@ import {
   setPersistence,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
+import massiveWords from './words';
 // firebase 프로젝트 환경 정보
 const firebaseConfig = {
   apiKey: import.meta.env.REACT_APP_API_KEY,
@@ -38,7 +39,9 @@ const fireAuth = getAuth();
 // firestore 연결
 const firestore = getFirestore();
 
-connectAuthEmulator(fireAuth, 'http://localhost:9099');
+//-> Local 에서 테스트용 Emulator [Firebase CLI 설치 요망]
+
+//connectAuthEmulator(fireAuth, 'http://localhost:9099');
 console.log(fireAuth.currentUser);
 // createUserWithEmailAndPassword(fireAuth, 'gamja@naver.com', '394998998')
 //   .then((userCredential) => {
@@ -50,6 +53,7 @@ console.log(fireAuth.currentUser);
 //     const errorMessage = error.message;
 //     console.log(error);
 //   });
+
 signInWithEmailAndPassword(fireAuth, 'gamja@naver.com', '394998998')
   .then((userCredential) => {
     const { user } = userCredential;
@@ -73,6 +77,17 @@ const createUser = async (name: string) => {
   });
   console.log(newDoc.id);
 };
+
+/*
+const createDB = async () => {
+  const newDoc = await setDoc(doc(firestore, `words/backup`), {
+    massiveWords,
+  });
+  console.log(newDoc);
+};
+*/
+
+//createDB();
 
 const createSpecialUser = async (userId: string, userName: string) => {
   // setDoc: addDoc 과 다르게 setDoc 은 특정 id 를 기준으로 생성
@@ -131,22 +146,24 @@ const queryForDocuments = async () => {
 };
 
 const test = () => {
-  // createUser('감자');
-  // queryForDocuments();
-  // setTimeout(() => {
-  //   createSpecialUser('394998', 'Junhwan');
-  // }, 3000);
-  // setTimeout(() => {
-  //   createSpecialUser('394998', 'guma');
-  // }, 7000);
-  // setTimeout(() => {
-  //   updateUser('394998');
-  // }, 5000);
-  // getUser('394998');
-  // listenToADocument();
-  // setTimeout(() => {
-  //   unSubscribe();
-  // }, 10000);
+  createUser('감자');
+  queryForDocuments();
+  setTimeout(() => {
+    createSpecialUser('394998', 'Junhwan');
+  }, 3000);
+  setTimeout(() => {
+    createSpecialUser('394998', 'guma');
+  }, 7000);
+  /*
+  setTimeout(() => {
+    updateUser('394998');
+  }, 5000);
+  getUser('394998');
+  listenToADocument();
+  setTimeout(() => {
+    unSubscribe();
+  }, 10000);
+  */
 };
 
-test();
+//test();
