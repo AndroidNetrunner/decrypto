@@ -1,7 +1,7 @@
 ---
 name: 컴포넌트
 about: 새로운 컴포넌트 제작 및 추가가 필요할 경우
-title: '[COMPONENT]'
+title: "[COMPONENT]"
 labels: "\U0001F528component"
 assignees: ''
 
@@ -9,7 +9,7 @@ assignees: ''
 
 ## 🔨 Refactor Request check list
 
-- [x] 이슈 제목: [COMPONENT] '컴포넌트 내용 상세'
+- [x] 이슈 제목: [COMPONENT] '컴포넌트 제목'
 - [ ] Assignees, Label을 붙여주세요.
 
 ## 컴포넌트 설명
