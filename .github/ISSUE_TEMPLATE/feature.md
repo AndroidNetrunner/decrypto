@@ -3,7 +3,7 @@ name: 추가 기능 제안
 about: 새로운 기능에 대한 아이디어가 떠오른 경우
 title: ''
 labels: "✨enhancement"
-assignees: AndroidNetrunner
+assignees: ''
 
 ---
 
