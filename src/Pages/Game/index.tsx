@@ -83,14 +83,14 @@ export default function Game() {
     if (teamName === 'firstTeam' || teamName === 'secondTeam') {
       const isInclude = team[teamName].users.some((user) => user.userId === dummyUser.userId);
       if (!isInclude && team[teamName].users.length !== 4) {
-        const filterdUsers = {
+        const filteredUsers = {
           firstTeam: { users: firstTeam.users.filter((user) => user.userId !== dummyUser.userId) },
           secondTeam: { users: secondTeam.users.filter((user) => user.userId !== dummyUser.userId) },
         };
-        setTeam({ ...team, ...filterdUsers, [teamName]: { users: [...team[teamName].users, dummyUser] } });
+        setTeam({ ...team, ...filteredUsers, [teamName]: { users: [...team[teamName].users, dummyUser] } });
       } else {
-        const filterdUsers = team[teamName].users.filter((user) => user.userId !== dummyUser.userId);
-        setTeam({ ...team, [teamName]: { users: [...filterdUsers] } });
+        const filteredUsers = team[teamName].users.filter((user) => user.userId !== dummyUser.userId);
+        setTeam({ ...team, [teamName]: { users: [...filteredUsers] } });
       }
     }
   };
@@ -110,6 +110,13 @@ export default function Game() {
           type='button'
           name='firstTeam'
           onClick={onClickJoinButton}
+          bgColor={
+            firstTeam.users.includes(dummyUser)
+              ? '#ff9999'
+              : firstTeam.users.length === 4
+              ? '#ffbe76'
+              : '#00008099'
+          }
           isFull={firstTeam.users.length === 4}
         >
           {firstTeam.users.includes(dummyUser)
@@ -134,6 +141,13 @@ export default function Game() {
           type='button'
           name='secondTeam'
           onClick={onClickJoinButton}
+          bgColor={
+            secondTeam.users.includes(dummyUser)
+              ? '#ff9999'
+              : secondTeam.users.length === 4
+              ? '#ffbe76'
+              : '#00008099'
+          }
           isFull={secondTeam.users.length === 4}
         >
           {secondTeam.users.includes(dummyUser)
@@ -189,13 +203,14 @@ const User = styled.li`
   text-align: center;
 `;
 
-const JoinButton = styled.button<{ isFull: boolean }>`
+const JoinButton = styled.button<{ isFull: boolean; bgColor: string }>`
   display: block;
   margin: 0 auto;
   font-size: 1.6rem;
   color: white;
   width: 100%;
-  background-color: ${(props) => (props.isFull ? '#ff9999' : 'rgba(0, 0, 128, 0.6)')};
+  cursor: pointer;
+  background-color: ${(props) => props.bgColor};
   border: none;
   padding: 1rem 0rem;
   border-radius: 1rem;
@@ -204,5 +219,4 @@ const JoinButton = styled.button<{ isFull: boolean }>`
     opacity: 0.9;
     transform: scale(0.98);
   }
-  cursor: pointer;
 `;

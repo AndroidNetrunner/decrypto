@@ -1,14 +1,19 @@
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import useInput from './Hooks/useInput';
 
 export default function Login() {
   const [nickname, onChangeNickname] = useInput();
   const [roomNumber, onChangeRoomNumber] = useInput();
-
+  const navigate = useNavigate();
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    navigate(`game/${roomNumber}`);
+  };
   return (
     <Container>
       <Title>Decrypto</Title>
-      <Form>
+      <Form onSubmit={onSubmit}>
         <InputContainer>
           <label htmlFor='nickname'>
             닉네임
