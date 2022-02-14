@@ -4,3 +4,14 @@ dist
 dist-ssr
 *.local
 .env*
+
+# firestore 관련
+database-debug.log
+database.rules.json
+firebase-debug.log
+firebase.json
+firestore-debug.log
+firestore.indexes.json
+firestore.rules
+storage.rules
+.firebaserc
