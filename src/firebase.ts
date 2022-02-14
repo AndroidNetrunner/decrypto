@@ -13,19 +13,13 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import {
-  browserSessionPersistence,
-  connectAuthEmulator,
-  createUserWithEmailAndPassword,
-  getAuth,
-  setPersistence,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
-import massiveWords from './words';
+import { getAuth } from 'firebase/auth';
+
 // firebase 프로젝트 환경 정보
 const firebaseConfig = {
   apiKey: import.meta.env.REACT_APP_API_KEY,
   authDomain: import.meta.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: import.meta.env.REACT_APP_DATABASE_URL,
   projectId: import.meta.env.REACT_APP_PROJECT_ID,
   storageBucket: import.meta.env.REACT_APP_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.REACT_APP_MESSAGING_SENDER_ID,
@@ -33,44 +27,21 @@ const firebaseConfig = {
   measurementId: import.meta.env.REACT_APP_MEASUREMENT_ID,
 };
 
+// Firebase initialize
 const app = initializeApp(firebaseConfig);
 
-const fireAuth = getAuth();
-// firestore 연결
+// Firestore 연결
 const firestore = getFirestore();
 
-//-> Local 에서 테스트용 Emulator [Firebase CLI 설치 요망]
-
-//connectAuthEmulator(fireAuth, 'http://localhost:9099');
-console.log(fireAuth.currentUser);
-// createUserWithEmailAndPassword(fireAuth, 'gamja@naver.com', '394998998')
-//   .then((userCredential) => {
-//     const { user } = userCredential;
-//     console.log(user);
-//   })
-//   .catch((error) => {
-//     const errorCode = error.code;
-//     const errorMessage = error.message;
-//     console.log(error);
-//   });
-
-signInWithEmailAndPassword(fireAuth, 'gamja@naver.com', '394998998')
-  .then((userCredential) => {
-    const { user } = userCredential;
-    console.log(user);
-    console.log(fireAuth.currentUser);
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(errorMessage);
-  });
+// Auth 연결
+const fireAuth = getAuth();
 
 // Collection 은 Document 들의 집합이라 생각하면 이해가 쉬울 것 같다.
+// Collection: 폴더, Document: 파일
 // 그렇기에 Document 하나를 특정하기 위해선 Collection 과 Document 를 둘 다 명시해야하며
 // Document 여러개를 얻기 위해선 Query 문이나 Collection 을 명시해야한다.
 
-const createUser = async (name: string) => {
+const createDoc = async (name: string) => {
   // addDoc: collection 만 지정하면 랜덤한 id 로 document 를 생성함, 생성 후 return 으로 promise 반환
   const newDoc = await addDoc(collection(firestore, 'users'), {
     name,
@@ -78,18 +49,7 @@ const createUser = async (name: string) => {
   console.log(newDoc.id);
 };
 
-/*
-const createDB = async () => {
-  const newDoc = await setDoc(doc(firestore, `words/backup`), {
-    massiveWords,
-  });
-  console.log(newDoc);
-};
-*/
-
-//createDB();
-
-const createSpecialUser = async (userId: string, userName: string) => {
+const createSpecialDoc = async (userId: string, userName: string) => {
   // setDoc: addDoc 과 다르게 setDoc 은 특정 id 를 기준으로 생성
   // 해당 document 가 없다면 생성하지만, document 가 있다면 해당 document 를 대체시킴
   // 다만 옵션 중 merge 옵션을 활성화 시킨다면 해당 document 덮어씌움 (병합) === updateUser
@@ -103,14 +63,14 @@ const createSpecialUser = async (userId: string, userName: string) => {
 };
 
 const updateUser = (userId: string) => {
-  // updateDoc: 특정 레퍼런스 즉, 해당 유저를 정확히 알아야 수정이 가능, toDo 만들 때랑 비슷하게 해당 todo id 확인 후 해당 todo 수정을 하니 당연한 이치?
+  // updateDoc: 특정 레퍼런스 즉, 해당 document 을 수정
   updateDoc(doc(firestore, `users/${userId}`), {
     name: 'yeah',
     favColor: 'black',
   });
 };
 
-const getUser = async (userId: string) => {
+const getDocument = async (userId: string) => {
   // getDoc: 특정 도큐먼트의 정보를 가져온다.
   const user = await getDoc(doc(firestore, `users/${userId}`));
   user.data(); // 가져온 정보
@@ -120,12 +80,18 @@ const getUser = async (userId: string) => {
   console.log(user.metadata);
 };
 
-let unSubscribe: () => void;
+const getDocuments = async (userId: string) => {
+  // getDocs: 특정 Collection 에 속한 데이터들을 모두 가져온다.
+  // query 를 적용하여 조건부로 가져올 수 있으며 promise 를 반환한다.
+  const docs = await getDocs(collection(firestore, 'users'));
+};
 
+let unSubscribe: () => void;
 const listenToADocument = () => {
   // 특정 Document 가 변경되는지 관찰하며 변경이 감지되었을 때 (서버측에서) 변경됨을 알려주어 업데이트 해준다.
   // onSnapshot 은 unSubscribe 함수를 return 해 주는데 해당 함수를 실행시키면 더이상 변경을 감지하지 않는다.
-  // 이게 중요한 이유는 어떤 컴포넌트가 렌더링 되었을 때만 서버와 통신을 하면 되기에 불필요한 서버 연결을 줄일 수 있다. (사실 돈을 줄일 수 있다.)
+  // 반환하는 unSubscribe 함수가 중요한 이유는
+  // 특정 컴포넌트가 렌더링 되었을 때만 서버와 통신, 언마운트 될 때부턴 서버와 통신을 제한하여 불필요한 서버 접근 및 이벤트를 줄일 수 있다.
   unSubscribe = onSnapshot(doc(firestore, 'users/394998'), (snap) => {
     console.log(snap.data());
   });
@@ -154,7 +120,6 @@ const test = () => {
   setTimeout(() => {
     createSpecialUser('394998', 'guma');
   }, 7000);
-  /*
   setTimeout(() => {
     updateUser('394998');
   }, 5000);
@@ -163,7 +128,6 @@ const test = () => {
   setTimeout(() => {
     unSubscribe();
   }, 10000);
-  */
 };
 
-//test();
+// test();
