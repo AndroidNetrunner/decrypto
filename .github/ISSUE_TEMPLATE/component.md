@@ -1,7 +1,7 @@
 ---
 name: 컴포넌트
 about: 새로운 컴포넌트 제작 및 추가가 필요할 경우
-title: ''
+title: '[COMPONENT]'
 labels: "\U0001F528component"
 assignees: ''
 
@@ -16,6 +16,7 @@ assignees: ''
 
 - 상위 컴포넌트와 하위 컴포넌트에는 이런 것들이 있어
 - 이 컴포넌트가 띄워주는 내용은 이러한 내용이야
+- props로 받을 내용은 이러한 것들이야
 
 ## TODO
 
