@@ -3,6 +3,12 @@ import BaseLayout from './Layouts/BaseLayout';
 import GameLayout from './Layouts/GameLayout';
 import Login from './Login';
 import Game from './Pages/Game';
+import Word from './components/Word';
+import Hints from './components/Hints';
+import { useState } from 'react'
+import logo from './logo.svg'
+import './App.css'
+import Heading from "./Heading"
 import './firebase';
 
 function App() {
@@ -12,6 +18,8 @@ function App() {
         <Route path='/game' element={<GameLayout />}>
           <Route path=':roomId' element={<Game />} />
         </Route>
+        <Route path='/word' element={<Word wordList={["사과", "배", "포도", "딸기"]}/>} />
+        <Route path='/hints' element={<Hints hintRecord={[["빨강", "", "보라", "케익"], ["동그라미", "노랑", "", "겨울"]]}/>} />
         <Route path='/' element={<BaseLayout />}>
           <Route index element={<Login />} />
         </Route>
@@ -19,6 +27,13 @@ function App() {
       </Routes>
     </Router>
   );
+  <Router>
+    <Routes>
+    <Route path="/" element={<Login />} />
+    <Route path="/lobby" element={<Heading />} />
+    </Routes>
+  </Router>
+  )
 }
 
 export default App;
