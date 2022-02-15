@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import BaseLayout from './Layouts/BaseLayout';
 import GameLayout from './Layouts/GameLayout';
@@ -6,18 +5,14 @@ import Login from './Login';
 import Game from './Pages/Game';
 import Word from './components/Word';
 import Hints from './components/Hints';
-=======
 import { useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
-import { BrowserRouter as Router,Routes,Route } from 'react-router-dom'
-import Login from './Login'
 import Heading from "./Heading"
->>>>>>> 9404545e50008babb33a5740790fb78833355b0b
+import './firebase';
 
 function App() {
   return (
-<<<<<<< HEAD
     <Router>
       <Routes>
         <Route path='/game' element={<GameLayout />}>
@@ -32,7 +27,6 @@ function App() {
       </Routes>
     </Router>
   );
-=======
   <Router>
     <Routes>
     <Route path="/" element={<Login />} />
@@ -40,7 +34,6 @@ function App() {
     </Routes>
   </Router>
   )
->>>>>>> 9404545e50008babb33a5740790fb78833355b0b
 }
 
 export default App;
