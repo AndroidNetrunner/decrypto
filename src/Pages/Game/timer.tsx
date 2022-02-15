@@ -55,19 +55,15 @@ const Select = styled.select`
   color: #495057;
   border-color: transparent;
   background-color: #e5dbff;
-  &:focus {
-    border-color: none;
-  }
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  &:focus {
+    border-color: none;
+  }
   option {
     color: black;
-    background: black;
-    display: flex;
-    white-space: pre;
-    min-height: 20px;
-    padding: 0px 2px 1px;
+    background-color: black;
   }
 `;
 
