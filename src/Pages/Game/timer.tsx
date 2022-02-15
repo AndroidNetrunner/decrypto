@@ -22,8 +22,7 @@ export default function SetGameLength({ captain }: Props) {
     } = event;
     setGameTime(Number(value));
   };
-  console.log(gameTime); //DB 에서 update
-
+  console.log(gameTime);
   return (
     <SelectBoxWrapper>
       <Select id='timer-select' onChange={onChangeTime} disabled={currentUser.uid !== captain.uid}>
