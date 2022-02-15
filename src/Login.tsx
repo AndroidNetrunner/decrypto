@@ -1,15 +1,9 @@
-<<<<<<< HEAD
-import { useNavigate } from 'react-router';
 import styled from 'styled-components';
-=======
-import styled from "styled-components"
-import React, { useState } from "react"
-import { Link } from 'react-router-dom'
->>>>>>> 9404545e50008babb33a5740790fb78833355b0b
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import useInput from './Hooks/useInput';
 
 export default function Login() {
-<<<<<<< HEAD
   const [nickname, onChangeNickname] = useInput();
   const [roomNumber, onChangeRoomNumber] = useInput();
   const navigate = useNavigate();
@@ -38,32 +32,6 @@ export default function Login() {
       </Form>
     </Container>
   );
-=======
-    const [nickname, onChangeNickname] = useInput();
-    const [roomNumber, onChangeRoomNumber] = useInput();
-
-    return (
-        <Container>
-            <Title>
-                Decrypto
-            </Title>
-            <Form>
-                <InputContainer>
-                    <label htmlFor="nickname">닉네임</label>
-                    <input value={nickname} onChange={onChangeNickname} id="nickname" />
-                    <label htmlFor='room'>방 번호</label>
-                    <input value={roomNumber} onChange={onChangeRoomNumber} id='room' />
-                </InputContainer>
-                <ButtonContainer>
-                    <EntryButton disabled={!nickname.length}>방 만들기</EntryButton>
-                    <Link to="/lobby">
-                        <EntryButton disabled={!(nickname.length && roomNumber.length)}>참가하기</EntryButton>
-                    </Link>
-                </ButtonContainer>
-            </Form>
-        </Container>
-    )
->>>>>>> 9404545e50008babb33a5740790fb78833355b0b
 }
 
 // 둘 다 값이 없을 경우 => 방 만들기, 참가하기 비활성화
