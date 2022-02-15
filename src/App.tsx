@@ -5,9 +5,11 @@ import Login from './Login';
 import Game from './Pages/Game';
 import Word from './components/Word';
 import Hints from './components/Hints';
-import { useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react'
+import logo from './logo.svg'
+import './App.css'
+import Heading from "./Heading"
+import './firebase';
 function App() {
   return (
     <Router>
