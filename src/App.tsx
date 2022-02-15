@@ -27,12 +27,9 @@ function App() {
   <Router>
     <Routes>
     <Route path="/" element={<Login />} />
-<<<<<<< HEAD
     <Route path="/hidden" element={<OpponentHints hints={[['폭포','나무'], ['꿈', '시계'], ['사랑','태양'], ['눈','시련']]}/>} />
     <Route path="/test" element={<HintSubmit answer={[2, 1, 4]} wordList={['평화', '자유', '사랑', 'My life']} />} />
-=======
     <Route path="/lobby" element={<Heading />} />
->>>>>>> 4ee1a2de535c31b8c161d66549df975e50f7bcf6
     </Routes>
   </Router>
   )
