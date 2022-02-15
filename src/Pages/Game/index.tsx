@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import TeamChangeButton from './Components/TeamChangeButton';
+import SetGameLength from './timer';
 
 const dummyUser = {
   userId: 394998,
@@ -49,6 +50,11 @@ interface Iteam {
     users: IUser[];
   };
 }
+
+const captain = {
+  uid: '0909',
+  username: 'yeoyoon',
+};
 
 export default function Game() {
   const [teamNames, setTeamNames] = useState({
@@ -157,6 +163,7 @@ export default function Game() {
             : '팀 참가하기'}
         </JoinButton>
       </TeamContainer>
+      <SetGameLength captain={captain} />
     </Container>
   );
 }
