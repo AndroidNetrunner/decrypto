@@ -10,7 +10,6 @@ import logo from './logo.svg'
 import './App.css'
 import Heading from "./Heading"
 import './firebase';
-
 function App() {
   return (
     <Router>
@@ -30,6 +29,8 @@ function App() {
   <Router>
     <Routes>
     <Route path="/" element={<Login />} />
+    <Route path="/hidden" element={<OpponentHints hints={[['폭포','나무'], ['꿈', '시계'], ['사랑','태양'], ['눈','시련']]}/>} />
+    <Route path="/test" element={<HintSubmit answer={[2, 1, 4]} wordList={['평화', '자유', '사랑', 'My life']} />} />
     <Route path="/lobby" element={<Heading />} />
     </Routes>
   </Router>
