@@ -77,9 +77,3 @@ const IconSVG = styled.svg`
   width: 24px;
   height: 24px;
 `;
-
-const Option = styled.option`
-  background: black;
-  color: #fff;
-  padding: 3px 0;
-`;

@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { Outlet } from 'react-router';
 import styled from 'styled-components';
-import Header from '../components/Layout/Header';
-import Overlay from '../components/Overlay';
+import Header from '../Components/Layout/Header';
+import Overlay from '../Components/Overlay';
 
 export default function BaseLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
