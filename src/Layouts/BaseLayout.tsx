@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router';
 import styled from 'styled-components';
-import Header from '../Components/Layout/Header';
+import Header from '../components/Layout/Header';
 
 export default function BaseLayout() {
   return (
