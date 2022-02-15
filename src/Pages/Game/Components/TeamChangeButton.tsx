@@ -34,8 +34,6 @@ export default function TeamChangeButton({ team, setTeam }: Props) {
   useEffect(() => {
     if (team.firstTeam.users.some((user) => user.userId === dummyUser.userId)) {
       setIsFirstTeamUser(true);
-    } else {
-      setIsFirstTeamUser(false);
     }
   }, []);
 
