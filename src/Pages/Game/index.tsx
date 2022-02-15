@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import TeamChangeButton from './Components/TeamChangeButton';
 
 const dummyUser = {
   userId: 394998,
@@ -54,7 +55,6 @@ export default function Game() {
     firstTeamName: 'White',
     secondTeamName: 'Black',
   });
-
   const [team, setTeam] = useState<Iteam>({
     firstTeam: {
       users: [...dummyFirstTeam],
@@ -126,7 +126,7 @@ export default function Game() {
             : '팀 참가하기'}
         </JoinButton>
       </TeamContainer>
-
+      <TeamChangeButton team={team} setTeam={setTeam} />
       <TeamContainer>
         <input name='secondTeamName' value={secondTeamName} onChange={onChangeName} type='text' />
         <UserList>
