@@ -102,7 +102,7 @@ export default function Game() {
   };
 
   const gameStart = () => {
-    if ((firstTeam.users.length < 1 && secondTeam.users.length < 1) || captain.uid !== dummyUser.userId) {
+    if (firstTeam.users.length < 2 || secondTeam.users.length < 2 || captain.uid !== dummyUser.userId) {
       return;
     }
     console.log('start');
@@ -173,7 +173,7 @@ export default function Game() {
       <SetGameLength captain={captain} />
       <GameStartButton
         type='button'
-        disabled={firstTeam.users.length < 1 || secondTeam.users.length < 1}
+        disabled={firstTeam.users.length < 2 || secondTeam.users.length < 2}
         onClick={gameStart}
       >
         게임 시작
