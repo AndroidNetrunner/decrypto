@@ -4,7 +4,7 @@
   "description": "Decrypto Backend",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/index.ts",
+    "dev": "NODE_ENV=development nodemon --exec ts-node  src/index.ts",
     "lint": "eslint . --ext .js,.ts"
   },
   "keywords": [
