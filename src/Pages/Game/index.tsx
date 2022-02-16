@@ -82,33 +82,13 @@ export default function Game() {
     });
   };
 
-  const onClickJoinButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const {
-      currentTarget: { name: teamName },
-    } = event;
-
-    if (teamName === 'firstTeam' || teamName === 'secondTeam') {
-      const isInclude = team[teamName].users.some((user) => user.userId === dummyUser.userId);
-      if (!isInclude && team[teamName].users.length !== 4) {
-        const filteredUsers = {
-          firstTeam: { users: firstTeam.users.filter((user) => user.userId !== dummyUser.userId) },
-          secondTeam: { users: secondTeam.users.filter((user) => user.userId !== dummyUser.userId) },
-        };
-        setTeam({ ...team, ...filteredUsers, [teamName]: { users: [...team[teamName].users, dummyUser] } });
-      } else {
-        const filteredUsers = team[teamName].users.filter((user) => user.userId !== dummyUser.userId);
-        setTeam({ ...team, [teamName]: { users: [...filteredUsers] } });
-      }
-    }
-  };
-
   const onClickStartButton = () => {
     if (firstTeam.users.length < 2 || secondTeam.users.length < 2 || captain.uid !== dummyUser.userId) {
       return;
     }
     console.log('start');
   };
-  
+
   return (
     <Container>
       <TeamContainer>
