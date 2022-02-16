@@ -7,6 +7,7 @@ import Word from './Components/Word';
 import Hints from './Components/Hints';
 import OpponentHints from './Components/OpponentHints';
 import HintSubmit from './Components/HintSubmit';
+import Timer from './Components/Timer';
 // import './firebase';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path='/game' element={<GameLayout />}>
           <Route path=':roomId' element={<Game />} />
         </Route>
+        <Route path='/timer' element={<Timer gameTime={30} />} />
         <Route path='/word' element={<Word wordList={['사과', '배', '포도', '딸기']} />} />
         <Route
           path='/hints'
