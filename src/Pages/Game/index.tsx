@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import GameStartButton from './Components/GameStartButton';
 import SetGameLength from './timer';
 
 const dummyUser = {
@@ -101,7 +102,7 @@ export default function Game() {
     }
   };
 
-  const gameStart = () => {
+  const onClickStartButton = () => {
     if (firstTeam.users.length < 2 || secondTeam.users.length < 2 || captain.uid !== dummyUser.userId) {
       return;
     }
@@ -171,13 +172,7 @@ export default function Game() {
         </JoinButton>
       </TeamContainer>
       <SetGameLength captain={captain} />
-      <GameStartButton
-        type='button'
-        disabled={firstTeam.users.length < 2 || secondTeam.users.length < 2}
-        onClick={gameStart}
-      >
-        게임 시작
-      </GameStartButton>
+      <GameStartButton team={team} onClickStartButton={onClickStartButton} />
     </Container>
   );
 }
@@ -239,26 +234,5 @@ const JoinButton = styled.button<{ isFull: boolean; bgColor: string }>`
   &:active {
     opacity: 0.9;
     transform: scale(0.98);
-  }
-`;
-
-const GameStartButton = styled.button`
-  cursor: ${(props) => (props.disabled ? '' : 'pointer')};
-  position: absolute;
-  font-size: 2rem;
-  padding: 1.5rem 8rem;
-  background-color: #ffdf86;
-  border: 3px solid #e4dbff;
-  border-radius: 1rem;
-  transition: all 0.2s ease-in-out;
-  &:hover {
-    transform: ${(props) => (props.disabled ? '' : 'scale(0.95)')};
-  }
-  &:active {
-    transform: scale(0.9);
-  }
-  &:disabled {
-    opacity: 0.65;
-    filter: blur(1px);
   }
 `;
