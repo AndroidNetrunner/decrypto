@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import GameStartButton from './Components/GameStartButton';
+import TeamChangeButton from './Components/TeamChangeButton';
 import SetGameLength from './timer';
 
 const dummyUser = {
@@ -41,7 +43,7 @@ interface IUser {
   userId: number;
   nickname: string;
 }
-interface Iteam {
+interface ITeam {
   firstTeam: {
     users: IUser[];
   };
@@ -51,7 +53,7 @@ interface Iteam {
 }
 
 const captain = {
-  uid: '0909',
+  uid: 394998,
   username: 'yeoyoon',
 };
 
@@ -60,8 +62,7 @@ export default function Game() {
     firstTeamName: 'White',
     secondTeamName: 'Black',
   });
-
-  const [team, setTeam] = useState<Iteam>({
+  const [team, setTeam] = useState<ITeam>({
     firstTeam: {
       users: [...dummyFirstTeam],
     },
@@ -81,24 +82,11 @@ export default function Game() {
     });
   };
 
-  const onClickJoinButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const {
-      currentTarget: { name: teamName },
-    } = event;
-
-    if (teamName === 'firstTeam' || teamName === 'secondTeam') {
-      const isInclude = team[teamName].users.some((user) => user.userId === dummyUser.userId);
-      if (!isInclude && team[teamName].users.length !== 4) {
-        const filteredUsers = {
-          firstTeam: { users: firstTeam.users.filter((user) => user.userId !== dummyUser.userId) },
-          secondTeam: { users: secondTeam.users.filter((user) => user.userId !== dummyUser.userId) },
-        };
-        setTeam({ ...team, ...filteredUsers, [teamName]: { users: [...team[teamName].users, dummyUser] } });
-      } else {
-        const filteredUsers = team[teamName].users.filter((user) => user.userId !== dummyUser.userId);
-        setTeam({ ...team, [teamName]: { users: [...filteredUsers] } });
-      }
+  const onClickStartButton = () => {
+    if (firstTeam.users.length < 2 || secondTeam.users.length < 2 || captain.uid !== dummyUser.userId) {
+      return;
     }
+    console.log('start');
   };
 
   return (
@@ -112,27 +100,8 @@ export default function Game() {
             <User>참가하세오,,!</User>
           )}
         </UserList>
-        <JoinButton
-          type='button'
-          name='firstTeam'
-          onClick={onClickJoinButton}
-          bgColor={
-            firstTeam.users.includes(dummyUser)
-              ? '#ff9999'
-              : firstTeam.users.length === 4
-              ? '#ffbe76'
-              : '#00008099'
-          }
-          isFull={firstTeam.users.length === 4}
-        >
-          {firstTeam.users.includes(dummyUser)
-            ? '팀 떠나기'
-            : firstTeam.users.length === 4
-            ? 'Full'
-            : '팀 참가하기'}
-        </JoinButton>
       </TeamContainer>
-
+      <TeamChangeButton team={team} setTeam={setTeam} />
       <TeamContainer>
         <input name='secondTeamName' value={secondTeamName} onChange={onChangeName} type='text' />
         <UserList>
@@ -142,28 +111,9 @@ export default function Game() {
             <User>참가하세오,,!</User>
           )}
         </UserList>
-
-        <JoinButton
-          type='button'
-          name='secondTeam'
-          onClick={onClickJoinButton}
-          bgColor={
-            secondTeam.users.includes(dummyUser)
-              ? '#ff9999'
-              : secondTeam.users.length === 4
-              ? '#ffbe76'
-              : '#00008099'
-          }
-          isFull={secondTeam.users.length === 4}
-        >
-          {secondTeam.users.includes(dummyUser)
-            ? '팀 떠나기'
-            : secondTeam.users.length === 4
-            ? 'Full'
-            : '팀 참가하기'}
-        </JoinButton>
       </TeamContainer>
       <SetGameLength captain={captain} />
+      <GameStartButton team={team} onClickStartButton={onClickStartButton} />
     </Container>
   );
 }
@@ -208,22 +158,4 @@ const User = styled.li`
   padding: 3rem 1rem;
   font-size: 2rem;
   text-align: center;
-`;
-
-const JoinButton = styled.button<{ isFull: boolean; bgColor: string }>`
-  display: block;
-  margin: 0 auto;
-  font-size: 1.6rem;
-  color: white;
-  width: 100%;
-  cursor: pointer;
-  background-color: ${(props) => props.bgColor};
-  border: none;
-  padding: 1rem 0rem;
-  border-radius: 1rem;
-  transition: all 0.1s linear;
-  &:active {
-    opacity: 0.9;
-    transform: scale(0.98);
-  }
 `;
