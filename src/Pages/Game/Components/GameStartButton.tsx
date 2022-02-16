@@ -1,11 +1,34 @@
 import styled from 'styled-components';
 
+interface IUser {
+  userId: number;
+  nickname: string;
+}
+interface Iteam {
+  firstTeam: {
+    users: IUser[];
+  };
+  secondTeam: {
+    users: IUser[];
+  };
+}
+
 interface Props {
+  team: Iteam;
   onClickStartButton: () => void;
 }
 
-export default function GameStartButton({ onClickStartButton }: Props) {
-  return <Button onClick={onClickStartButton}>hi</Button>;
+export default function GameStartButton({ team, onClickStartButton }: Props) {
+  const { firstTeam, secondTeam } = team;
+  return (
+    <Button
+      disabled={firstTeam.users.length < 2 || secondTeam.users.length < 2}
+      type='button'
+      onClick={onClickStartButton}
+    >
+      hi
+    </Button>
+  );
 }
 
 const Button = styled.button`
