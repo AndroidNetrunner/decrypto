@@ -5,7 +5,6 @@ import helmet from 'helmet';
 import cors from 'cors';
 import cookieSession from 'cookie-session';
 import userRouter from './routers/apiRouter';
-import globalRouter from './routers/globalRouter';
 
 const app = express();
 const logger = morgan('dev');
@@ -23,7 +22,6 @@ app.use(
   })
 );
 
-app.use('/', globalRouter);
 app.use('/', userRouter);
 
 export default app;
