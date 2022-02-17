@@ -1,7 +1,7 @@
 import express from 'express';
 
 export const login = (req: express.Request, res: express.Response) => {
-  const { loginId, loginPassword } = req.body;
-  console.log(loginId, loginPassword);
+  const { email, password } = req.body;
+  res.json({ email, password });
 };
 export const logout = () => {};

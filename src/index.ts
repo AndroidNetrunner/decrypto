@@ -1,7 +1,9 @@
 import app from './server';
 
+const PORT = process.env.PORT || 4040;
+
 const handleListen = () => {
-  console.log(`✅ http://localhost:${process.env.PORT}`);
+  console.log(`✅ http://localhost:${PORT}`);
 };
 
-app.listen(process.env.PORT, handleListen);
+app.listen(PORT, handleListen);
