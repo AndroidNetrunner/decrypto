@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import GameStartButton from './Components/GameStartButton';
 import TeamChangeButton from './Components/TeamChangeButton';
 import SetGameLength from './timer';
 
@@ -52,7 +53,7 @@ interface ITeam {
 }
 
 const captain = {
-  uid: '0909',
+  uid: 394998,
   username: 'yeoyoon',
 };
 
@@ -81,6 +82,13 @@ export default function Game() {
     });
   };
 
+  const onClickStartButton = () => {
+    if (firstTeam.users.length < 2 || secondTeam.users.length < 2 || captain.uid !== dummyUser.userId) {
+      return;
+    }
+    console.log('start');
+  };
+
   return (
     <Container>
       <TeamContainer>
@@ -105,6 +113,7 @@ export default function Game() {
         </UserList>
       </TeamContainer>
       <SetGameLength captain={captain} />
+      <GameStartButton team={team} onClickStartButton={onClickStartButton} />
     </Container>
   );
 }
