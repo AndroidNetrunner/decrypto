@@ -2,8 +2,6 @@ import express from 'express';
 
 const globalRouter = express.Router();
 
-globalRouter('/', (req: express.Request, res: express.Response) => {
-  res.json({});
-});
+globalRouter.get('/', (req: express.Request, res: express.Response) => {});
 
 export default globalRouter;

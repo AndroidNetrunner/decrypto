@@ -23,7 +23,7 @@ app.use(
   })
 );
 
-// app.use('/', globalRouter);
+app.use('/', globalRouter);
 app.use('/', userRouter);
 
 export default app;
