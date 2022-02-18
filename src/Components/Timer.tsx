@@ -1,6 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import styled from 'styled-components';
-import '../fonts/font.css';
 
 export default function Timer({ gameTime }: { gameTime: number }) {
   const progressRef = useRef<HTMLDivElement>(null);
@@ -24,22 +23,16 @@ export default function Timer({ gameTime }: { gameTime: number }) {
     }
   }, setTimer);
 
-  useEffect(() => {
-    return () => clearInterval(progress);
-  }, []);
-
   return (
-    <Container>
+    <div>
       <TimerLeft ref={progressValueRef}>{(setTimer / 10).toFixed(0)}</TimerLeft>
       <CircularProgress ref={progressRef} />
-    </Container>
+    </div>
   );
 }
 
-const Container = styled.div``;
-
 const TimerLeft = styled.div`
-  font-family: neodgm;
+  font-family: neodgm, sans-serif;
   font-size: 10rem;
   text-align: center;
   height: 100px;
@@ -47,18 +40,7 @@ const TimerLeft = styled.div`
 `;
 
 const CircularProgress = styled.div`
-  position: relative;
   height: 250px;
   width: 250px;
   border-radius: 50%;
-  display: grid;
-  place-items: center;
-  .before {
-    content: '';
-    position: absolute;
-    height: 84%;
-    width: 84%;
-    background-color: #ffffff;
-    border-radius: 50%;
-  }
 `;

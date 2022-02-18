@@ -8,6 +8,7 @@ import Hints from './Components/Hints';
 import OpponentHints from './Components/OpponentHints';
 import HintSubmit from './Components/HintSubmit';
 import Timer from './Components/Timer';
+import './fonts/font.css';
 // import './firebase';
 
 function App() {
