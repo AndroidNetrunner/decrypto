@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import GameStartButton from './Components/GameStartButton';
 import TeamChangeButton from './Components/TeamChangeButton';
-import SetGameLength from './timer';
+import SetGameLength from './Components/SetGameLength';
 
 const dummyUser = {
   userId: 394998,

@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Outlet } from 'react-router';
 import styled from 'styled-components';
 import Header from '../Components/Layout/Header';
-import Overlay from '../Components/Overlay';
+import Overlay from '../Components/Common/Overlay';
 
 export default function BaseLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
