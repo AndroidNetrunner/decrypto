@@ -9,7 +9,7 @@ export default function Login() {
   const navigate = useNavigate();
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    navigate(`game/${roomNumber}`);
+    navigate(`room/${roomNumber}`);
   };
   return (
     <Container>
