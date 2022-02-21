@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import useInput from './Hooks/useInput';
+import useInput from '../../Hooks/useInput';
 
 export default function Login() {
   const [nickname, onChangeNickname] = useInput();
