@@ -3,8 +3,8 @@ import { nanoid } from 'nanoid';
 import { v4 as uuidv4 } from 'uuid';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import useInput from './Hooks/useInput';
-import socket from './socket';
+import useInput from '../../Hooks/useInput';
+import socket from '../../socket';
 
 export default function Login() {
   const [nickname, onChangeNickname] = useInput();
