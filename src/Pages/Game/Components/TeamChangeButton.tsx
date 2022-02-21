@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 interface IUser {
-  userId: number;
   nickname: string;
+  uuid: string;
+  isOwner: boolean;
+  _id: string;
 }
 
 interface ITeam {
@@ -15,13 +17,6 @@ interface ITeam {
   };
 }
 
-// 테스트용 더미 유저
-// auth 연결하면 currentUser 로 검증 예정
-const dummyUser = {
-  userId: 394998,
-  nickname: 'gamja',
-};
-
 interface Props {
   team: ITeam;
   setTeam: React.Dispatch<React.SetStateAction<ITeam>>;
@@ -32,23 +27,23 @@ export default function TeamChangeButton({ team, setTeam }: Props) {
   const { firstTeam, secondTeam } = team;
 
   useEffect(() => {
-    if (team.firstTeam.users.some((user) => user.userId === dummyUser.userId)) {
+    if (team.firstTeam.users.some((user) => user.uuid === dummyUser.uuid)) {
       setIsFirstTeamUser(true);
     }
   }, []);
 
   const onClickTeamChangeButton = () => {
     if (isFirstTeamUser) {
-      const filteredUsers = firstTeam.users.filter((user) => user.userId !== dummyUser.userId);
+      const filteredUsers = firstTeam.users.filter((user) => user.uuid !== dummyUser.uuid);
       setTeam({
         firstTeam: { users: [...filteredUsers] },
-        secondTeam: { users: [...secondTeam.users, dummyUser] },
+        secondTeam: { users: [...secondTeam.users] },
       });
     }
     if (!isFirstTeamUser) {
-      const filteredUsers = secondTeam.users.filter((user) => user.userId !== dummyUser.userId);
+      const filteredUsers = secondTeam.users.filter((user) => user.uuid !== dummyUser.uuid);
       setTeam({
-        firstTeam: { users: [...firstTeam.users, dummyUser] },
+        firstTeam: { users: [...firstTeam.users] },
         secondTeam: { users: [...filteredUsers] },
       });
     }
