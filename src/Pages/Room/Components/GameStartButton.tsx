@@ -1,20 +1,8 @@
 import styled from 'styled-components';
-
-interface IUser {
-  userId: number;
-  nickname: string;
-}
-interface Iteam {
-  firstTeam: {
-    users: IUser[];
-  };
-  secondTeam: {
-    users: IUser[];
-  };
-}
+import { ITeam } from '..';
 
 interface Props {
-  team: Iteam;
+  team: ITeam;
   onClickStartButton: () => void;
 }
 

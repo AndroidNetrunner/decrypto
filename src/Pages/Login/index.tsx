@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
 import { nanoid } from 'nanoid';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidV4 } from 'uuid';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useInput from '../../Hooks/useInput';
-import socket from '../../socket';
+import socket from '../../Utils/socket';
 
 export default function Login() {
-  const [nickname, onChangeNickname] = useInput();
+  const [nickname, onChangeNickname] = useInput(localStorage.getItem('nick') ?? '');
   const [roomId, onChangeRoomId] = useInput();
   const navigate = useNavigate();
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    navigate(`room/${roomNumber}`);
   };
 
   const enterRoom = () => {
@@ -20,18 +19,15 @@ export default function Login() {
     // * 방 만들기 : nanoid 로 random 한 str 만들어서 보냅니다.
     // * 방 참가하기 : 입력된 roomId 를 사용합니다.
     // * emit(event, 보낼 정보1, 보낼 정보2, 맨 마지막엔 백엔드에서 처리가 완료된 후 발생할 callback 함수)
-
-    let uuid = window.localStorage.getItem('UUID');
+    let uid = window.localStorage.getItem('uid');
     window.localStorage.setItem('nick', nickname);
-    if (uuid === null) {
-      uuid = uuidv4();
-      window.localStorage.setItem('UUID', uuid);
+    if (uid === null) {
+      uid = uuidV4();
+      window.localStorage.setItem('uid', uid);
     }
-
-    const data = { nickname, roomId, uuid };
-
-    socket.emit('ENTER_ROOM', data, (confirmRoomId) => {
-      navigate(`game/${confirmRoomId}`);
+    const userData = { nickname, roomId, uid };
+    socket.emit('ENTER_ROOM', userData, (confirmRoomId) => {
+      navigate(`room/${confirmRoomId}`);
     });
   };
 

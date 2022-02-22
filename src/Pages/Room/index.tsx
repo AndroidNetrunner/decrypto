@@ -2,42 +2,41 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useParams } from 'react-router';
-import socket from '../../socket';
+import socket from '../../Utils/socket';
 import GameStartButton from './Components/GameStartButton';
 import TeamChangeButton from './Components/TeamChangeButton';
 import SetGameLength from './Components/SetGameLength';
 
-const dummyUser = {
-  userId: 394998,
-  nickname: 'gamja',
-};
-
-interface IUser {
-  nickname: string;
-  uuid: string;
-  isOwner: boolean;
+export interface User {
   _id: string;
+  uid: string;
+  nickname: string;
+  isOwner: string;
+  isRedTeam: boolean;
 }
-interface ITeam {
+
+export interface ITeam {
   firstTeam: {
-    users: IUser[];
+    users: User[];
   };
   secondTeam: {
-    users: IUser[];
+    users: User[];
   };
 }
 
-const captain = {
-  uid: 394998,
-  username: 'yeoyoon',
-};
-
 export default function Room() {
+  const { roomId } = useParams();
+  const [user, setUser] = useState<User>({
+    _id: '',
+    uid: '',
+    nickname: '',
+    isOwner: '',
+    isRedTeam: true,
+  });
   const [teamNames, setTeamNames] = useState({
     firstTeamName: 'White',
     secondTeamName: 'Black',
   });
-
   const [team, setTeam] = useState<ITeam>({
     firstTeam: {
       users: [],
@@ -58,57 +57,144 @@ export default function Room() {
     });
   };
 
+  /*
+    ! 방장이 게임 시작 버튼을 눌렀을 때의 로직
+  */
   const onClickStartButton = () => {
-    if (firstTeam.users.length < 2 || secondTeam.users.length < 2 || captain.uid !== dummyUser.userId) {
+    if (firstTeam.users.length < 2 || secondTeam.users.length < 2 || !user.isOwner) {
       return;
     }
+    console.log('나는 방장이지롱');
+    // socket.emit('GAME_START', team, (confirmTeam) => {
+    //   console.log('GAME_START | 방장');
+    //   console.log(confirmTeam);
+    // });
+  };
 
-    // * 방장이 게임 스타트를 하면 현재 팀 state 를 서버로 보낸다.
-    // * 그 후 서버는 각각의 인원에게 팀 state 를 보내고, 방장에게 callback 함수를 실행시키도록 한다.
-    // * 우선 navigate 로 창 전환을 한 후 GAME_START 이벤트로 넘어온 팀 배열을 적용한다.
-
-    // TODO: 팀 변경, 게임 떠나기(방장, 팀원)
-
-    // ? 방장이 게임 시작할 때 서버에 보내야 할 것들은 무엇일까?
-    // ? 게임 설정, 팀원
-    socket.emit('GAME_START', team, (confirmTeam) => {
-      console.log('GAME_START | 방장');
-      console.log(confirmTeam);
+  /*
+    ! 사용자가 팀 변경을 요청하는 로직
+  */
+  const onClickChangeButton = () => {
+    const { uid } = user;
+    const to = user.isRedTeam ? 'blue' : 'red';
+    socket.emit('CHANGE_TEAM', uid, to, () => {
+      const afterUserData = { ...user, isRedTeam: !user.isRedTeam };
+      if (to === 'red') {
+        const filteredUser = team.secondTeam.users.filter((secondTeamUser) => secondTeamUser.uid !== uid);
+        setTeam({
+          firstTeam: { users: [...team.firstTeam.users, afterUserData] },
+          secondTeam: { users: [...filteredUser] },
+        });
+      } else if (to === 'blue') {
+        const filteredUser = team.firstTeam.users.filter((firstTeamUser) => firstTeamUser.uid !== uid);
+        setTeam({
+          firstTeam: { users: [...filteredUser] },
+          secondTeam: { users: [...team.secondTeam.users, afterUserData] },
+        });
+      }
+      setUser(afterUserData);
     });
   };
 
-  const { roomId } = useParams();
-  // ! 누군가 들어왔을 때 로직
-  socket.off('ENTER_ROOM').on('ENTER_ROOM', (userData) => {
-    setTeam({ ...team, firstTeam: { users: [...team.firstTeam.users, userData] } });
-    // 들어온 유저의 데이터 : userData: { nickname: string; uuid: string; isOwner: boolean; _id: string }
-    console.log(userData);
+  /*
+    ! 누군가 들어왔을 때 로직
+    * @param userData = 들어온 유저의 데이터
+    * @param userTeam = 들어온 유저가 배정받은 팀
+    * 들어온 유저의 데이터와 배정된 팀 정보를 받는다 userData = (isOwner, nickname, uid, _id), 'red' | 'blue'
+    * 해당 정보를 바탕으로 팀 state 를 변경한다.
+  */
+  socket.off('ENTER_ROOM').on('ENTER_ROOM', (userData, userTeam) => {
+    if (userTeam === 'red') {
+      setTeam({
+        firstTeam: { users: [...firstTeam.users, userData] },
+        secondTeam: { users: [...secondTeam.users] },
+      });
+    } else {
+      setTeam({
+        firstTeam: { users: [...firstTeam.users] },
+        secondTeam: { users: [...secondTeam.users, userData] },
+      });
+    }
+    console.log('🚀 들어온 유저 🚀', userData);
   });
 
-  // ! 누군가 떠났을 때 로직
-  socket.off('LEAVE_ROOM').on('LEAVE_ROOM', (uuid) => {
-    console.log(uuid);
-    // ? 떠난 유저를 지우기 위해 uuid 만 제공받아 클라이언트에서 처리할 것인지
-    // ? 혹은 응답에 team 을 통째로 받아 처리할 것인지
-    // * 클라이언트 측에서 처리하기엔 2안이 더 편리할 것 같다. 그냥 setTeam(response) 하면 되지 않을까?
-    // * 첫번째 방식으로 처리한다면 uuid, 나가기 전 팀을 전달해야 클라이언트에서 불필요한 접근이 줄어들 것 같다.
+  /* 
+    ! 누군가 팀을 바꿨을 때 로직
+    *@param userData = 변경을 한 유저의 데이터
+    *@param to = 팀 변경 목적지, ex)red 일 경우 해당 유저의 기존 팀은 blue 팀이고, red 팀으로 변경 요청을 한 것
+  */
+
+  socket.off('CHANGE_TEAM').on('CHANGE_TEAM', (userData, to) => {
+    const { uid } = userData;
+    if (to === 'red') {
+      const filteredUser = team.secondTeam.users.filter((secondTeamUser) => secondTeamUser.uid !== uid);
+      setTeam({
+        firstTeam: { users: [...team.firstTeam.users, userData] },
+        secondTeam: { users: [...filteredUser] },
+      });
+    } else {
+      const filteredUser = team.firstTeam.users.filter((firstTeamUser) => firstTeamUser.uid !== uid);
+      setTeam({
+        firstTeam: { users: [...filteredUser] },
+        secondTeam: { users: [...team.secondTeam.users, userData] },
+      });
+    }
+    console.log('🔄 팀을 바꾼 유저 🔄', userData);
   });
 
+  /*
+    ! 누군가 떠났을 때 로직
+    *@param userData = 떠난 유저의 데이터
+    *@param userTeam = 떠난 유저가 속해있던 팀
+  */
+  socket.off('LEAVE_ROOM').on('LEAVE_ROOM', (userData, userTeam) => {
+    const { uid } = userData;
+    if (userTeam === 'red') {
+      const filteredUser = team.firstTeam.users.filter((firstTeamUser) => firstTeamUser.uid !== uid);
+      setTeam({
+        ...team,
+        firstTeam: { users: [...filteredUser] },
+      });
+    } else {
+      const filteredUser = team.secondTeam.users.filter((firstTeamUser) => firstTeamUser.uid !== uid);
+      setTeam({
+        ...team,
+        secondTeam: { users: [...filteredUser] },
+      });
+    }
+    console.log('👋🏻 나간 유저 👋🏻', userData);
+  });
+
+  /*
+    ! 초기 로딩시 받아야 할 데이터
+    기존에 들어와 있는 유저들의 목록을 받아서 반영해야한다.
+    에러가 발생하는 경우는 새로고침을 하여 방이 사라졌을 때 발생하므로 이전 페이지로 리다이렉트 해줘야한다.
+  */
   useEffect(() => {
-    axios({ method: 'GET', url: `${import.meta.env.REACT_APP_BACKEND_BASE_URL}/game/${roomId}` }).then(
-      (response) => {
-        const {
-          data: { users },
-        } = response;
-        setTeam({ ...team, firstTeam: { users: [...users] } });
-        console.log(users);
-      },
-      // * 여기서도 팀을 통째로 받는 것이 쉬울 것 같다.
-      // * 그러기 위해선 처음부터 db 에 team 이 분리되어 있어야한다.
-    );
-
-    return () => socket.disconnect();
+    const uid = localStorage.getItem('uid');
+    axios({
+      method: 'GET',
+      url: `${import.meta.env.REACT_APP_BACKEND_BASE_URL}/game/${roomId}`,
+      params: { uid },
+    })
+      .then((response) => {
+        const { data } = response;
+        const isFirstTeamUser = Boolean(
+          data.gameInfo.team.redTeam.users.find((firstTeamUser: User) => firstTeamUser.uid === uid),
+        );
+        setUser({ ...data.userInfo, isRedTeam: isFirstTeamUser });
+        setTeam({
+          firstTeam: { users: [...data.gameInfo.team.redTeam.users] },
+          secondTeam: { users: [...data.gameInfo.team.blueTeam.users] },
+        });
+      })
+      .catch((e) => console.log(e));
+    return () => {
+      socket.disconnect();
+    };
   }, []);
+
+  console.log('🙌🏻 이건 저에요 🙌🏻', user);
 
   return (
     <Container>
@@ -116,18 +202,18 @@ export default function Room() {
         <input name='firstTeamName' value={firstTeamName} onChange={onChangeName} type='text' />
         <UserList>
           {firstTeam.users.length ? (
-            firstTeam.users.map((user) => <User key={user.uuid}>{user.nickname}</User>)
+            firstTeam.users.map((user) => <User key={user.uid}>{user.nickname}</User>)
           ) : (
             <User>참가하세오,,!</User>
           )}
         </UserList>
       </TeamContainer>
-      <TeamChangeButton team={team} setTeam={setTeam} />
+      <TeamChangeButton user={user} team={team} onClickChangeButton={onClickChangeButton} />
       <TeamContainer>
         <input name='secondTeamName' value={secondTeamName} onChange={onChangeName} type='text' />
         <UserList>
           {secondTeam.users.length ? (
-            secondTeam.users.map((user) => <User key={user.uuid}>{user.nickname}</User>)
+            secondTeam.users.map((user) => <User key={user.uid}>{user.nickname}</User>)
           ) : (
             <User>참가하세오,,!</User>
           )}

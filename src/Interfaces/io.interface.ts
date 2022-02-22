@@ -1,29 +1,22 @@
-interface IUser {
-  nickname: string;
-  uuid: string;
-  isOwner: boolean;
-  _id: string;
-}
-interface ITeam {
-  firstTeam: {
-    users: IUser[];
-  };
-  secondTeam: {
-    users: IUser[];
-  };
-}
+import { ITeam, User } from '../Pages/Room';
+
+type TeamList = 'red' | 'blue';
 
 // * 이벤트를 받을 때
 export interface ServerToClientEvents {
-  ENTER_ROOM: (userData: { nickname: string; uuid: string; isOwner: boolean; _id: string }) => void;
-  LEAVE_ROOM: (uuid: string) => void;
+  // TODO: 타입 겹치니 리팩토링 필요
+  ENTER_ROOM: (userData: User, team: TeamList) => void;
+  CHANGE_TEAM: (userData: User, to: TeamList) => void;
+  LEAVE_ROOM: (userData: User, team: TeamList) => void;
   GAME_START: (players: ITeam) => void;
 }
 
 // * 이벤트를 보낼 때
 export interface ClientToServerEvents {
+  CHANGE_TEAM: (uid: string, to: 'red' | 'blue', done: () => void) => void;
+
   ENTER_ROOM: (
-    userData: { nickname: string; roomId: string; uuid: string },
+    userData: { nickname: string; roomId: string; uid: string },
     done: (confirmRoomId: string) => void,
   ) => void;
 

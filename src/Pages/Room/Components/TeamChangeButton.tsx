@@ -1,57 +1,28 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-interface IUser {
-  nickname: string;
-  uuid: string;
-  isOwner: boolean;
-  _id: string;
-}
-
-interface ITeam {
-  firstTeam: {
-    users: IUser[];
-  };
-  secondTeam: {
-    users: IUser[];
-  };
-}
+import { User, ITeam } from '../index';
 
 interface Props {
+  user: User;
   team: ITeam;
-  setTeam: React.Dispatch<React.SetStateAction<ITeam>>;
+  onClickChangeButton: () => void;
 }
 
-export default function TeamChangeButton({ team, setTeam }: Props) {
+export default function TeamChangeButton({ user, team, onClickChangeButton }: Props) {
   const [isFirstTeamUser, setIsFirstTeamUser] = useState<boolean>(false);
-  const { firstTeam, secondTeam } = team;
+  const { firstTeam } = team;
 
   useEffect(() => {
-    if (team.firstTeam.users.some((user) => user.uuid === dummyUser.uuid)) {
+    if (firstTeam.users.some((firstTeamUser) => firstTeamUser.uid === user.uid)) {
       setIsFirstTeamUser(true);
+    } else {
+      setIsFirstTeamUser(false);
     }
-  }, []);
-
-  const onClickTeamChangeButton = () => {
-    if (isFirstTeamUser) {
-      const filteredUsers = firstTeam.users.filter((user) => user.uuid !== dummyUser.uuid);
-      setTeam({
-        firstTeam: { users: [...filteredUsers] },
-        secondTeam: { users: [...secondTeam.users] },
-      });
-    }
-    if (!isFirstTeamUser) {
-      const filteredUsers = secondTeam.users.filter((user) => user.uuid !== dummyUser.uuid);
-      setTeam({
-        firstTeam: { users: [...firstTeam.users] },
-        secondTeam: { users: [...filteredUsers] },
-      });
-    }
-    setIsFirstTeamUser((prev) => !prev);
-  };
+  }, [team]);
 
   return (
-    <Button type='button' onClick={onClickTeamChangeButton} isFirstTeamUser={isFirstTeamUser}>
+    <Button type='button' onClick={onClickChangeButton} isFirstTeamUser={isFirstTeamUser}>
       <svg
         xmlns='http://www.w3.org/2000/svg'
         xmlnsXlink='http://www.w3.org/1999/xlink'
