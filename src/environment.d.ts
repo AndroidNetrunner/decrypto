@@ -1,9 +1,12 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      GITHUB_AUTH_TOKEN: string;
+      MONGO_DB_URL: string;
+      COOKIE_SECRET: string;
       NODE_ENV: 'development' | 'production';
-      PORT?: string;
+      GITHUB_CLIENT_ID: string;
+      GITHUB_CLIENT_SECRET: string;
+      CLIENT_URL: string;
     }
   }
 }

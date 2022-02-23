@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-mongoose.connect('mongodb://127.0.0.1:27017/decrypto');
+mongoose.connect(process.env.MONGO_DB_URL as string);
 const db = mongoose.connection;
 
 const handleError = (error: string) => console.log('🚫 DB Error : ', error);

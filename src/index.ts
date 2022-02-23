@@ -1,6 +1,7 @@
+import './env';
 import './db';
 import './interface/@types/session';
-import app from './server';
+import httpServer from './server';
 
 const PORT = process.env.PORT || 4040;
 
@@ -8,4 +9,4 @@ const handleListen = () => {
   console.log(`✅ http://localhost:${PORT}`);
 };
 
-app.listen(PORT, handleListen);
+httpServer.listen(PORT, handleListen);

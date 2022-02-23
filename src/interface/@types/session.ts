@@ -5,5 +5,6 @@ declare module 'express-session' {
   export interface SessionData {
     loggedIn: boolean;
     user: IUser;
+    gitHubToken: string;
   }
 }
