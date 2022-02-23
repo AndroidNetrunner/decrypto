@@ -61,7 +61,6 @@ function RoundResult({
               : `${guessTeamName} 팀은 코드 추측에 실패하였습니다.`}
           </StyledResultDescription>
         </div>
-
       </div>
     </StyledRoundResult>
   );
