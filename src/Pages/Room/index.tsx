@@ -78,21 +78,21 @@ export default function Room() {
     const { uid } = user;
     const to = user.isRedTeam ? 'blue' : 'red';
     socket.emit('CHANGE_TEAM', uid, to, () => {
-      const afterUserData = { ...user, isRedTeam: !user.isRedTeam };
+      const afterChangedUserData = { ...user, isRedTeam: !user.isRedTeam };
       if (to === 'red') {
         const filteredUser = team.secondTeam.users.filter((secondTeamUser) => secondTeamUser.uid !== uid);
         setTeam({
-          firstTeam: { users: [...team.firstTeam.users, afterUserData] },
+          firstTeam: { users: [...team.firstTeam.users, afterChangedUserData] },
           secondTeam: { users: [...filteredUser] },
         });
       } else if (to === 'blue') {
         const filteredUser = team.firstTeam.users.filter((firstTeamUser) => firstTeamUser.uid !== uid);
         setTeam({
           firstTeam: { users: [...filteredUser] },
-          secondTeam: { users: [...team.secondTeam.users, afterUserData] },
+          secondTeam: { users: [...team.secondTeam.users, afterChangedUserData] },
         });
       }
-      setUser(afterUserData);
+      setUser(afterChangedUserData);
     });
   };
 
