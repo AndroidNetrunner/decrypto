@@ -13,22 +13,31 @@ export default function Login() {
   };
   return (
     <Container>
-      <Title>Decrypto</Title>
       <Form onSubmit={onSubmit}>
         <InputContainer>
-          <label htmlFor='nickname'>
-            닉네임
-            <input value={nickname} onChange={onChangeNickname} id='nickname' />
-          </label>
-          <label htmlFor='room'>
-            방 번호
-            <input value={roomNumber} onChange={onChangeRoomNumber} id='room' />
-          </label>
+          <InputWrapper>
+            <label htmlFor='nickname'>Name</label>
+            <input
+              autoComplete='off'
+              value={nickname}
+              onChange={onChangeNickname}
+              placeholder='Enter nickname'
+              id='nickname'
+            />
+            <Button disabled={!nickname.length}>Creat Game</Button>
+          </InputWrapper>
+          <InputWrapper>
+            <label htmlFor='room'>Room</label>
+            <input
+              autoComplete='off'
+              value={roomNumber}
+              onChange={onChangeRoomNumber}
+              placeholder='Enter room number'
+              id='room'
+            />
+            <Button disabled={!(nickname.length && roomNumber.length)}>Enter Game</Button>
+          </InputWrapper>
         </InputContainer>
-        <ButtonContainer>
-          <EntryButton disabled={!nickname.length}>방 만들기</EntryButton>
-          <EntryButton disabled={!(nickname.length && roomNumber.length)}>참가하기</EntryButton>
-        </ButtonContainer>
       </Form>
     </Container>
   );
@@ -42,32 +51,15 @@ export default function Login() {
 // Input 2개
 
 const Button = styled.button`
-  &:disabled {
-    pointer-events: none;
-    opacity: 0.65;
-  }
-  display: inline-block;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #ffffff;
-  text-align: center;
-  text-decoration: none;
-  vertical-align: middle;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  background-color: transparent;
-  border: 1px solid transparent;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
-    box-shadow 0.15s ease-in-out;
-`;
-
-const EntryButton = styled(Button)`
-  background-color: purple;
+  height: 100%;
+  height: 4.35rem;
+  width: 100%;
+  max-width: 10rem;
+  background-color: #fbeaeb;
+  border-radius: 0.5rem;
+  border: none;
+  padding: 1rem;
+  font-size: 1.5rem;
 `;
 
 const InputContainer = styled.div`
@@ -75,17 +67,40 @@ const InputContainer = styled.div`
   flex-direction: column;
 `;
 
-const ButtonContainer = styled.div`
+const InputWrapper = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
+  &:first-child {
+    margin-bottom: 8rem;
+  }
+  label {
+    font-family: 'PressStart';
+    font-size: 3rem;
+    margin-right: 3rem;
+    width: fit-content;
+    max-width: 24rem;
+  }
+  input {
+    font-family: 'PressStart';
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    margin-right: 4rem;
+    width: 100%;
+    max-width: 30rem;
+  }
+  span {
+    height: 100%;
+  }
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-top: 13rem;
 `;
-
-const Title = styled.h1``;
 
 const Container = styled.div`
   max-width: 860px;

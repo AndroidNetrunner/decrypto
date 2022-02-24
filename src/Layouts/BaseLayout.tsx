@@ -1,32 +1,92 @@
+import { useRef, useState } from 'react';
 import { Outlet } from 'react-router';
 import styled from 'styled-components';
+import Overlay from '../Components/Common/Overlay';
+import RuleModal from '../Components/Common/RuleModal';
+import bookClose from '../Assets/img/book-close.png';
+import bookOpen from '../Assets/img/book-open.png';
+import pacMan from '../Assets/img/pacman.gif';
 
 export default function BaseLayout() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  const mainRef = useRef<HTMLElement>(null);
+
+  const toggleModal = () => {
+    setIsModalOpen((prev) => !prev);
+    if (headerRef.current !== null) {
+      headerRef.current.style.cssText = headerRef.current.style.cssText ? '' : 'filter: blur(3px)';
+    }
+    if (mainRef.current !== null) {
+      mainRef.current.style.cssText = mainRef.current.style.cssText ? '' : 'filter: blur(3px)';
+    }
+  };
+
   return (
-    <>
-      <header>
-        <HeaderWrapper>
-          <div>LOGO</div>
-        </HeaderWrapper>
-      </header>
-      <Main>
-        <Outlet />
-      </Main>
-    </>
+    <Wrapper>
+      <Container>
+        <Header ref={headerRef}>
+          <img src={pacMan} alt='pacMan' style={{ width: '10rem', height: '10rem' }} />
+          <h1>Decrypto</h1>
+        </Header>
+        <RuleButton name='Rule' onClick={toggleModal}>
+          {isModalOpen ? (
+            <img src={bookOpen} alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
+          ) : (
+            <img src={bookClose} alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
+          )}
+        </RuleButton>
+        <Main ref={mainRef}>
+          <Outlet />
+        </Main>
+        {isModalOpen && (
+          <Overlay onClickOverlay={toggleModal}>
+            <RuleModal toggleModal={toggleModal} />
+          </Overlay>
+        )}
+      </Container>
+    </Wrapper>
   );
 }
 
-const Main = styled.main`
-  width: 100%;
-  padding: 0rem 5rem;
-  margin: 0 auto;
-  height: calc(100vh - 8.15rem);
+const Wrapper = styled.div`
+  height: 100vh;
+  position: relative;
+  padding: 8rem 9rem;
+  background-color: #2e3c7e;
+  color: #fbeaeb;
 `;
 
-const HeaderWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 86rem;
+const Container = styled.div`
+  position: relative;
+  border: 5px solid white;
+  height: 100%;
+`;
+
+const Main = styled.main`
+  width: 100%;
   margin: 0 auto;
+`;
+
+const Header = styled.header`
+  h1 {
+    font-family: 'PressStart';
+    font-size: 5rem;
+  }
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 3rem;
+  margin: 0 auto;
+  margin-top: 5rem;
+`;
+
+const RuleButton = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
 `;
