@@ -23,6 +23,7 @@ const GlobalStyle = createGlobalStyle`
         font-size: 100%;
         font: inherit;
         vertical-align: baseline;
+        font-family: neodgm, sans-serif;
     }
     html {
         font-size: 62.5%;

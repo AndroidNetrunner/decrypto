@@ -57,7 +57,7 @@ const captain = {
   username: 'yeoyoon',
 };
 
-export default function Game() {
+export default function Room() {
   const [teamNames, setTeamNames] = useState({
     firstTeamName: 'White',
     secondTeamName: 'Black',
