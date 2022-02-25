@@ -16,7 +16,7 @@ export default function Login() {
       <Form onSubmit={onSubmit}>
         <InputContainer>
           <InputWrapper>
-            <label htmlFor='nickname'>Name</label>
+            <span>Name</span>
             <input
               autoComplete='off'
               value={nickname}
@@ -27,7 +27,7 @@ export default function Login() {
             <Button disabled={!nickname.length}>Creat Game</Button>
           </InputWrapper>
           <InputWrapper>
-            <label htmlFor='room'>Room</label>
+            <span>Room</span>
             <input
               autoComplete='off'
               value={roomNumber}
@@ -43,12 +43,17 @@ export default function Login() {
   );
 }
 
-// 둘 다 값이 없을 경우 => 방 만들기, 참가하기 비활성화
-// 닉네임에만 값이 있을 경우 -> 방 만들기 버튼 활성화, 참가하기 버튼 비활성화
-// 닉네임과 방 번호에 값이 있을 경우 -> 참가하기 버튼 활성화
+const Container = styled.div`
+  max-width: 860px;
+  margin: auto;
+`;
 
-// 제목
-// Input 2개
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 13rem;
+`;
 
 const Button = styled.button`
   height: 100%;
@@ -60,6 +65,7 @@ const Button = styled.button`
   border: none;
   padding: 1rem;
   font-size: 1.5rem;
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
 `;
 
 const InputContainer = styled.div`
@@ -74,7 +80,7 @@ const InputWrapper = styled.div`
   &:first-child {
     margin-bottom: 8rem;
   }
-  label {
+  span {
     font-family: 'PressStart';
     font-size: 3rem;
     margin-right: 3rem;
@@ -89,20 +95,6 @@ const InputWrapper = styled.div`
     margin-right: 4rem;
     width: 100%;
     max-width: 30rem;
+    box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
   }
-  span {
-    height: 100%;
-  }
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 13rem;
-`;
-
-const Container = styled.div`
-  max-width: 860px;
-  margin: auto;
 `;

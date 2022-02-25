@@ -3,9 +3,6 @@ import { Outlet } from 'react-router';
 import styled from 'styled-components';
 import Overlay from '../Components/Common/Overlay';
 import RuleModal from '../Components/Common/RuleModal';
-import bookClose from '../Assets/img/book-close.png';
-import bookOpen from '../Assets/img/book-open.png';
-import pacMan from '../Assets/img/pacman.gif';
 
 export default function BaseLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,14 +23,14 @@ export default function BaseLayout() {
     <Wrapper>
       <Container>
         <Header ref={headerRef}>
-          <img src={pacMan} alt='pacMan' style={{ width: '10rem', height: '10rem' }} />
+          <img src='img/pacMan.gif' alt='pacMan' style={{ width: '10rem', height: '10rem' }} />
           <h1>Decrypto</h1>
         </Header>
         <RuleButton name='Rule' onClick={toggleModal}>
           {isModalOpen ? (
-            <img src={bookOpen} alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
+            <img src='img/book-open.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
           ) : (
-            <img src={bookClose} alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
+            <img src='img/book-close.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
           )}
         </RuleButton>
         <Main ref={mainRef}>
@@ -61,6 +58,7 @@ const Container = styled.div`
   position: relative;
   border: 5px solid white;
   height: 100%;
+  overflow: hidden;
 `;
 
 const Main = styled.main`

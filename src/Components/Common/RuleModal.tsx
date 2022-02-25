@@ -72,26 +72,26 @@ export default function RuleModal({ toggleModal }: Props) {
           우리팀과 상대팀은 이제 정답 코드가 무엇인지 논의 후 추측을 하게 됩니다. 대부분의 경우, 비밀 단어를
           우리팀만 알고 있으므로 우리 팀은 맞히고, 상대 팀은 틀리게 될 것입니다. <Enter> </Enter>추측이 끝나면
           정답 코드를 공개하며, 라운드 결과를 정산합니다. <Enter> </Enter>만약 <b>우리 팀이</b> 비밀 단어를
-          알고 있었음에도 정답 코드를 못 맞혔다면 우리 팀은 <b>오답 토큰</b>을 하나 받습니다.{' '}
+          알고 있었음에도 정답 코드를 못 맞혔다면 우리 팀은 <b>오답 토큰</b>을 하나 받습니다.
           <b>
             오답 토큰을 2개 얻는 팀은 게임에서 즉시 패배합니다. <Enter> </Enter>
-          </b>{' '}
+          </b>
           만약 <b>상대 팀이</b> 비밀 단어를 몰랐음에도 정답 코드를 맞혔다면 상대 팀은 <b>해독 토큰</b>을 하나
           받습니다. <b>해독 토큰을 2개 얻는 팀은 게임에서 즉시 승리합니다</b>
         </Paragraph>
         <Paragraph>
-          <Enter> </Enter>그런데 비밀 단어를 모르는 상대 팀이 어떻게 정답 코드를 맞출 수 있을까요?{' '}
-          <Enter> </Enter>라운드가 진행되면서, 상대 팀은 팀장이 준 힌트를 기록하게 됩니다. 정답 코드가{' '}
+          <Enter> </Enter>그런데 비밀 단어를 모르는 상대 팀이 어떻게 정답 코드를 맞출 수 있을까요?
+          <Enter> </Enter>라운드가 진행되면서, 상대 팀은 팀장이 준 힌트를 기록하게 됩니다. 정답 코드가
           <b>2 - 1 - 4</b>이고, <b>불 - 낙하 - 콩깍지</b>가 힌트라면, 상대방은 2번째 단어가 불, 1번째 단어가
           낙하, 4번째 단어가 콩깍지와 관련있다는 것을 알 것입니다. 라운드를 거듭하면서 힌트들은 누적되고,
           상대팀은 비밀 단어 대신 우리 팀이 준 힌트를 보면서 정답 코드를 유추할 수 있죠. <Enter> </Enter>
-          그래서 <b>힌트를 너무 명확하게 주면 상대팀이 비밀 단어를 알아차릴 수 있습니다</b> 대신{' '}
+          그래서 <b>힌트를 너무 명확하게 주면 상대팀이 비밀 단어를 알아차릴 수 있습니다</b> 대신
           <b>힌트를 너무 애매하게 주면 우리 팀이 코드를 못 알아차릴 수 있습니다</b> 결국 둘 사이의 균형이 매우
           중요하죠.
         </Paragraph>
         <SemiTitle>승리 조건</SemiTitle>
         <Paragraph>
-          게임의 승리 조건은 다음과 같습니다. <Enter> </Enter> 우리 팀이 해독 토큰 2개를 획득한다.{' '}
+          게임의 승리 조건은 다음과 같습니다. <Enter> </Enter> 우리 팀이 해독 토큰 2개를 획득한다.
           <Enter> </Enter> 상대 팀이 오답 토큰 2개를 획득한다. <Enter> </Enter>두 조건 중 하나라도 충족하면
           게임을 승리하게 됩니다. 참 쉽죠?
         </Paragraph>
@@ -125,13 +125,13 @@ const Title = styled.div`
 const RuleText = styled.div``;
 
 const ButtonWrapper = styled.div`
-  position: absolute;
+  position: relative;
 `;
 
 const CloseButton = styled.span`
-  position: fiexed;
-  top: 1rem;
-  right: 1rem;
+  position: absolute;
+  top: 0;
+  right: 0;
   margin-bottom: 1rem;
   svg {
     cursor: pointer;
@@ -149,4 +149,5 @@ const RuleWrapper = styled.div`
   padding: 2rem;
   overflow-y: auto;
   color: black;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 `;
