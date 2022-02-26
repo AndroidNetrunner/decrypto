@@ -1,20 +1,40 @@
 import mongoose from 'mongoose';
 
+type Team = {
+  words: string[];
+  codes: string[][];
+  hints: string[][];
+  leader: mongoose.Types.ObjectId;
+  users: mongoose.Types.ObjectId[];
+  greenToken: number;
+  redToken: number;
+};
+
 interface IGame {
   roomId: string;
-  isPlay: boolean;
-  users?: mongoose.Types.ObjectId[];
+  isPlaying: boolean;
+  captain: mongoose.Types.ObjectId;
+  stageNumber: number;
+  answerCode: number[];
+  roomNumber: number;
+  timer: number;
   team: {
-    redTeam: { users: mongoose.Types.ObjectId[] };
-    blueTeam: { users: mongoose.Types.ObjectId[] };
+    sovietTeam: Team;
+    usaTeam: Team;
   };
 }
 
 const gameSchema = new mongoose.Schema({
   roomId: { type: String, unique: true, required: true },
-  isPlay: { type: Boolean, default: false },
+  isPlaying: { type: Boolean, default: false },
+  captain: { type: mongoose.Types.ObjectId, ref: 'User' },
+  stageNumber: { type: Number },
+  answerCode: [],
+  roomNumber: { type: Number },
+  timer: { type: Number },
   team: {
-    redTeam: {
+    sovietTeam: {
+      words: [],
       users: [
         {
           type: mongoose.Schema.Types.ObjectId,
@@ -22,7 +42,7 @@ const gameSchema = new mongoose.Schema({
         },
       ],
     },
-    blueTeam: {
+    usaTeam: {
       users: [
         {
           type: mongoose.Schema.Types.ObjectId,
@@ -31,12 +51,6 @@ const gameSchema = new mongoose.Schema({
       ],
     },
   },
-  users: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-    },
-  ],
 });
 
 const Game = mongoose.model<IGame>('Game', gameSchema);
