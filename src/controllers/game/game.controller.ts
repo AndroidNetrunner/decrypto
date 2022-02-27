@@ -8,8 +8,8 @@ export const getGameInfo = async (req: Request, res: Response) => {
   try {
     const userInfo = await User.findOne({ uid });
     const gameInfo = await Game.findOne({ roomId })
-      .populate({ path: 'team.redTeam.users' })
-      .populate({ path: 'team.blueTeam.users' });
+      .populate({ path: 'sovietTeam.users' })
+      .populate({ path: 'usaTeam.users' });
     return res.status(200).json({ gameInfo, userInfo });
   } catch (error) {
     console.log(error);

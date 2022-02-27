@@ -20,7 +20,7 @@ export interface ServerToClientEvents {
     callback: (e: string) => void
   ) => void;
 
-  CHANGE_TEAM: (uid: string, to: 'red' | 'blue', done: () => void) => void;
+  CHANGE_TEAM: (uid: string, to: 'soviet' | 'usa', done: () => void) => void;
 
   GAME_START: (players: ITeam, done: (confirmTeam: ITeam) => void) => void;
 }
@@ -32,7 +32,7 @@ export interface ClientToServerEvents {
     isOwner: boolean;
     uid: string;
     id: Types.ObjectId;
-    isRedTeam: boolean;
+    isSovietTeam: boolean;
   }) => void;
   ALREADY_START: () => void;
   ENTER_ROOM: (
@@ -41,7 +41,7 @@ export interface ClientToServerEvents {
       isOwner: boolean;
       uid: string;
       id: Types.ObjectId;
-      isRedTeam: boolean;
+      isSovietTeam: boolean;
     },
     team?: string
   ) => void;
@@ -51,7 +51,7 @@ export interface ClientToServerEvents {
       isOwner: boolean;
       uid: string;
       id: Types.ObjectId;
-      isRedTeam: boolean;
+      isSovietTeam: boolean;
     },
     to?: string
   ) => void;
@@ -61,7 +61,7 @@ export interface ClientToServerEvents {
       isOwner: boolean;
       uid: string;
       id: Types.ObjectId;
-      isRedTeam: boolean;
+      isSovietTeam: boolean;
     },
     team?: string
   ) => void;
@@ -80,6 +80,6 @@ export interface SocketData {
     isOwner: boolean;
     uid: string;
     id: Types.ObjectId;
-    isRedTeam: boolean;
+    isSovietTeam: boolean;
   };
 }

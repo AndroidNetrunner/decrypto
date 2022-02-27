@@ -103,8 +103,8 @@ const handleSocket = (io: ServerType) => {
       let team;
       try {
         const game = await Game.findOne({ roomId });
-        if (game?.isPlay) {
-          console.log('isPlay');
+        if (game?.isPlaying) {
+          console.log('isPlaying');
           return socket.to(socket.id).emit('ALREADY_START');
         }
         let user = await User.findOne({ uid });
@@ -115,22 +115,22 @@ const handleSocket = (io: ServerType) => {
         }
         socket.data = {
           roomId,
-          user: { nickname, uid, isOwner: false, id: user?.id, isRedTeam: true },
+          user: { nickname, uid, isOwner: false, id: user?.id, isSovietTeam: true },
         };
         if (game) {
           await user?.updateOne({ isOwner: false });
-          if (game.team.redTeam.users.length > game.team.blueTeam.users.length) {
-            team = 'blue';
-            socket.data.user!.isRedTeam = false;
-            await game.updateOne({ $push: { 'team.blueTeam.users': user?.id } });
+          if (game.team.sovietTeam.users.length > game.team.usaTeam.users.length) {
+            team = 'usa';
+            socket.data.user!.isSovietTeam = false;
+            await game.updateOne({ $push: { 'team.usaTeam.users': user?.id } });
           } else {
-            team = 'red';
-            await game.updateOne({ $push: { 'team.redTeam.users': user?.id } });
+            team = 'soviet';
+            await game.updateOne({ $push: { 'team.sovietTeam.users': user?.id } });
           }
         } else {
           await user?.updateOne({ $set: { isOwner: true } });
           socket.data.user!.isOwner = true;
-          await Game.create({ roomId, team: { redTeam: { users: [user?.id] } } });
+          await Game.create({ roomId, team: { sovietTeam: { users: [user?.id] } } });
         }
         socket.join(roomId);
         done(roomId);
@@ -145,19 +145,19 @@ const handleSocket = (io: ServerType) => {
       try {
         const game = await Game.findOne({ roomId });
         if (game && user && user.id) {
-          if (to === 'red') {
-            await game.updateOne({ $pull: { 'team.blueTeam.users': user?.id } });
-            await game.updateOne({ $push: { 'team.redTeam.users': user?.id } });
-          } else if (to === 'blue') {
-            await game.updateOne({ $pull: { 'team.redTeam.users': user?.id } });
-            await game.updateOne({ $push: { 'team.blueTeam.users': user?.id } });
+          if (to === 'soviet') {
+            await game.updateOne({ $pull: { 'team.usaTeam.users': user?.id } });
+            await game.updateOne({ $push: { 'team.sovietTeam.users': user?.id } });
+          } else if (to === 'usa') {
+            await game.updateOne({ $pull: { 'team.sovietTeam.users': user?.id } });
+            await game.updateOne({ $push: { 'team.usaTeam.users': user?.id } });
           }
         }
       } catch (error) {
         console.log(error);
       }
       if (roomId && user) {
-        socket.data.user!.isRedTeam = !user?.isRedTeam;
+        socket.data.user!.isSovietTeam = !user?.isSovietTeam;
         socket.broadcast.to(roomId).emit('CHANGE_TEAM', user, to);
       }
       done();
@@ -174,16 +174,16 @@ const handleSocket = (io: ServerType) => {
           await game?.delete({ roomId });
           return;
         }
-        if (user?.isRedTeam) {
-          await game?.updateOne({ $pull: { 'team.redTeam.users': user?.id } });
+        if (user?.isSovietTeam) {
+          await game?.updateOne({ $pull: { 'team.sovietTeam.users': user?.id } });
         } else {
-          await game?.updateOne({ $pull: { 'team.blueTeam.users': user?.id } });
+          await game?.updateOne({ $pull: { 'team.usaTeam.users': user?.id } });
         }
       } catch (error) {
         console.log(error);
       }
       if (roomId && user) {
-        const team = user.isRedTeam ? 'red' : 'blue';
+        const team = user.isSovietTeam ? 'soviet' : 'usa';
         socket.broadcast.to(roomId).emit('LEAVE_ROOM', user, team);
       }
     });
