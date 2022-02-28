@@ -2,133 +2,129 @@ import styled from 'styled-components';
 
 type code = [number, number, number];
 
-// function ResultDescription({ color, content }: { color: string; content: string }) {
-//   return <h3>{content}</h3>;
-// }
-
-function RoundResult({
-  answerCode,
-  hints,
-  codeGuess,
-  guessTeamName,
-  codeSteal,
-  stealTeamName,
-}: {
+interface Props {
   answerCode: code;
   hints: [string, string, string];
   codeGuess: code;
   guessTeamName: string;
   codeSteal: code;
   stealTeamName: string;
-}) {
+}
+
+function RoundResult({ answerCode, hints, codeGuess, guessTeamName, codeSteal, stealTeamName }: Props) {
   const stealSuccess = answerCode.toString() === codeSteal.toString();
   const guessSuccess = answerCode.toString() === codeGuess.toString();
   return (
-    <StyledRoundResult stealSuccess={stealSuccess} guessSuccess={guessSuccess}>
-      
-      <div className='roundResult'>
+    <Container>
+      <Result>
         <h1>이번 라운드의 결과입니다.</h1>
-        <h2 className='answerCodeArea'>
-          정답 코드: <span className='answerCode'>{answerCode.join(' - ')}</span>{' '}
+        <h2>
+          정답 코드: <AnswerCode>{answerCode.join(' - ')}</AnswerCode>{' '}
         </h2>
-        <h2 className='hintsArea'>
-          힌트: <span className='hints'>{hints[0]}</span>
-          <span className='hints'>{hints[1]}</span>
-          <span className='hints'>{hints[2]}</span>
-        </h2>
-      </div>
+        <HintContainer>
+          힌트:
+          {hints.map((hint) => (
+            <Hint key={hint}>{hint}</Hint>
+          ))}
+        </HintContainer>
+      </Result>
 
-      <div className='teamResult'>
-
-        <div className='stealTeamResult'>
+      <TeamResultContainer>
+        <TeamResult isSuccess={stealSuccess} successColor='green' failureColor='grey'>
           <h2>
-            {stealTeamName}팀의 탈취 시도: <span className='codeSteal'>{codeSteal.join(' - ')}</span>
+            {stealTeamName}팀의 탈취 시도: <SubmitCode>{codeSteal.join(' - ')}</SubmitCode>
           </h2>
-          <StyledResultDescription color={stealSuccess ? 'green' : 'gray'}>
+          <ResultDescription>
             {stealSuccess
               ? `${stealTeamName} 팀은 코드 탈취에 성공하였습니다.`
               : `${stealTeamName} 팀은 코드 탈취에 실패하였습니다.`}
-          </StyledResultDescription>
-        </div>
+          </ResultDescription>
+        </TeamResult>
 
-        <div className='guessTeamResult'>
+        <TeamResult isSuccess={guessSuccess} successColor='gray' failureColor='red'>
           <h2>
-            {guessTeamName}팀의 코드 추측: <span className='codeGuess'>{codeGuess.join(' - ')}</span>
+            {guessTeamName}팀의 코드 추측: <SubmitCode>{codeGuess.join(' - ')}</SubmitCode>
           </h2>
-          <StyledResultDescription color={guessSuccess ? 'gray' : 'red'}>
+          <ResultDescription>
             {guessSuccess
               ? `${guessTeamName} 팀은 코드 추측에 성공하였습니다.`
               : `${guessTeamName} 팀은 코드 추측에 실패하였습니다.`}
-          </StyledResultDescription>
-        </div>
-      </div>
-    </StyledRoundResult>
+          </ResultDescription>
+        </TeamResult>
+      </TeamResultContainer>
+    </Container>
   );
 }
 
 export default RoundResult;
 
-const StyledRoundResult = styled.div<{ stealSuccess: boolean; guessSuccess: boolean }>`
+const Container = styled.div`
+  font-family: neodgm, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+    'Open Sans', 'Helvetica Neue', sans-serif;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  padding: 15px;
-  div {
-    width: 100%;
-  }
-  h1 {
-    display: block;
-    text-align: center;
-  }
+  align-items: center;
+  text-align: center;
+`;
+
+const Result = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  h1,
   h2 {
-    display: block;
-    margin: 10px 0;
-  }
-  span {
-    padding: 5px;
-    color: white;
-    border-radius: 100px;
-  }
-  .answerCodeArea,
-  .hintsArea {
-    text-align: center;
-  }
-  .roundResult {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .stealTeamResult {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .guessTeamResult {
-    float: left;
-    display: flex;
-    flex-direction: column;
-  }
-
-  span.answerCode {
-    background-color: black;
-  }
-
-  span.hints {
-    background-color: #005666;
-  }
-  span.codeSteal {
-    background-color: ${(props) => (props.stealSuccess ? 'green' : 'gray')};
-  }
-  span.codeGuess {
-    background-color: ${(props) => (props.guessSuccess ? 'gray' : 'red')};
-  }
-  .teamResult {
-    display: flex;
-    text-align: center;
+    margin-bottom: 1rem;
   }
 `;
 
-const StyledResultDescription = styled.h3`
-  color: ${(props) => props.color};
+const Code = styled.span`
+  padding: 0.25rem 0.5rem;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  color: white;
+`;
+
+const AnswerCode = styled(Code)`
+  background-color: black;
+`;
+
+const SubmitCode = styled(Code)``;
+
+const HintContainer = styled.div`
+  margin-bottom: 2rem;
+`;
+
+const Hint = styled.span`
+  display: inline-block;
+  min-width: 4rem;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 5rem;
+  background-color: #005666;
+`;
+
+const TeamResultContainer = styled.div`
+  display: flex;
+  gap: 2rem;
+`;
+
+const ResultDescription = styled.h3``;
+
+const TeamResult = styled.div<{ isSuccess: boolean; successColor: string; failureColor: string }>`
+  display: flex;
+  flex-direction: column;
+  h2 {
+    margin-bottom: 1rem;
+  }
+  ${SubmitCode} {
+    background-color: ${({ isSuccess, successColor, failureColor }) =>
+      isSuccess ? successColor : failureColor};
+  }
+  ${ResultDescription} {
+    color: ${({ isSuccess, successColor, failureColor }) => (isSuccess ? successColor : failureColor)};
+  }
 `;
 
 /* 
