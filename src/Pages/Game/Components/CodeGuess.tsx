@@ -21,106 +21,132 @@ import styled from 'styled-components';
 //   return false;
 // }
 
+function makeEmptyOptionTag() {
+  const emptyOptionTag = document.createElement('option');
+  emptyOptionTag.value = '';
+  emptyOptionTag.disabled = true;
+  emptyOptionTag.selected = true;
+  return emptyOptionTag;
+}
+
+function makeNewOptions(code: HTMLSelectElement, possibleCode: number[], codeIndex: number) {
+  while (code.firstChild) {
+    code.removeChild(code.firstChild);
+  }
+  code.appendChild(makeEmptyOptionTag());
+  possibleCode.forEach((number, index) => {
+    const child = document.createElement('option');
+    child.value = number.toString();
+    child.text = number.toString();
+    if (codeIndex !== -1 && codeIndex === index + 1) {
+      child.selected = true;
+    }
+    code.appendChild(child);
+  });
+}
+
 function handleChange() {
   const firstCode = document.getElementById('guessFirstCode') as HTMLSelectElement;
   const secondCode = document.getElementById('guessSecondCode') as HTMLSelectElement;
   const thirdCode = document.getElementById('guessThirdCode') as HTMLSelectElement;
   const possibleCode = [1, 2, 3, 4];
-  const selectedFirstCodeIndex = firstCode.options.selectedIndex;
-  const selectedSecondCodeIndex = secondCode.options.selectedIndex;
-  const selectedThirdCodeIndex = thirdCode.options.selectedIndex;
-  const possibleSecondCode = possibleCode.filter((value, index) => index !== selectedFirstCodeIndex);
-  const possibleThirdCode = possibleSecondCode.filter((value, index) => index !== selectedSecondCodeIndex);
-  while (secondCode.firstChild) {
-    secondCode.removeChild(secondCode.firstChild);
-  }
-  while (thirdCode.firstChild) {
-    thirdCode.removeChild(thirdCode.firstChild);
-  }
-  possibleSecondCode.forEach((number, index) => {
-    const child = document.createElement('option');
-    child.value = number.toString();
-    child.text = number.toString();
-    if (selectedSecondCodeIndex !== -1 && selectedSecondCodeIndex === index) {
-      child.selected = true;
-    }
-    secondCode.appendChild(child);
-  });
-  possibleThirdCode.forEach((number, index) => {
-    const child = document.createElement('option');
-    child.value = number.toString();
-    child.text = number.toString();
-    if (selectedThirdCodeIndex !== -1 && selectedThirdCodeIndex === index) {
-      child.selected = true;
-    }
-    thirdCode.appendChild(child);
-  });
+  const selectedIndex = [
+    firstCode.options.selectedIndex,
+    secondCode.options.selectedIndex,
+    thirdCode.options.selectedIndex,
+  ];
+  const possibleSecondCode = possibleCode.filter((value, index) => index !== selectedIndex[0] - 1);
+  const possibleThirdCode = possibleSecondCode.filter((value, index) => index !== selectedIndex[1] - 1);
+  makeNewOptions(secondCode, possibleSecondCode, selectedIndex[1]);
+  makeNewOptions(thirdCode, possibleThirdCode, selectedIndex[2]);
 }
 
 function CodeGuess({ hints }: { hints: string[] }) {
   return (
     <GuessForm onChange={handleChange}>
-      <table>
-        <tr>
-          <th>힌트</th>
-          <th>번호</th>
-        </tr>
-        <tr>
-          <td>
-            <label htmlFor='guessFirstCode'>{hints[0]}</label>
-          </td>
-          <td>
-            <select name='guessFirstCode' id='guessFirstCode' required>
-              <option disabled selected>
-                Choose Answer
-              </option>
-              <option value='1'>1</option>
-              <option value='2'>2</option>
-              <option value='3'>3</option>
-              <option value='4'>4</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label htmlFor='guessSecondCode'>{hints[1]}</label>
-          </td>
-          <td>
-            <select name='guessSecondCode' id='guessSecondCode' required>
-              {/* <option value='1'>1</option>
+      <div className='formArea'>
+        <table>
+          <tr>
+            <th>Hint</th>
+            <th>Code</th>
+          </tr>
+          <tr>
+            <td className='labelArea'>
+              <label htmlFor='guessFirstCode'>{hints[0]}</label>
+            </td>
+            <td>
+              <select name='guessFirstCode' id='guessFirstCode' required>
+                <option disabled selected>
+                  {' '}
+                </option>
+                <option value='1'>1</option>
+                <option value='2'>2</option>
+                <option value='3'>3</option>
+                <option value='4'>4</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td className='labelArea'>
+              <label htmlFor='guessSecondCode'>{hints[1]}</label>
+            </td>
+            <td>
+              <select name='guessSecondCode' id='guessSecondCode' required>
+                {/* <option value='1'>1</option>
               <option value='2' selected>
                 2
               </option>
               <option value='3'>3</option>
               <option value='4'>4</option> */}
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label htmlFor='guessThirdCode'>{hints[2]}</label>
-          </td>
-          <td>
-            <select name='guessThirdCode' id='guessThirdCode' required>
-              {/* <option value='1'>1</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td className='labelArea'>
+              <label htmlFor='guessThirdCode'>{hints[2]}</label>
+            </td>
+            <td>
+              <select name='guessThirdCode' id='guessThirdCode' required>
+                {/* <option value='1'>1</option>
               <option value='2'>2</option>
               <option value='3' selected>
                 3
               </option>
               <option value='4'>4</option> */}
-            </select>
-          </td>
-        </tr>
-      </table>
-      <button type='submit'>제출</button>
+              </select>
+            </td>
+          </tr>
+        </table>
+        <div className='buttonArea'>
+          <button type='submit'>Submit</button>
+        </div>
+      </div>
     </GuessForm>
   );
 }
 
 const GuessForm = styled.form`
-  th,
-  td {
-    padding: 2px;
+  margin: 10px;
+
+  .formArea {
+    display: flex;
+  }
+
+  table {
+    border-collapse: separate;
+    border-spacing: 3px 5px;
+  }
+
+  .labelArea {
+    background-color: #b4bce3;
+    width: 90px;
+    border-radius: 8px;
+    padding: 0.6em;
+  }
+
+  .buttonArea {
+    padding: 15px;
+    margin: auto 0;
   }
 
   button {
@@ -128,6 +154,7 @@ const GuessForm = styled.form`
       pointer-events: none;
       opacity: 0.65;
     }
+    height: 40px;
     display: inline-block;
     font-weight: 400;
     line-height: 1.5;
@@ -146,7 +173,19 @@ const GuessForm = styled.form`
     border-radius: 0.25rem;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
       box-shadow 0.15s ease-in-out;
-    background-color: #006364;
+    background-color: #2e3c7e;
+  }
+
+  label {
+    font-size: 12px;
+  }
+
+  select {
+    width: 35px;
+    padding: 0.4em 0.3em;
+    border: none;
+    border-radius: 10px;
+    background-color: #fbeaeb;
   }
 `;
 export default CodeGuess;
