@@ -23,6 +23,7 @@ const GlobalStyle = createGlobalStyle`
         font-size: 100%;
         font-family: neodgm, sans-serif;
         vertical-align: baseline;
+        font-family: neodgm, sans-serif;
     }
     input {
         font-family: neodgm;
