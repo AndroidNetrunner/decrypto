@@ -1,20 +1,19 @@
 import { Outlet, useNavigate, useParams } from 'react-router';
 import styled from 'styled-components';
-import Header from '../Components/Layout/Header';
 
 export default function GameLayout() {
   const { roomId } = useParams();
   const navigate = useNavigate();
   return (
     <>
-      <Header>
-        <Nav>
+      <header>
+        <nav>
           <div role='button' tabIndex={0} onClick={() => navigate(-1)} onKeyDown={() => navigate(-1)}>
             &larr; 뒤로가기
           </div>
-        </Nav>
-        <RoomNumber>방 번호 : {roomId}</RoomNumber>
-      </Header>
+        </nav>
+        <div>방 번호 : {roomId}</div>
+      </header>
       <Main>
         <Outlet />
       </Main>
@@ -27,7 +26,3 @@ const Main = styled.main`
   padding: 0rem 5rem;
   margin: 0 auto;
 `;
-
-const Nav = styled.nav``;
-
-const RoomNumber = styled.span``;

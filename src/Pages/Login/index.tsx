@@ -9,65 +9,63 @@ export default function Login() {
   const navigate = useNavigate();
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    navigate(`game/${roomNumber}`);
+    navigate(`room/${roomNumber}`);
   };
   return (
     <Container>
-      <Title>Decrypto</Title>
       <Form onSubmit={onSubmit}>
         <InputContainer>
-          <label htmlFor='nickname'>
-            닉네임
-            <input value={nickname} onChange={onChangeNickname} id='nickname' />
-          </label>
-          <label htmlFor='room'>
-            방 번호
-            <input value={roomNumber} onChange={onChangeRoomNumber} id='room' />
-          </label>
+          <InputWrapper>
+            <span>Name</span>
+            <input
+              autoComplete='off'
+              value={nickname}
+              onChange={onChangeNickname}
+              placeholder='Enter nickname'
+              id='nickname'
+            />
+            <Button disabled={!nickname.length}>Creat Game</Button>
+          </InputWrapper>
+          <InputWrapper>
+            <span>Room</span>
+            <input
+              autoComplete='off'
+              value={roomNumber}
+              onChange={onChangeRoomNumber}
+              placeholder='Enter room number'
+              id='room'
+            />
+            <Button disabled={!(nickname.length && roomNumber.length)}>Enter Game</Button>
+          </InputWrapper>
         </InputContainer>
-        <ButtonContainer>
-          <EntryButton disabled={!nickname.length}>방 만들기</EntryButton>
-          <EntryButton disabled={!(nickname.length && roomNumber.length)}>참가하기</EntryButton>
-        </ButtonContainer>
       </Form>
     </Container>
   );
 }
 
-// 둘 다 값이 없을 경우 => 방 만들기, 참가하기 비활성화
-// 닉네임에만 값이 있을 경우 -> 방 만들기 버튼 활성화, 참가하기 버튼 비활성화
-// 닉네임과 방 번호에 값이 있을 경우 -> 참가하기 버튼 활성화
-
-// 제목
-// Input 2개
-
-const Button = styled.button`
-  &:disabled {
-    pointer-events: none;
-    opacity: 0.65;
-  }
-  display: inline-block;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #ffffff;
-  text-align: center;
-  text-decoration: none;
-  vertical-align: middle;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  background-color: transparent;
-  border: 1px solid transparent;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
-    box-shadow 0.15s ease-in-out;
+const Container = styled.div`
+  max-width: 860px;
+  margin: auto;
 `;
 
-const EntryButton = styled(Button)`
-  background-color: purple;
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 13rem;
+`;
+
+const Button = styled.button`
+  height: 100%;
+  height: 4.35rem;
+  width: 100%;
+  max-width: 10rem;
+  background-color: #fbeaeb;
+  border-radius: 0.5rem;
+  border: none;
+  padding: 1rem;
+  font-size: 1.5rem;
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
 `;
 
 const InputContainer = styled.div`
@@ -75,19 +73,28 @@ const InputContainer = styled.div`
   flex-direction: column;
 `;
 
-const ButtonContainer = styled.div`
+const InputWrapper = styled.div`
   display: flex;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
-`;
-
-const Title = styled.h1``;
-
-const Container = styled.div`
-  max-width: 860px;
-  margin: auto;
+  &:first-child {
+    margin-bottom: 8rem;
+  }
+  span {
+    font-family: 'PressStart';
+    font-size: 3rem;
+    margin-right: 3rem;
+    width: fit-content;
+    max-width: 24rem;
+  }
+  input {
+    font-family: 'PressStart';
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    margin-right: 4rem;
+    width: 100%;
+    max-width: 30rem;
+    box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+  }
 `;

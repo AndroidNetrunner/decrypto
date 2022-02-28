@@ -21,8 +21,14 @@ const GlobalStyle = createGlobalStyle`
         padding: 0;
         border: 0;
         font-size: 100%;
-        font: inherit;
+        font-family: neodgm, sans-serif;
         vertical-align: baseline;
+    }
+    input {
+        font-family: neodgm;
+    }
+    button {
+        font-family: neodgm;
     }
     html {
         font-size: 62.5%;
