@@ -1,26 +1,5 @@
 import styled from 'styled-components';
 
-// function checkForm(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): boolean {
-//   const firstCode = document.getElementById('guessFirstCode') as HTMLSelectElement;
-//   const secondCode = document.getElementById('guessSecondCode') as HTMLSelectElement;
-//   const thirdCode = document.getElementById('guessThirdCode') as HTMLSelectElement;
-//   if (firstCode && secondCode && thirdCode) {
-//     if (
-//       !(
-//         firstCode.options.selectedIndex !== secondCode.options.selectedIndex &&
-//         secondCode.options.selectedIndex !== thirdCode.options.selectedIndex &&
-//         firstCode.options.selectedIndex !== thirdCode.options.selectedIndex
-//       )
-//     ) {
-//       alert('코드 안에 같은 숫자가 포함되어 있습니다.');
-//       event.preventDefault();
-//       return false;
-//     }
-//     return true;
-//   }
-//   return false;
-// }
-
 function makeEmptyOptionTag() {
   const emptyOptionTag = document.createElement('option');
   emptyOptionTag.value = '';
@@ -92,12 +71,7 @@ function CodeGuess({ hints }: { hints: string[] }) {
             </td>
             <td>
               <select name='guessSecondCode' id='guessSecondCode' required>
-                {/* <option value='1'>1</option>
-              <option value='2' selected>
-                2
-              </option>
-              <option value='3'>3</option>
-              <option value='4'>4</option> */}
+                {' '}
               </select>
             </td>
           </tr>
@@ -107,12 +81,7 @@ function CodeGuess({ hints }: { hints: string[] }) {
             </td>
             <td>
               <select name='guessThirdCode' id='guessThirdCode' required>
-                {/* <option value='1'>1</option>
-              <option value='2'>2</option>
-              <option value='3' selected>
-                3
-              </option>
-              <option value='4'>4</option> */}
+                {' '}
               </select>
             </td>
           </tr>
