@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-function Word({ wordList }: { wordList: string[] }) {
+function Word({ wordList }: { wordList: [string, string, string, string] }) {
   return (
     <Container>
       <Title>우리팀 단어</Title>
@@ -11,20 +11,18 @@ function Word({ wordList }: { wordList: string[] }) {
         <Item>4</Item>
       </ItemList>
       <ItemList>
-        <Item>{wordList[0]}</Item>
-        <Item>{wordList[1]}</Item>
-        <Item>{wordList[2]}</Item>
-        <Item>{wordList[3]}</Item>
+        <Item className='wordItem'>{wordList[0]}</Item>
+        <Item className='wordItem'>{wordList[1]}</Item>
+        <Item className='wordItem'>{wordList[2]}</Item>
+        <Item className='wordItem'>{wordList[3]}</Item>
       </ItemList>
     </Container>
   );
 }
 
 const Container = styled.div`
-  padding: 20px;
-  width: 300px;
-  border: 2px solid;
-  border-radius: 20px;
+  padding: 35px;
+  width: 500px;
 `;
 
 const Title = styled.p`
@@ -36,10 +34,15 @@ const Title = styled.p`
 const ItemList = styled.div`
   display: flex;
   justify-content: space-between;
+  .wordItem {
+    border: 2px solid;
+    border-radius: 10px;
+    padding: 10px;
+  }
 `;
 
 const Item = styled.div`
-  width: 50px;
+  width: 100px;
   margin-top: 10px;
   font-size: large;
   font-weight: bold;

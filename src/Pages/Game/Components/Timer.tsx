@@ -33,14 +33,16 @@ export default function Timer({ gameTime }: { gameTime: number }) {
 
 const TimerLeft = styled.div`
   font-family: neodgm, sans-serif;
-  font-size: 10rem;
+  font-size: 2rem;
   text-align: center;
-  height: 100px;
-  width: 250px;
+  height: 20px;
+  width: 50px;
+  margin: 10px;
 `;
 
 const CircularProgress = styled.div`
-  height: 250px;
-  width: 250px;
+  height: 50px;
+  width: 50px;
   border-radius: 50%;
+  margin: 10px;
 `;

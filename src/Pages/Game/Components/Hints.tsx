@@ -24,14 +24,13 @@ function Hints({ hintRecord }: { hintRecord: string[][] }) {
 
 const Container = styled.div`
   padding: 20px;
-  width: 400px;
+  width: 250px;
   border: 2px solid;
   border-radius: 20px;
 `;
 
 const Title = styled.p`
   text-align: center;
-  font-size: medium;
   margin-bottom: 10px;
 `;
 
@@ -42,9 +41,8 @@ const ItemList = styled.div`
 `;
 
 const Item = styled.div`
-  width: 80px;
-  margin-top: 10px;
-  font-size: medium;
+  width: 50px;
+  margin-top: 5px;
   font-weight: bold;
   text-align: center;
 `;

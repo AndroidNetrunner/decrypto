@@ -5,7 +5,7 @@ import TeamChangeButton from './Components/TeamChangeButton';
 import SetGameLength from './Components/SetGameLength';
 
 const dummyUser = {
-  userId: 394998,
+  userId: '394998',
   nickname: 'gamja',
 };
 
@@ -53,7 +53,7 @@ interface ITeam {
 }
 
 const captain = {
-  uid: 394998,
+  uid: '0909',
   username: 'yeoyoon',
 };
 
