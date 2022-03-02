@@ -1,16 +1,21 @@
-# DECRYPTO
+<p align='center'>
+<img src="https://user-images.githubusercontent.com/66371206/156014259-8fb4d24b-c853-42ed-a429-4a2fe0170298.gif" />
+</p>
 
 ## 개요
 
 이 프로젝트는 보드게임 Decrypto를 웹사이트에서 즐기기 위해 시작한 프로젝트입니다. Decrypto는 최소 4인이서 즐길 수 있는 보드게임입니다. 룰 영상은 [여기](https://www.youtube.com/watch?v=AXc-z5Sp1Hc)에서 확인하실 수 있으며, Rulebook.md에서도 룰을 확인하실 수 있으니 참고해주세요!
 
 ## 사용 기술 스택
-
-* Typescript
-* React
-* Firebase
-* styled-components
-* vite
+<p align='center'>
+<img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
+<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+<img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" />
+<img src="https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white" />
+<img src="https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E" />
+<img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />
+<img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white" />
+</p>
 
 ## 페이지 소개
 
@@ -43,14 +48,12 @@ yarn && yarn run dev
 ```
 
 ## 팀원
-
-* byukim (github 링크)
-* junseo (github 링크)
-* sjo (github 링크)
-* yeoyoon (github 링크)
+|byukim|junseo|sjo|yeoyoo|
+|---|---|---|---|
+|[AndroidNetrunner](https://github.com/AndroidNetrunner)|[gamguma](https://github.com/Seojunhwan)|[Sara-Jo](https://github.com/Sara-Jo)|[071yoon](https://github.com/071yoon)|
 
 ## 워크플로우
-
+[WorkFlow Wiki](https://github.com/AndroidNetrunner/decrypto/wiki/디크립토-플로우차트-&-데이터베이스-스키마)
 ## 실행 화면
 
 ## 배포 환경
