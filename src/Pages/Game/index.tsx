@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import CodeGuess from './Components/CodeGuess';
 import Hints from './Components/Hints';
@@ -10,24 +10,10 @@ import Word from './Components/Word';
 
 type code = [number, number, number];
 type hints = [string, string, string];
-const answerCode: code = [3, 1, 4];
-const hints: hints = ['힌트3번', '힌트1번', '힌트4번'];
-const codeGuess: code = [2, 1, 4];
-const guessTeamName = 'Soviet';
-const codeSteal: code = [1, 2, 3];
-const stealTeamName = 'America';
-const gameLength = 15;
 interface user {
   uid: string;
   nickname: string;
 }
-
-const dummy1: user = { uid: '0909', nickname: 'yeoyoon' };
-const dummy2: user = { uid: '12341234', nickname: 'sjo' };
-const dummy3: user = { uid: '351235', nickname: 'byukim' };
-const dummy4: user = { uid: '561364', nickname: 'junseo' };
-
-const captain = dummy1;
 interface team {
   word: [string, string, string, string];
   hints: string[][];
@@ -36,6 +22,28 @@ interface team {
   greenToken: number;
   redToken: number;
 }
+
+const dummy1: user = { uid: '0909', nickname: 'yeoyoon' };
+const dummy2: user = { uid: '12341234', nickname: 'sjo' };
+const dummy3: user = { uid: '351235', nickname: 'byukim' };
+const dummy4: user = { uid: '561364', nickname: 'junseo' };
+
+// 변하는 정보 Game 여기
+const answerCode: code = [3, 1, 4];
+const hints: hints = ['힌트3번', '힌트1번', '힌트4번'];
+const codeGuess: code = [2, 1, 4];
+const codeSteal: code = [1, 2, 3];
+
+// 고정된 정보
+const guessTeamName = 'Soviet';
+const stealTeamName = 'America';
+const gameLength = 15;
+const captain = dummy1;
+
+/*
+Class Game -> interface america, interface Svoiet, interface Turn, gamelength, captain
+*/
+
 const america: team = {
   word: ['비트코인', '감자', '수건', '침대'],
   hints: [
@@ -159,9 +167,7 @@ export default function Game() {
 1. USA, Soviet 나눠서 뭘 보여줄지 결정 
   a. 내가 어떤팀에 속해있는지 확인
   b. 몇번째 라운드인지 확인
-Stage 0 : 
-
-
+Stage 0 : America Leader 가 Hint 제출
 -----> Server에 제출
 Stage 1 : America Team이 Code guess 및 Soviet Team Interrupt
 -----> Round 결과 모달창 + Hint 내역에 추가
@@ -169,14 +175,13 @@ Stage 2 : Soviet Leader 가 Hint 제출
 -----> Server
 Stage 3 : Soviet Team code guess 및 america team interrupt
 -----> 결과
-
-
 */
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  // background-color: #2e3c7e;
+  //background-color: #2e3c7e;
 `;
 
 const HintTokenArea = styled.div`
