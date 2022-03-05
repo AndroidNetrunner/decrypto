@@ -27,6 +27,7 @@ const Container = styled.div`
   width: 250px;
   border: 2px solid;
   border-radius: 20px;
+  background-color: white;
 `;
 
 const Title = styled.p`

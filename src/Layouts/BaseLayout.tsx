@@ -21,16 +21,18 @@ export default function BaseLayout() {
     }
   };
   const onClickAudioButton = () => {
-    if (isPlayingBGM) {
+    if (isPlayingBgm) {
       bgm.pause();
-      console.log('음악 실행 중 => 음악 중단');
-      setIsPlayingBGM(false);
+      setIsPlayingBgm(false);
     } else {
+      bgm.volume = 0.05;
       bgm.play();
-      console.log('음악 중단 => 음악 실행 중');
-      setIsPlayingBGM(true);
+      setIsPlayingBgm(true);
     }
   };
+  useEffect(() => {
+    return () => bgm.pause();
+  }, []);
 
   return (
     <Wrapper>
@@ -39,18 +41,22 @@ export default function BaseLayout() {
           <img src='img/pacMan.gif' alt='pacMan' style={{ width: '10rem', height: '10rem' }} />
           <h1>Decrypto</h1>
         </Header>
-        <RuleButton name='Rule' onClick={toggleModal}>
-          {isModalOpen ? (
-            <img src='img/book-open.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
-          ) : (
-            <img src='img/book-close.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
-          )}
-        </RuleButton>
-        <AudioButton onClick={onClickAudioButton}>{ {isPlayingBGM ? (
-            <img src='img/audio_on.png' alt='audio' style={{ width: '10rem', height: '10rem' }} />
-          ) : (
-            <img src='img/audio_off.png' alt='audio' style={{ width: '10rem', height: '10rem' }} />
-          )}</AudioButton>
+        <ButtonControl>
+          <AudioButton onClick={onClickAudioButton}>
+            {isPlayingBgm ? (
+              <img src='img/audio_on.png' alt='audio' style={{ width: '10rem', height: '10rem' }} />
+            ) : (
+              <img src='img/audio_off.png' alt='audio' style={{ width: '10rem', height: '10rem' }} />
+            )}
+          </AudioButton>
+          <RuleButton name='Rule' onClick={toggleModal}>
+            {isModalOpen ? (
+              <img src='img/book-open.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
+            ) : (
+              <img src='img/book-close.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
+            )}
+          </RuleButton>
+        </ButtonControl>
         <Main ref={mainRef}>
           <Outlet />
         </Main>
@@ -99,19 +105,25 @@ const Header = styled.header`
 `;
 
 const RuleButton = styled.button`
-  position: absolute;
-  top: 0;
-  right: 0;
+  width: 10rem;
+  height: 10rem;
   border: none;
   background-color: inherit;
   cursor: pointer;
 `;
 
 const AudioButton = styled.button`
-  position: absolute;
-  top: 0;
-  right: 5rem;
+  magin: 3rem;
+  width: 10rem;
+  height: 10rem;
   border: none;
   background-color: inherit;
   cursor: pointer;
+`;
+
+const ButtonControl = styled.div`
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
 `;

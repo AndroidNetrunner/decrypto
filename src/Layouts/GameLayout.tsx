@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router';
 import styled from 'styled-components';
 import Overlay from '../Components/Common/Overlay';
@@ -6,20 +6,46 @@ import RuleModal from '../Components/Common/RuleModal';
 
 export default function GameLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPlayingBgm, setIsPlayingBgm] = useState(false);
+  const [bgm, setBgm] = useState(new Audio('audio/in_game.mp3'));
 
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev);
   };
+  const onClickAudioButton = () => {
+    if (isPlayingBgm) {
+      bgm.pause();
+      setIsPlayingBgm(false);
+    } else {
+      bgm.volume = 0.03;
+      bgm.play();
+      setIsPlayingBgm(true);
+    }
+  };
+
+  useEffect(() => {
+    return () => bgm.pause();
+  }, []);
+
   return (
     <Wrapper>
       <Container>
-        <RuleButton name='Rule' onClick={toggleModal}>
-          {isModalOpen ? (
-            <img src='../img/book-open.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
-          ) : (
-            <img src='../img/book-close.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
-          )}
-        </RuleButton>
+        <ButtonControl>
+          <AudioButton onClick={onClickAudioButton}>
+            {isPlayingBgm ? (
+              <img src='img/audio_on.png' alt='audio' style={{ width: '10rem', height: '10rem' }} />
+            ) : (
+              <img src='img/audio_off.png' alt='audio' style={{ width: '10rem', height: '10rem' }} />
+            )}
+          </AudioButton>
+          <RuleButton name='Rule' onClick={toggleModal}>
+            {isModalOpen ? (
+              <img src='img/book-open.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
+            ) : (
+              <img src='img/book-close.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
+            )}
+          </RuleButton>
+        </ButtonControl>
         <Main>
           <Outlet />
         </Main>
@@ -57,10 +83,25 @@ const Wrapper = styled.div`
 `;
 
 const RuleButton = styled.button`
-  position: absolute;
-  top: 0;
-  right: 0;
+  width: 10rem;
+  height: 10rem;
   border: none;
   background-color: inherit;
   cursor: pointer;
+`;
+
+const AudioButton = styled.button`
+  magin: 3rem;
+  width: 10rem;
+  height: 10rem;
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
+`;
+
+const ButtonControl = styled.div`
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
 `;
