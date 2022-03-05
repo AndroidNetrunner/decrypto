@@ -11,10 +11,22 @@ function Word({ wordList }: { wordList: [string, string, string, string] }) {
         <Item>4</Item>
       </ItemList>
       <ItemList>
-        <Item className='wordItem'>{wordList[0]}</Item>
-        <Item className='wordItem'>{wordList[1]}</Item>
-        <Item className='wordItem'>{wordList[2]}</Item>
-        <Item className='wordItem'>{wordList[3]}</Item>
+        <ItemContainer>
+          <img src='../../img/tv-fullsz.gif' alt='green' style={{ width: '12rem', height: '10rem' }} />
+          <Item className='wordItem'>{wordList[0]}</Item>
+        </ItemContainer>
+        <ItemContainer>
+          <img src='../../img/tv-fullsz.gif' alt='green' style={{ width: '12rem', height: '10rem' }} />
+          <Item className='wordItem'>{wordList[1]}</Item>
+        </ItemContainer>
+        <ItemContainer>
+          <img src='../../img/tv-fullsz.gif' alt='green' style={{ width: '12rem', height: '10rem' }} />
+          <Item className='wordItem'>{wordList[2]}</Item>
+        </ItemContainer>
+        <ItemContainer>
+          <img src='../../img/tv-fullsz.gif' alt='green' style={{ width: '12rem', height: '10rem' }} />
+          <Item className='wordItem'>{wordList[3]}</Item>
+        </ItemContainer>
       </ItemList>
     </Container>
   );
@@ -34,19 +46,23 @@ const Title = styled.p`
 const ItemList = styled.div`
   display: flex;
   justify-content: space-between;
-  .wordItem {
-    border: 2px solid;
-    border-radius: 10px;
-    padding: 10px;
-  }
 `;
 
 const Item = styled.div`
+  position: relative;
   width: 100px;
   margin-top: 10px;
   font-size: large;
   font-weight: bold;
   text-align: center;
+`;
+
+const ItemContainer = styled.div`
+  .wordItem {
+    text-align: center;
+    top: 11rem;
+    position: absolute;
+  }
 `;
 
 export default Word;

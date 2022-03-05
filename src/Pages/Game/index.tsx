@@ -7,6 +7,8 @@ import RoundResult from './Components/RoundResult';
 import ScoreTable from './Components/ScoreTable';
 import Timer from './Components/Timer';
 import Word from './Components/Word';
+import RuleModal from '../../Components/Common/RuleModal';
+import Overlay from '../../Components/Common/Overlay';
 
 type code = [number, number, number];
 type hints = [string, string, string];
@@ -73,6 +75,15 @@ const soviet: team = {
 export default function Game() {
   const currentUser: user = dummy1;
   const [gameStage, setStage] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [resultModal, setResultModal] = useState(false);
+  const toggleModal = () => {
+    setIsModalOpen((prev) => !prev);
+  };
+  const toggleResult = () => {
+    setResultModal((prev) => !prev);
+  };
+
   const nextStage = () => {
     setStage(gameStage + 1);
   };
@@ -150,14 +161,33 @@ export default function Game() {
         <Hints hintRecord={soviet.hints} />
         <Hints hintRecord={america.hints} />
       </HintRecordArea>
-      <RoundResult
-        answerCode={answerCode}
-        hints={hints}
-        codeGuess={codeGuess}
-        guessTeamName={guessTeamName}
-        codeSteal={codeSteal}
-        stealTeamName={stealTeamName}
-      />{' '}
+      <RuleButton name='Rule' onClick={toggleModal}>
+        {isModalOpen ? (
+          <img src='../../img/book-open.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
+        ) : (
+          <img src='../../img/book-close.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
+        )}
+      </RuleButton>
+      <button name='Result' onClick={toggleResult} type='button'>
+        result
+      </button>
+      {isModalOpen && (
+        <Overlay onClickOverlay={toggleModal}>
+          <RuleModal toggleModal={toggleModal} />
+        </Overlay>
+      )}
+      {resultModal && (
+        <Overlay onClickOverlay={toggleResult}>
+          <RoundResult
+            answerCode={answerCode}
+            hints={hints}
+            codeGuess={codeGuess}
+            guessTeamName={guessTeamName}
+            codeSteal={codeSteal}
+            stealTeamName={stealTeamName}
+          />
+        </Overlay>
+      )}
       {/* Will turn into Modal */}
     </Container>
   );
@@ -178,10 +208,11 @@ Stage 3 : Soviet Team code guess 및 america team interrupt
 */
 
 const Container = styled.div`
+  color: black;
   display: flex;
   flex-direction: column;
   align-items: center;
-  //background-color: #2e3c7e;
+  background-color: #2e3c7e;
 `;
 
 const HintTokenArea = styled.div`
@@ -192,4 +223,13 @@ const HintTokenArea = styled.div`
 const HintRecordArea = styled.div`
   display: flex;
   align-items: center;
+`;
+
+const RuleButton = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
 `;

@@ -66,6 +66,8 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
+  background-color: white;
+  border-radius: 1rem;
 `;
 
 const Result = styled.div`

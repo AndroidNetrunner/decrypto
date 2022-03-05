@@ -25,8 +25,13 @@ export default function SetGameLength({ captain }: Props) {
   console.log(gameTime);
   return (
     <SelectBoxWrapper>
-      <Select id='timer-select' onChange={onChangeTime} disabled={currentUser.uid !== captain.uid}>
-        <option disabled selected>
+      <Select
+        id='timer-select'
+        defaultValue='DEFAULT'
+        onChange={onChangeTime}
+        disabled={currentUser.uid !== captain.uid}
+      >
+        <option value='DEFAULT' disabled>
           👑게임 속도 정하기👑
         </option>
         <option value='60'>느릿느릿(20 ~ 30 mins)</option>
