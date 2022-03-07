@@ -74,7 +74,7 @@ const soviet: team = {
 
 export default function Game() {
   const currentUser: user = dummy1;
-  const [gameStage, setStage] = useState(0);
+  const [gameStage, setStage] = useState(3);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [resultModal, setResultModal] = useState(false);
   const toggleModal = () => {
@@ -92,52 +92,64 @@ export default function Game() {
   function renderByStage(stage: number, sovietLeader: user, americaLeader: user, me: user) {
     if (stage === 0 && americaLeader === me)
       return (
-        <div>
+        <RenderingArea>
           <HintSubmit answer={answerCode} wordList={america.word} stage={nextStage} />{' '}
           <Timer gameTime={gameLength} />
-        </div>
+        </RenderingArea>
       );
     if (stage === 0)
       return (
-        <div>
-          Waiting <Timer gameTime={gameLength} />
-        </div>
+        <RenderingArea>
+          <Waiting>
+            <p>Waiting...</p>
+          </Waiting>{' '}
+          <Timer gameTime={gameLength} />
+        </RenderingArea>
       );
     if (stage === 1 && americaLeader === me)
       return (
-        <div>
-          Waiting <Timer gameTime={gameLength} />
-        </div>
+        <RenderingArea>
+          <Waiting>
+            <p>Waiting...</p>
+          </Waiting>{' '}
+          <Timer gameTime={gameLength} />
+        </RenderingArea>
       );
     if (stage === 1)
       return (
-        <div>
+        <RenderingArea>
           <CodeGuess hints={hints} /> <Timer gameTime={gameLength} />
-        </div>
+        </RenderingArea>
       );
     if (stage === 2 && sovietLeader === me)
       return (
-        <div>
+        <RenderingArea>
           <HintSubmit answer={answerCode} wordList={soviet.word} stage={nextStage} />{' '}
           <Timer gameTime={gameLength} />
-        </div>
+        </RenderingArea>
       );
     if (stage === 2)
       return (
-        <div>
-          Waiting <Timer gameTime={gameLength} />
-        </div>
+        <RenderingArea>
+          <Waiting>
+            <p>Waiting...</p>
+          </Waiting>{' '}
+          <Timer gameTime={gameLength} />
+        </RenderingArea>
       );
     if (stage === 3 && sovietLeader === me)
       return (
-        <div>
-          Waiting <Timer gameTime={gameLength} />
-        </div>
+        <RenderingArea>
+          <Waiting>
+            <p>Waiting...</p>
+          </Waiting>{' '}
+          <Timer gameTime={gameLength} />
+        </RenderingArea>
       );
     return (
-      <div>
+      <RenderingArea>
         <CodeGuess hints={hints} /> <Timer gameTime={gameLength} />
-      </div>
+      </RenderingArea>
     );
   }
 
@@ -158,8 +170,8 @@ export default function Game() {
         />
       </HintTokenArea>
       <HintRecordArea>
-        <Hints hintRecord={soviet.hints} />
-        <Hints hintRecord={america.hints} />
+        <Hints team='Soviet' hintRecord={soviet.hints} />
+        <Hints team='America' hintRecord={america.hints} />
       </HintRecordArea>
       <RuleButton name='Rule' onClick={toggleModal}>
         {isModalOpen ? (
@@ -213,16 +225,21 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: #2e3c7e;
+  justify-content: center;
 `;
 
 const HintTokenArea = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-evenly;
 `;
 
 const HintRecordArea = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
+  justify-content: space-evenly;
 `;
 
 const RuleButton = styled.button`
@@ -232,4 +249,20 @@ const RuleButton = styled.button`
   border: none;
   background-color: inherit;
   cursor: pointer;
+`;
+
+const RenderingArea = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Waiting = styled.div`
+  font-size: 15pt;
+  font-weight: bold;
+  background-color: gray;
+  text-align: center;
+  padding: 2rem 4rem;
+  border-radius: 1rem;
+  border: 0.3rem white solid;
+  margin-right: 2rem;
 `;

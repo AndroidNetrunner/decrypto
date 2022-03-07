@@ -3,12 +3,11 @@ import styled from 'styled-components';
 function Word({ wordList }: { wordList: [string, string, string, string] }) {
   return (
     <Container>
-      <Title>우리팀 단어</Title>
       <ItemList>
-        <Item>1</Item>
-        <Item>2</Item>
-        <Item>3</Item>
-        <Item>4</Item>
+        <Number>1</Number>
+        <Number>2</Number>
+        <Number>3</Number>
+        <Number>4</Number>
       </ItemList>
       <ItemList>
         <ItemContainer>
@@ -33,19 +32,20 @@ function Word({ wordList }: { wordList: [string, string, string, string] }) {
 }
 
 const Container = styled.div`
-  padding: 35px;
-  width: 500px;
-`;
-
-const Title = styled.p`
-  text-align: center;
-  font-size: medium;
-  margin-bottom: 10px;
+  padding: 20px;
+  width: 60%;
 `;
 
 const ItemList = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const Number = styled.div`
+  font-size: 4rem;
+  font-weight: bold;
+  text-align: center;
+  width: 100px;
 `;
 
 const Item = styled.div`
@@ -60,7 +60,7 @@ const Item = styled.div`
 const ItemContainer = styled.div`
   .wordItem {
     text-align: center;
-    top: 11rem;
+    top: 9rem;
     position: absolute;
   }
 `;

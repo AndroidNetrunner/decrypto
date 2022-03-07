@@ -11,12 +11,12 @@ export default function ScoreTable({ sovietDecode, sovietMistake, americaDecode,
   return (
     <ScoreTableArea>
       <tr>
-        <th>팀 이름</th>
-        <th>해독 토큰</th>
-        <th>오답 토큰</th>
+        <th> </th>
+        <th className='labelArea'>해독 토큰</th>
+        <th className='labelArea'>오답 토큰</th>
       </tr>
       <tr>
-        <td>Soviet</td>
+        <th className='labelArea'>Soviet</th>
         <CircleContainer>
           {sovietDecode > 0 ? (
             <img src='../../img/my-coin-green.gif' alt='green' style={{ width: '2rem', height: '2rem' }} />
@@ -35,7 +35,7 @@ export default function ScoreTable({ sovietDecode, sovietMistake, americaDecode,
         </CircleContainer>
       </tr>
       <tr>
-        <td>America</td>
+        <th className='labelArea'>America</th>
         <CircleContainer>
           {americaDecode > 0 ? (
             <img src='../../img/my-coin-green.gif' alt='green' style={{ width: '2rem', height: '2rem' }} />
@@ -58,7 +58,17 @@ export default function ScoreTable({ sovietDecode, sovietMistake, americaDecode,
 }
 
 const ScoreTableArea = styled.table`
-  width: 180px;
+  width: 300px;
+  font-size: 1.3rem;
+  border-collapse: separate;
+  border-spacing: 20px 5px;
+
+  .labelArea {
+    background-color: #b4bce3;
+    padding: 0.5rem;
+    border-radius: 3rem;
+    margin: 2rem;
+  }
 `;
 
 const CircleContainer = styled.td`
