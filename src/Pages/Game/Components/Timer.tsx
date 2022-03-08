@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 export default function Timer({ gameTime }: { gameTime: number }) {
@@ -8,21 +8,24 @@ export default function Timer({ gameTime }: { gameTime: number }) {
   let progressValue = 0;
   const progressEndValue = 100;
   const setTimer = gameTime * 10;
-  const progress = setInterval(() => {
-    if (progressRef.current !== null && progressValueRef.current !== null) {
-      progressValue += 1;
-      progressValueRef.current.textContent = `${(gameTime - (progressValue / 100) * gameTime).toFixed(0)}`;
-      progressRef.current.style.background = `conic-gradient(
-        #a37094 ${progressValue * 3.6}deg,
-        #ccc2c9 ${progressValue * 3.6}deg
-        )`;
-      if (progressValue === progressEndValue) {
-        console.log('done'); // 추후에 서버에 제출하는 코드로 변경
-        clearInterval(progress);
-      }
-    }
-  }, setTimer);
 
+  useEffect(() => {
+    const progress = setInterval(() => {
+      if (progressRef.current !== null && progressValueRef.current !== null) {
+        progressValue += 1;
+        progressValueRef.current.textContent = `${(gameTime - (progressValue / 100) * gameTime).toFixed(0)}`;
+        progressRef.current.style.background = `conic-gradient(
+          #a37094 ${progressValue * 3.6}deg,
+          #ccc2c9 ${progressValue * 3.6}deg
+          )`;
+        if (progressValue === progressEndValue) {
+          console.log('done'); // 추후에 서버에 제출하는 코드로 변경
+          clearInterval(progress);
+        }
+      }
+    }, setTimer);
+    return () => clearInterval(progress);
+  }, []);
   return (
     <div>
       <TimerLeft ref={progressValueRef}>{(setTimer / 10).toFixed(0)}</TimerLeft>

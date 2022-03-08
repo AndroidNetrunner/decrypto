@@ -1,3 +1,5 @@
+import shadows from '@material-ui/core/styles/shadows';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -5,6 +7,16 @@ interface Props {
 }
 
 export default function RuleModal({ toggleModal }: Props) {
+  const [isMainOpen, setMainOpen] = useState('none');
+  const [isLobbyOpen, setLobbyOpen] = useState('none');
+  const [isGameOpen, setGameOpen] = useState('none');
+  const [isHintOpen, setHintOpen] = useState('none');
+  const [isGuessOpen, setGuessOpen] = useState('none');
+  const [isWinOpen, setWinOpen] = useState('none');
+  const showParagraph = (state: string, setState: React.Dispatch<React.SetStateAction<string>>) => {
+    setState(state === 'block' ? 'none' : 'block');
+  };
+
   return (
     <RuleWrapper onClick={(e) => e.stopPropagation()}>
       <ButtonWrapper>
@@ -32,15 +44,25 @@ export default function RuleModal({ toggleModal }: Props) {
           Decrypto(이하 디크립토)는 우리 팀의 코드는 안전하게 전달하고, 상대방의 코드는 훔쳐 점수를 획득하는
           게임입니다.
         </Paragraph>
-        <SemiTitle>메인 페이지</SemiTitle>
-        <Paragraph>
+        <SemiTitle onClick={() => showParagraph(isMainOpen, setMainOpen)}>
+          메인 페이지
+          <IconSVG width='30' height='30' viewBox='0 0 16 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
+            <path d='M10 14L16 6H4L10 14Z' fill='#495057' />
+          </IconSVG>
+        </SemiTitle>
+        <Paragraph style={{ display: isMainOpen }}>
           메인 페이지에서는 새로운 방을 만들거나, 이미 만들어진 방에 참가하실 수 있습니다. <Enter> </Enter>
           새로운 방을 만들기 위해서는 닉네임을 입력하시고 (방 번호는 필요 없습니다.) 방 만들기 버튼을
           눌러주세요. <Enter> </Enter>만들어진 방에 참가하기 위해서는 닉네임과 참가하실 방 번호를 입력하신
           후에 참가하기 버튼을 눌러주세요.
         </Paragraph>
-        <SemiTitle>로비</SemiTitle>
-        <Paragraph>
+        <SemiTitle onClick={() => showParagraph(isLobbyOpen, setLobbyOpen)}>
+          로비
+          <IconSVG width='30' height='30' viewBox='0 0 16 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
+            <path d='M10 14L16 6H4L10 14Z' fill='#495057' />
+          </IconSVG>
+        </SemiTitle>
+        <Paragraph style={{ display: isLobbyOpen }}>
           로비에서는 팀과 제한시간을 정하는 공간입니다. <Enter> </Enter> <b>팀을 변경</b>하기 위해서는 가운데
           있는 화살표 버튼을 눌러주세요. <Enter> </Enter> <b>제한시간</b>은 오른쪽에 있는 버튼을 통해 설정할
           수 있습니다. 방장만이 제한시간을 변경할 수 있으며, 방장은 닉네임 오른쪽을 확인해 아실 수 있습니다.
@@ -48,14 +70,24 @@ export default function RuleModal({ toggleModal }: Props) {
           2명이 아니라면 아무도 버튼을 누를 수 없으며, 인원을 충족했다면 방장만이 게임을 시작할 권한을
           가집니다. (방장이 아니라면 버튼을 눌러도 아무런 일이 일어나지 않습니다.)
         </Paragraph>
-        <SemiTitle>게임</SemiTitle>
-        <Paragraph>
+        <SemiTitle onClick={() => showParagraph(isGameOpen, setGameOpen)}>
+          게임
+          <IconSVG width='30' height='30' viewBox='0 0 16 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
+            <path d='M10 14L16 6H4L10 14Z' fill='#495057' />
+          </IconSVG>
+        </SemiTitle>
+        <Paragraph style={{ display: isGameOpen }}>
           게임이 시작되면 모든 플레이어들은 우리팀에게 주어진 4개의 단어(이하 비밀 단어)를 확인할 수 있습니다.
           이 단어는 후술할 힌트를 제공하는데 사용됩니다. <Enter> </Enter>한 게임은 총 8라운드로 이루어져
           있으며, 한 라운드의 진행은 <b>힌트 제출</b>과 <b>코드 추측</b> 단계로 이루어져 있습니다.
         </Paragraph>
-        <SemiTitle>힌트 제출</SemiTitle>
-        <Paragraph>
+        <SemiTitle onClick={() => showParagraph(isHintOpen, setHintOpen)}>
+          힌트 제출
+          <IconSVG width='30' height='30' viewBox='0 0 16 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
+            <path d='M10 14L16 6H4L10 14Z' fill='#495057' />
+          </IconSVG>
+        </SemiTitle>
+        <Paragraph style={{ display: isHintOpen }}>
           팀원 중 한 명이 새로운 팀장이 되며, 팀장은 이번 라운드의 화면 상단에 적힌 <b>정답 코드</b>를
           확인합니다. 정답 코드는 1 ~ 4 중 3개의 숫자가 무작위 순서로 결정되며, 각 라운드의 목표는 상대팀에게
           들키지 않고 우리팀에게만 정답 코드를 전달하는 것입니다. <Enter> </Enter>코드를 전달하기 위해 팀장은
@@ -67,8 +99,13 @@ export default function RuleModal({ toggleModal }: Props) {
           따로따로 입력해주시고, 모두 입력하셨다면 제출 버튼을 눌러주세요! 제출하셨다면 코드 추측 단계로
           넘어갑니다.
         </Paragraph>
-        <SemiTitle>코드 추측</SemiTitle>
-        <Paragraph>
+        <SemiTitle onClick={() => showParagraph(isGuessOpen, setGuessOpen)}>
+          코드 추측
+          <IconSVG width='30' height='30' viewBox='0 0 16 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
+            <path d='M10 14L16 6H4L10 14Z' fill='#495057' />
+          </IconSVG>
+        </SemiTitle>
+        <Paragraph style={{ display: isGuessOpen }}>
           우리팀과 상대팀은 이제 정답 코드가 무엇인지 논의 후 추측을 하게 됩니다. 대부분의 경우, 비밀 단어를
           우리팀만 알고 있으므로 우리 팀은 맞히고, 상대 팀은 틀리게 될 것입니다. <Enter> </Enter>추측이 끝나면
           정답 코드를 공개하며, 라운드 결과를 정산합니다. <Enter> </Enter>만약 <b>우리 팀이</b> 비밀 단어를
@@ -78,8 +115,6 @@ export default function RuleModal({ toggleModal }: Props) {
           </b>
           만약 <b>상대 팀이</b> 비밀 단어를 몰랐음에도 정답 코드를 맞혔다면 상대 팀은 <b>해독 토큰</b>을 하나
           받습니다. <b>해독 토큰을 2개 얻는 팀은 게임에서 즉시 승리합니다</b>
-        </Paragraph>
-        <Paragraph>
           <Enter> </Enter>그런데 비밀 단어를 모르는 상대 팀이 어떻게 정답 코드를 맞출 수 있을까요?
           <Enter> </Enter>라운드가 진행되면서, 상대 팀은 팀장이 준 힌트를 기록하게 됩니다. 정답 코드가
           <b>2 - 1 - 4</b>이고, <b>불 - 낙하 - 콩깍지</b>가 힌트라면, 상대방은 2번째 단어가 불, 1번째 단어가
@@ -89,8 +124,13 @@ export default function RuleModal({ toggleModal }: Props) {
           <b>힌트를 너무 애매하게 주면 우리 팀이 코드를 못 알아차릴 수 있습니다</b> 결국 둘 사이의 균형이 매우
           중요하죠.
         </Paragraph>
-        <SemiTitle>승리 조건</SemiTitle>
-        <Paragraph>
+        <SemiTitle onClick={() => showParagraph(isWinOpen, setWinOpen)}>
+          승리 조건
+          <IconSVG width='30' height='30' viewBox='0 0 16 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
+            <path d='M10 14L16 6H4L10 14Z' fill='#495057' />
+          </IconSVG>
+        </SemiTitle>
+        <Paragraph style={{ display: isWinOpen }}>
           게임의 승리 조건은 다음과 같습니다. <Enter> </Enter> 우리 팀이 해독 토큰 2개를 획득한다.
           <Enter> </Enter> 상대 팀이 오답 토큰 2개를 획득한다. <Enter> </Enter>두 조건 중 하나라도 충족하면
           게임을 승리하게 됩니다. 참 쉽죠?
@@ -143,7 +183,7 @@ const RuleWrapper = styled.div`
   width: 100%;
   height: 100%;
   background-color: white;
-  max-width: 50rem;
+  max-width: 60rem;
   max-height: 60rem;
   border-radius: 1rem;
   padding: 2rem;
@@ -151,3 +191,5 @@ const RuleWrapper = styled.div`
   color: black;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 `;
+
+const IconSVG = styled.svg``;

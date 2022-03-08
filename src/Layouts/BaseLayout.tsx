@@ -3,13 +3,18 @@ import { Outlet } from 'react-router';
 import styled from 'styled-components';
 import Overlay from '../Components/Common/Overlay';
 import RuleModal from '../Components/Common/RuleModal';
+import AudioOff from '../Assets/img/audio-off.png';
+import AudioOn from '../Assets/img/audio-on.png';
+import BookClose from '../Assets/img/book-close.png';
+import BookOpen from '../Assets/img/book-open.png';
+import Music from '../Assets/audio/login_bgm.mp3';
 
 export default function BaseLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const mainRef = useRef<HTMLElement>(null);
   const [isPlayingBgm, setIsPlayingBgm] = useState(false);
-  const [bgm, setBgm] = useState(new Audio('audio/login_bgm.mp3'));
+  const [bgm, setBgm] = useState(new Audio(Music));
 
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev);
@@ -44,16 +49,16 @@ export default function BaseLayout() {
         <ButtonControl>
           <AudioButton onClick={onClickAudioButton}>
             {isPlayingBgm ? (
-              <img src='img/audio_on.png' alt='audio' style={{ width: '10rem', height: '10rem' }} />
+              <img src={AudioOn} alt='audio-on' style={{ width: '10rem', height: '10rem' }} />
             ) : (
-              <img src='img/audio_off.png' alt='audio' style={{ width: '10rem', height: '10rem' }} />
+              <img src={AudioOff} alt='audio-off' style={{ width: '10rem', height: '10rem' }} />
             )}
           </AudioButton>
           <RuleButton name='Rule' onClick={toggleModal}>
             {isModalOpen ? (
-              <img src='img/book-open.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
+              <img src={BookOpen} alt='RuleBook-open' style={{ width: '10rem', height: '10rem' }} />
             ) : (
-              <img src='img/book-close.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
+              <img src={BookClose} alt='RuleBook-close' style={{ width: '10rem', height: '10rem' }} />
             )}
           </RuleButton>
         </ButtonControl>
@@ -113,7 +118,6 @@ const RuleButton = styled.button`
 `;
 
 const AudioButton = styled.button`
-  magin: 3rem;
   width: 10rem;
   height: 10rem;
   border: none;
@@ -125,5 +129,5 @@ const ButtonControl = styled.div`
   display: flex;
   position: absolute;
   top: 0;
-  right: 0;
+  right: 2rem;
 `;

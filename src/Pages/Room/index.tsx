@@ -155,9 +155,9 @@ const Container = styled.div`
 
 const TeamContainer = styled.div`
   margin: 3rem 5rem;
-  width: 50rem;
+  width: 100%;
   height: 100%;
-  max-width: 60rem;
+  min-width: 40rem;
   .Soviet {
     background-color: #f15852;
   }

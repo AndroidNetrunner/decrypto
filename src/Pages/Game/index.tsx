@@ -173,21 +173,9 @@ export default function Game() {
         <Hints team='Soviet' hintRecord={soviet.hints} />
         <Hints team='America' hintRecord={america.hints} />
       </HintRecordArea>
-      <RuleButton name='Rule' onClick={toggleModal}>
-        {isModalOpen ? (
-          <img src='../../img/book-open.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
-        ) : (
-          <img src='../../img/book-close.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
-        )}
-      </RuleButton>
       <button name='Result' onClick={toggleResult} type='button'>
         result
       </button>
-      {isModalOpen && (
-        <Overlay onClickOverlay={toggleModal}>
-          <RuleModal toggleModal={toggleModal} />
-        </Overlay>
-      )}
       {resultModal && (
         <Overlay onClickOverlay={toggleResult}>
           <RoundResult

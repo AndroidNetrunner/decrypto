@@ -75,7 +75,6 @@ const SelectBoxWrapper = styled.div`
   display: flex;
 `;
 
-// Icon에 사용할 Icon SVG 컴포넌트 생성
 const IconSVG = styled.svg`
   margin-left: -28px;
   align-self: center;
