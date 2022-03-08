@@ -14,7 +14,7 @@ export default function BaseLayout() {
   const headerRef = useRef<HTMLElement>(null);
   const mainRef = useRef<HTMLElement>(null);
   const [isPlayingBgm, setIsPlayingBgm] = useState(false);
-  const [bgm, setBgm] = useState(new Audio(Music));
+  const bgmRef = useRef<HTMLAudioElement>(null);
 
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev);
@@ -26,17 +26,20 @@ export default function BaseLayout() {
     }
   };
   const onClickAudioButton = () => {
-    if (isPlayingBgm) {
-      bgm.pause();
-      setIsPlayingBgm(false);
-    } else {
-      bgm.volume = 0.05;
-      bgm.play();
-      setIsPlayingBgm(true);
+    if (bgmRef.current) {
+      if (isPlayingBgm) {
+        bgmRef.current.pause();
+        setIsPlayingBgm(false);
+      } else {
+        bgmRef.current.volume = 0.05;
+        bgmRef.current.play();
+        setIsPlayingBgm(true);
+      }
     }
   };
+
   useEffect(() => {
-    return () => bgm.pause();
+    return () => bgmRef.current?.pause();
   }, []);
 
   return (
@@ -47,6 +50,9 @@ export default function BaseLayout() {
           <h1>Decrypto</h1>
         </Header>
         <ButtonControl>
+          <audio src={Music} ref={bgmRef}>
+            <track kind='captions' />
+          </audio>
           <AudioButton onClick={onClickAudioButton}>
             {isPlayingBgm ? (
               <img src={AudioOn} alt='audio-on' style={{ width: '10rem', height: '10rem' }} />

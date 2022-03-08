@@ -7,7 +7,6 @@ import RoundResult from './Components/RoundResult';
 import ScoreTable from './Components/ScoreTable';
 import Timer from './Components/Timer';
 import Word from './Components/Word';
-import RuleModal from '../../Components/Common/RuleModal';
 import Overlay from '../../Components/Common/Overlay';
 
 type code = [number, number, number];
@@ -40,7 +39,7 @@ const codeSteal: code = [1, 2, 3];
 const guessTeamName = 'Soviet';
 const stealTeamName = 'America';
 const gameLength = 15;
-const captain = dummy1;
+// const captain = dummy1;
 
 /*
 Class Game -> interface america, interface Svoiet, interface Turn, gamelength, captain
@@ -75,11 +74,7 @@ const soviet: team = {
 export default function Game() {
   const currentUser: user = dummy1;
   const [gameStage, setStage] = useState(3);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [resultModal, setResultModal] = useState(false);
-  const toggleModal = () => {
-    setIsModalOpen((prev) => !prev);
-  };
   const toggleResult = () => {
     setResultModal((prev) => !prev);
   };
@@ -228,15 +223,6 @@ const HintRecordArea = styled.div`
   align-items: center;
   width: 100%;
   justify-content: space-evenly;
-`;
-
-const RuleButton = styled.button`
-  position: absolute;
-  top: 0;
-  right: 0;
-  border: none;
-  background-color: inherit;
-  cursor: pointer;
 `;
 
 const RenderingArea = styled.div`

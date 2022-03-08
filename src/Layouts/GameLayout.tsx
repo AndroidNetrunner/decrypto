@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Outlet } from 'react-router';
 import styled from 'styled-components';
 import Overlay from '../Components/Common/Overlay';
@@ -12,30 +12,35 @@ import Music from '../Assets/audio/in_game.mp3';
 export default function GameLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPlayingBgm, setIsPlayingBgm] = useState(false);
-  const [bgm, setBgm] = useState(new Audio(Music));
+  const bgmRef = useRef<HTMLAudioElement>(null);
 
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev);
   };
   const onClickAudioButton = () => {
-    if (isPlayingBgm) {
-      bgm.pause();
-      setIsPlayingBgm(false);
-    } else {
-      bgm.volume = 0.03;
-      bgm.play();
-      setIsPlayingBgm(true);
+    if (bgmRef.current) {
+      if (isPlayingBgm) {
+        bgmRef.current.pause();
+        setIsPlayingBgm(false);
+      } else {
+        bgmRef.current.volume = 0.05;
+        bgmRef.current.play();
+        setIsPlayingBgm(true);
+      }
     }
   };
 
   useEffect(() => {
-    return () => bgm.pause();
+    return () => bgmRef.current?.pause();
   }, []);
 
   return (
     <Wrapper>
       <Container>
         <ButtonControl>
+          <audio src={Music} ref={bgmRef}>
+            <track kind='captions' />
+          </audio>
           <AudioButton onClick={onClickAudioButton}>
             {isPlayingBgm ? (
               <img src={AudioOn} alt='audio_on' style={{ width: '10rem', height: '10rem' }} />
