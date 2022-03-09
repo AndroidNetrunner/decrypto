@@ -71,7 +71,6 @@ export default function GameLayout() {
 
 const Main = styled.main`
   width: 100%;
-  height: 100vh;
   padding: 0rem 5rem;
   margin: 0 auto;
   background-color: #2e3c7e;
@@ -79,15 +78,15 @@ const Main = styled.main`
 
 const Container = styled.div`
   position: relative;
-  border: 5px solid white;
+  border: 0.5rem solid white;
   height: 100%;
-  overflow: hidden;
+  overflow-y: auto;
 `;
 
 const Wrapper = styled.div`
   height: 100vh;
   position: relative;
-  padding: 8rem 9rem;
+  padding: 2%;
   background-color: #2e3c7e;
   color: #fbeaeb;
 `;

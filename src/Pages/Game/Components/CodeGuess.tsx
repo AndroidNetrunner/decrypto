@@ -95,7 +95,7 @@ function CodeGuess({ hints }: { hints: string[] }) {
 }
 
 const GuessForm = styled.form`
-  margin: 10px;
+  margin: 0.5%;
 
   .formArea {
     display: flex;

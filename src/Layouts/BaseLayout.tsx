@@ -84,16 +84,16 @@ export default function BaseLayout() {
 const Wrapper = styled.div`
   height: 100vh;
   position: relative;
-  padding: 8rem 9rem;
+  padding: 2%;
   background-color: #2e3c7e;
   color: #fbeaeb;
 `;
 
 const Container = styled.div`
   position: relative;
-  border: 5px solid white;
+  border: 0.5rem solid white;
   height: 100%;
-  overflow: hidden;
+  overflow-y: auto;
 `;
 
 const Main = styled.main`
@@ -104,7 +104,7 @@ const Main = styled.main`
 const Header = styled.header`
   h1 {
     font-family: 'PressStart';
-    font-size: 5rem;
+    font-size: 500%;
   }
   width: 100%;
   display: flex;

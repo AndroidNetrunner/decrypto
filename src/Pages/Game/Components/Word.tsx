@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import TV from '../../../Assets/img/tv-fullsz.gif';
 
 function Word({ wordList }: { wordList: [string, string, string, string] }) {
   return (
@@ -10,35 +11,32 @@ function Word({ wordList }: { wordList: [string, string, string, string] }) {
         <Number>4</Number>
       </ItemList>
       <ItemList>
-        <ItemContainer>
-          <img src='../../img/tv-fullsz.gif' alt='green' style={{ width: '12rem', height: '10rem' }} />
-          <Item className='wordItem'>{wordList[0]}</Item>
-        </ItemContainer>
-        <ItemContainer>
-          <img src='../../img/tv-fullsz.gif' alt='green' style={{ width: '12rem', height: '10rem' }} />
-          <Item className='wordItem'>{wordList[1]}</Item>
-        </ItemContainer>
-        <ItemContainer>
-          <img src='../../img/tv-fullsz.gif' alt='green' style={{ width: '12rem', height: '10rem' }} />
-          <Item className='wordItem'>{wordList[2]}</Item>
-        </ItemContainer>
-        <ItemContainer>
-          <img src='../../img/tv-fullsz.gif' alt='green' style={{ width: '12rem', height: '10rem' }} />
-          <Item className='wordItem'>{wordList[3]}</Item>
-        </ItemContainer>
+        <TmpContainer>{wordList[0]}</TmpContainer>
+        <TmpContainer>{wordList[1]}</TmpContainer>
+        <TmpContainer>{wordList[2]}</TmpContainer>
+        <TmpContainer>{wordList[3]}</TmpContainer>
       </ItemList>
     </Container>
   );
 }
 
+const TmpContainer = styled.div`
+  width: 18rem;
+  height: 13rem;
+  font-size: 250%;
+  background: url(${TV});
+  background-size: cover;
+  text-align: center;
+  padding: 4% 7% 5% 4%;
+`;
 const Container = styled.div`
   padding: 20px;
-  width: 60%;
+  width: 100%;
 `;
 
 const ItemList = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 `;
 
 const Number = styled.div`
@@ -46,23 +44,6 @@ const Number = styled.div`
   font-weight: bold;
   text-align: center;
   width: 100px;
-`;
-
-const Item = styled.div`
-  position: relative;
-  width: 100px;
-  margin-top: 10px;
-  font-size: large;
-  font-weight: bold;
-  text-align: center;
-`;
-
-const ItemContainer = styled.div`
-  .wordItem {
-    text-align: center;
-    top: 9rem;
-    position: absolute;
-  }
 `;
 
 export default Word;

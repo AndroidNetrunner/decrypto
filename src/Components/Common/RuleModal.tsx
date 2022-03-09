@@ -151,18 +151,18 @@ const Enter = styled.div`
 const Paragraph = styled.p<{ showOn: boolean }>`
   line-height: 3rem;
   font-family: neodgm;
-  font-size: 2rem;
+  font-size: 200%;
   display: ${({ showOn }) => (showOn ? 'block' : 'none')};
 `;
 
 const SemiTitle = styled.div`
   font-family: neodgm;
-  font-size: 3rem;
+  font-size: 300%;
   margin: 2rem 2rem;
 `;
 
 const Title = styled.div`
-  font-size: 3rem;
+  font-size: 300%;
   font-family: PressStart;
   text-align: center;
 `;
@@ -188,8 +188,8 @@ const RuleWrapper = styled.div`
   width: 100%;
   height: 100%;
   background-color: white;
-  max-width: 60rem;
-  max-height: 60rem;
+  max-width: 60%;
+  max-height: 70%;
   border-radius: 1rem;
   padding: 2rem;
   overflow-y: auto;

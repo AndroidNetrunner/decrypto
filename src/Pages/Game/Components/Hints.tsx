@@ -49,7 +49,7 @@ const ItemList = styled.div`
 `;
 
 const Item = styled.div`
-  width: 50px;
+  width: 20%;
   margin-top: 5px;
   font-weight: bold;
   text-align: center;
