@@ -1,13 +1,20 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Outlet } from 'react-router';
 import styled from 'styled-components';
 import Overlay from '../Components/Common/Overlay';
 import RuleModal from '../Components/Common/RuleModal';
+import AudioOff from '../Assets/img/audio-off.png';
+import AudioOn from '../Assets/img/audio-on.png';
+import BookClose from '../Assets/img/book-close.png';
+import BookOpen from '../Assets/img/book-open.png';
+import Music from '../Assets/audio/login_bgm.mp3';
 
 export default function BaseLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const mainRef = useRef<HTMLElement>(null);
+  const [isPlayingBgm, setIsPlayingBgm] = useState(false);
+  const bgmRef = useRef<HTMLAudioElement>(null);
 
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev);
@@ -18,6 +25,22 @@ export default function BaseLayout() {
       mainRef.current.style.cssText = mainRef.current.style.cssText ? '' : 'filter: blur(3px)';
     }
   };
+  const onClickAudioButton = () => {
+    if (bgmRef.current) {
+      if (isPlayingBgm) {
+        bgmRef.current.pause();
+        setIsPlayingBgm(false);
+      } else {
+        bgmRef.current.volume = 0.05;
+        bgmRef.current.play();
+        setIsPlayingBgm(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    return () => bgmRef.current?.pause();
+  }, []);
 
   return (
     <Wrapper>
@@ -26,13 +49,25 @@ export default function BaseLayout() {
           <img src='img/pacMan.gif' alt='pacMan' style={{ width: '10rem', height: '10rem' }} />
           <h1>Decrypto</h1>
         </Header>
-        <RuleButton name='Rule' onClick={toggleModal}>
-          {isModalOpen ? (
-            <img src='img/book-open.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
-          ) : (
-            <img src='img/book-close.png' alt='RuleBook' style={{ width: '10rem', height: '10rem' }} />
-          )}
-        </RuleButton>
+        <ButtonControl>
+          <audio src={Music} ref={bgmRef}>
+            <track kind='captions' />
+          </audio>
+          <AudioButton onClick={onClickAudioButton}>
+            {isPlayingBgm ? (
+              <img src={AudioOn} alt='audio-on' style={{ width: '10rem', height: '10rem' }} />
+            ) : (
+              <img src={AudioOff} alt='audio-off' style={{ width: '10rem', height: '10rem' }} />
+            )}
+          </AudioButton>
+          <RuleButton name='Rule' onClick={toggleModal}>
+            {isModalOpen ? (
+              <img src={BookOpen} alt='RuleBook-open' style={{ width: '10rem', height: '10rem' }} />
+            ) : (
+              <img src={BookClose} alt='RuleBook-close' style={{ width: '10rem', height: '10rem' }} />
+            )}
+          </RuleButton>
+        </ButtonControl>
         <Main ref={mainRef}>
           <Outlet />
         </Main>
@@ -81,10 +116,24 @@ const Header = styled.header`
 `;
 
 const RuleButton = styled.button`
-  position: absolute;
-  top: 0;
-  right: 0;
+  width: 10rem;
+  height: 10rem;
   border: none;
   background-color: inherit;
   cursor: pointer;
+`;
+
+const AudioButton = styled.button`
+  width: 10rem;
+  height: 10rem;
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
+`;
+
+const ButtonControl = styled.div`
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 2rem;
 `;

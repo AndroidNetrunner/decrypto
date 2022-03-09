@@ -46,8 +46,8 @@ function CodeGuess({ hints }: { hints: string[] }) {
       <div className='formArea'>
         <table>
           <tr>
-            <th>Hint</th>
-            <th>Code</th>
+            <th style={{ color: 'white' }}>Hint</th>
+            <th style={{ color: 'white' }}>Code</th>
           </tr>
           <tr>
             <td className='labelArea'>
@@ -107,8 +107,8 @@ const GuessForm = styled.form`
   }
 
   .labelArea {
-    background-color: #b4bce3;
-    width: 90px;
+    background-color: #fbeaeb;
+    width: 15rem;
     border-radius: 8px;
     padding: 0.6em;
   }
@@ -127,7 +127,7 @@ const GuessForm = styled.form`
     display: inline-block;
     font-weight: 400;
     line-height: 1.5;
-    color: #ffffff;
+    color: #000000;
     text-align: center;
     text-decoration: none;
     vertical-align: middle;
@@ -142,7 +142,7 @@ const GuessForm = styled.form`
     border-radius: 0.25rem;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
       box-shadow 0.15s ease-in-out;
-    background-color: #2e3c7e;
+    background-color: #b4bce3;
   }
 
   label {
@@ -154,7 +154,7 @@ const GuessForm = styled.form`
     padding: 0.4em 0.3em;
     border: none;
     border-radius: 10px;
-    background-color: #fbeaeb;
+    background-color: #b4bce3;
   }
 `;
 export default CodeGuess;

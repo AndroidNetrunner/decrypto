@@ -5,7 +5,6 @@ import Game from './Pages/Game';
 import Login from './Pages/Login';
 import Room from './Pages/Room';
 import './Styles/font.css';
-// import './firebase';
 
 function App() {
   return (

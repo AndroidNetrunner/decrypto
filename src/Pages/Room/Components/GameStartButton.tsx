@@ -26,7 +26,7 @@ export default function GameStartButton({ team, onClickStartButton }: Props) {
       type='button'
       onClick={onClickStartButton}
     >
-      hi
+      Start
     </Button>
   );
 }

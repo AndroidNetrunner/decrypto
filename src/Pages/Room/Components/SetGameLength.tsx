@@ -25,8 +25,13 @@ export default function SetGameLength({ captain }: Props) {
   console.log(gameTime);
   return (
     <SelectBoxWrapper>
-      <Select id='timer-select' onChange={onChangeTime} disabled={currentUser.uid !== captain.uid}>
-        <option disabled selected>
+      <Select
+        id='timer-select'
+        defaultValue='DEFAULT'
+        onChange={onChangeTime}
+        disabled={currentUser.uid !== captain.uid}
+      >
+        <option value='DEFAULT' disabled>
           👑게임 속도 정하기👑
         </option>
         <option value='60'>느릿느릿(20 ~ 30 mins)</option>
@@ -70,7 +75,6 @@ const SelectBoxWrapper = styled.div`
   display: flex;
 `;
 
-// Icon에 사용할 Icon SVG 컴포넌트 생성
 const IconSVG = styled.svg`
   margin-left: -28px;
   align-self: center;

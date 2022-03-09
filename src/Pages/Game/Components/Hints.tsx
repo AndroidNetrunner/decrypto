@@ -1,38 +1,45 @@
 import styled from 'styled-components';
 
-function Hints({ hintRecord }: { hintRecord: string[][] }) {
+function Hints({ team, hintRecord }: { team: string; hintRecord: string[][] }) {
   return (
     <Container>
-      <Title>힌트 제공 현황</Title>
-      <ItemList>
-        <Item>1</Item>
-        <Item>2</Item>
-        <Item>3</Item>
-        <Item>4</Item>
-      </ItemList>
-      {hintRecord.map((item: string[]) => (
+      <Title>{team}</Title>
+      <HintArea>
         <ItemList>
-          <Item>{item[0]}</Item>
-          <Item>{item[1]}</Item>
-          <Item>{item[2]}</Item>
-          <Item>{item[3]}</Item>
+          <Item className='num'>1</Item>
+          <Item className='num'>2</Item>
+          <Item className='num'>3</Item>
+          <Item className='num'>4</Item>
         </ItemList>
-      ))}
+
+        {hintRecord.map((item: string[]) => (
+          <ItemList>
+            <Item>{item[0]}</Item>
+            <Item>{item[1]}</Item>
+            <Item>{item[2]}</Item>
+            <Item>{item[3]}</Item>
+          </ItemList>
+        ))}
+      </HintArea>
     </Container>
   );
 }
 
 const Container = styled.div`
-  padding: 20px;
-  width: 400px;
-  border: 2px solid;
-  border-radius: 20px;
+  width: 35rem;
+  margin: 2rem;
+
+  .num {
+    font-size: 1.5rem;
+    color: #2e3c7e;
+  }
 `;
 
 const Title = styled.p`
+  font-size: 1.3rem;
+  color: white;
   text-align: center;
-  font-size: medium;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 `;
 
 const ItemList = styled.div`
@@ -42,11 +49,16 @@ const ItemList = styled.div`
 `;
 
 const Item = styled.div`
-  width: 80px;
-  margin-top: 10px;
-  font-size: medium;
+  width: 50px;
+  margin-top: 5px;
   font-weight: bold;
   text-align: center;
+`;
+
+const HintArea = styled.div`
+  padding: 1.5rem;
+  background-color: #b4bce3;
+  border-radius: 15px;
 `;
 
 export default Hints;
