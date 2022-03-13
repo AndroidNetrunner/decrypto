@@ -148,7 +148,6 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  align-items: center;
   flex-direction: column;
   color: black;
   flex-wrap: wrap;
@@ -195,5 +194,5 @@ const Control = styled.div`
 
 const Teams = styled.div`
   display: flex;
-  margin: 7% 0 0;
+  margin-top: 7%;
 `;
