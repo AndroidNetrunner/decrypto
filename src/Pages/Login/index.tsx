@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { v4 as uuidV4 } from 'uuid';
 import styled from 'styled-components';
@@ -33,6 +33,10 @@ export default function Login() {
       navigate(`room/${confirmRoomId}`);
     });
   };
+
+  useEffect(() => {
+    socket.disconnect();
+  }, []);
 
   return (
     <Container>

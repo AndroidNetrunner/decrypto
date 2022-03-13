@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
-import { useParams } from 'react-router';
 import socket from '../../Utils/socket';
 import GameStartButton from './Components/GameStartButton';
 import TeamChangeButton from './Components/TeamChangeButton';
@@ -109,7 +107,6 @@ export default function Room() {
     *@param userData = 변경을 한 유저의 데이터
     *@param to = 팀 변경 목적지, ex)red 일 경우 해당 유저의 기존 팀은 blue 팀이고, red 팀으로 변경 요청을 한 것
   */
-
   socket.off('CHANGE_TEAM').on('CHANGE_TEAM', (userData, to) => {
     const { uid } = userData;
     if (to === 'soviet') {
@@ -152,25 +149,17 @@ export default function Room() {
   });
 
   /*
-    ! 접속 시 초기 데이터 받는 이벤트
+    ! 접속 시 초기 1회 데이터 받는 이벤트
     *@param gameInfo = 게임에 관한 정보
     ex) 소련팀, 미국팀, 룸아이디, 현재 플레이 현황
-
     *@param userInfo = 접속한 유저의 정보
     ex) 방장, 소련팀인지?, 닉네임
-
     * 해당 정보는 서버에서 검증된 정보이므로 이 정보를 가지고 state 를 업데이트 시켜줘야 할 것 같습니다~!
    */
   socket.off('INIT_DATA').on('INIT_DATA', (gameInfo, userInfo) => {
     console.log(gameInfo);
     console.log(userInfo);
   });
-
-  useEffect(() => {
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
 
   console.log('🙌🏻 이건 저에요 🙌🏻', user);
 

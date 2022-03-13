@@ -10,7 +10,7 @@ export interface ServerToClientEvents {
   CHANGE_TEAM: (userData: User, to: TeamList) => void;
   LEAVE_ROOM: (userData: User, team: TeamList) => void;
   GAME_START: (players: ITeam) => void;
-  INIT_DATA: (gameInfo, userData) => void;
+  INIT_DATA: (gameInfo, userData: User) => void;
 }
 
 // * 이벤트를 보낼 때
