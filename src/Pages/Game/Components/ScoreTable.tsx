@@ -1,52 +1,75 @@
 import styled from 'styled-components';
 
-export default function ScoreTable({
-  whiteTeamName = 'White',
-  whiteDecode = 1,
-  whiteMistake = 1,
-  blackTeamName = 'Black',
-  blackDecode = 1,
-  blackMistake = 2,
-}: {
-  whiteTeamName: string;
-  whiteDecode: number;
-  whiteMistake: number;
-  blackTeamName: string;
-  blackDecode: number;
-  blackMistake: number;
-}) {
+interface Scores {
+  sovietDecode: number;
+  sovietMistake: number;
+  americaDecode: number;
+  americaMistake: number;
+}
+
+export default function ScoreTable({ sovietDecode, sovietMistake, americaDecode, americaMistake }: Scores) {
   return (
-    <table>
+    <ScoreTableArea>
       <tr>
-        <th>팀 이름</th>
-        <th>해독 토큰</th>
-        <th>오답 토큰</th>
+        <th> </th>
+        <th className='labelArea'>해독 토큰</th>
+        <th className='labelArea'>오답 토큰</th>
       </tr>
       <tr>
-        <td>{whiteTeamName}</td>
+        <th className='labelArea'>Soviet</th>
         <CircleContainer>
-          <Circle filled={whiteDecode > 0} color='green' />
-          <Circle filled={whiteDecode > 1} color='green' />
+          {sovietDecode > 0 ? (
+            <img src='../../img/my-coin-green.gif' alt='green' style={{ width: '2rem', height: '2rem' }} />
+          ) : (
+            <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
+          )}
+          <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
         </CircleContainer>
         <CircleContainer>
-          <Circle filled={whiteMistake > 0} color='red' />
-          <Circle filled={whiteMistake > 1} color='red' />
+          {sovietMistake > 0 ? (
+            <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
+          ) : (
+            <img src='../../img/my-coin-pink.gif' alt='pink' style={{ width: '2rem', height: '2rem' }} />
+          )}
+          <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
         </CircleContainer>
       </tr>
       <tr>
-        <td>{blackTeamName}</td>
+        <th className='labelArea'>America</th>
         <CircleContainer>
-          <Circle filled={blackDecode > 0} color='green' />
-          <Circle filled={blackDecode > 1} color='green' />
+          {americaDecode > 0 ? (
+            <img src='../../img/my-coin-green.gif' alt='green' style={{ width: '2rem', height: '2rem' }} />
+          ) : (
+            <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
+          )}
+          <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
         </CircleContainer>
         <CircleContainer>
-          <Circle filled={blackMistake > 0} color='red' />
-          <Circle filled={blackMistake > 1} color='red' />
+          {americaMistake > 0 ? (
+            <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
+          ) : (
+            <img src='../../img/my-coin-pink.gif' alt='pink' style={{ width: '2rem', height: '2rem' }} />
+          )}
+          <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
         </CircleContainer>
       </tr>
-    </table>
+    </ScoreTableArea>
   );
 }
+
+const ScoreTableArea = styled.table`
+  width: 300px;
+  font-size: 1.3rem;
+  border-collapse: separate;
+  border-spacing: 20px 5px;
+
+  .labelArea {
+    background-color: #b4bce3;
+    padding: 0.5rem;
+    border-radius: 3rem;
+    margin: 2rem;
+  }
+`;
 
 const CircleContainer = styled.td`
   text-align: center;

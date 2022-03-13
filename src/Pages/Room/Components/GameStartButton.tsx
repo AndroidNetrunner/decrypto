@@ -7,14 +7,14 @@ interface Props {
 }
 
 export default function GameStartButton({ team, onClickStartButton }: Props) {
-  const { firstTeam, secondTeam } = team;
+  const { sovietTeam, usaTeam } = team;
   return (
     <Button
-      disabled={firstTeam.users.length < 2 || secondTeam.users.length < 2}
+      disabled={sovietTeam.users.length < 2 || usaTeam.users.length < 2}
       type='button'
       onClick={onClickStartButton}
     >
-      hi
+      Start
     </Button>
   );
 }
