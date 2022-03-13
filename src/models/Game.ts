@@ -10,7 +10,7 @@ type Team = {
   redToken: number;
 };
 
-interface IGame {
+export interface IGame {
   roomId: string;
   isPlaying: boolean;
   captain: mongoose.Types.ObjectId;
@@ -18,10 +18,8 @@ interface IGame {
   answerCode: number[];
   roomNumber: number;
   timer: number;
-  team: {
-    sovietTeam: Team;
-    usaTeam: Team;
-  };
+  sovietTeam: Team;
+  usaTeam: Team;
 }
 
 const gameSchema = new mongoose.Schema({
@@ -32,24 +30,23 @@ const gameSchema = new mongoose.Schema({
   answerCode: [],
   roomNumber: { type: Number },
   timer: { type: Number },
-  team: {
-    sovietTeam: {
-      words: [],
-      users: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User',
-        },
-      ],
-    },
-    usaTeam: {
-      users: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User',
-        },
-      ],
-    },
+  sovietTeam: {
+    words: [],
+    users: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+  },
+  usaTeam: {
+    words: [],
+    users: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
   },
 });
 

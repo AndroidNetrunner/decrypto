@@ -1,9 +1,7 @@
 import mongoose, { Types } from 'mongoose';
+import { IGame } from '../models/Game';
+import IUser from './user.interface';
 
-interface IUser {
-  userId: number;
-  nickname: string;
-}
 interface ITeam {
   firstTeam: {
     users: IUser[];
@@ -67,6 +65,10 @@ export interface ClientToServerEvents {
   ) => void;
   GAME_START: (players: ITeam) => void;
   JOIN_USER: (userData: string) => void;
+  INIT_DATA: (
+    gameData: IGame,
+    userData: { nickname: string; uid: string; isOwner: boolean; isSovietTeam: boolean }
+  ) => void;
 }
 
 export interface InterServerEvents {
