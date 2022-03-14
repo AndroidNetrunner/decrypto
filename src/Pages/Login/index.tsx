@@ -1,16 +1,43 @@
+import React, { useEffect } from 'react';
+import { nanoid } from 'nanoid';
+import { v4 as uuidV4 } from 'uuid';
 import styled from 'styled-components';
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useInput from '../../Hooks/useInput';
+import socket from '../../Utils/socket';
 
 export default function Login() {
-  const [nickname, onChangeNickname] = useInput();
-  const [roomNumber, onChangeRoomNumber] = useInput();
+  const [nickname, onChangeNickname] = useInput(localStorage.getItem('nick') ?? '');
+  const [roomId, onChangeRoomId] = useInput();
   const navigate = useNavigate();
+
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    navigate(`room/${roomNumber}`);
+    socket.connect();
+    enterRoom();
   };
+
+  const enterRoom = () => {
+    // * 방 만들기 or 방 참가하기 했을 때 로직입니다.
+    // * 방 만들기 : nanoid 로 random 한 str 만들어서 보냅니다.
+    // * 방 참가하기 : 입력된 roomId 를 사용합니다.
+    // * emit(event, 보낼 정보1, 보낼 정보2, 맨 마지막엔 백엔드에서 처리가 완료된 후 발생할 callback 함수)
+    let uid = localStorage.getItem('uid');
+    localStorage.setItem('nick', nickname);
+    if (uid === null) {
+      uid = uuidV4();
+      localStorage.setItem('uid', uid);
+    }
+    const payload = { nickname, roomId, uid };
+    socket.emit('ENTER_ROOM', payload, (confirmRoomId) => {
+      navigate(`room/${confirmRoomId}`);
+    });
+  };
+
+  useEffect(() => {
+    socket.disconnect();
+  }, []);
+
   return (
     <Container>
       <Form onSubmit={onSubmit}>
@@ -30,12 +57,12 @@ export default function Login() {
             <span>Room</span>
             <input
               autoComplete='off'
-              value={roomNumber}
-              onChange={onChangeRoomNumber}
+              value={roomId}
+              onChange={onChangeRoomId}
               placeholder='Enter room number'
               id='room'
             />
-            <Button disabled={!(nickname.length && roomNumber.length)}>Enter Game</Button>
+            <Button disabled={!(nickname.length && roomId.length)}>Enter Game</Button>
           </InputWrapper>
         </InputContainer>
       </Form>

@@ -1,28 +1,16 @@
 import styled from 'styled-components';
-
-interface IUser {
-  userId: number;
-  nickname: string;
-}
-interface Iteam {
-  firstTeam: {
-    users: IUser[];
-  };
-  secondTeam: {
-    users: IUser[];
-  };
-}
+import { ITeam } from '..';
 
 interface Props {
-  team: Iteam;
+  team: ITeam;
   onClickStartButton: () => void;
 }
 
 export default function GameStartButton({ team, onClickStartButton }: Props) {
-  const { firstTeam, secondTeam } = team;
+  const { sovietTeam, usaTeam } = team;
   return (
     <Button
-      disabled={firstTeam.users.length < 2 || secondTeam.users.length < 2}
+      disabled={sovietTeam.users.length < 2 || usaTeam.users.length < 2}
       type='button'
       onClick={onClickStartButton}
     >
