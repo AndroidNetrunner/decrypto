@@ -70,6 +70,7 @@ const handleSocket = (io: ServerType) => {
             );
           }
         } else {
+          team = 'soviet';
           user = await User.findOneAndUpdate({ uid }, { $set: { isOwner: true } }, { new: true });
           socket.data.user!.isOwner = true;
           game = await Game.create({ roomId, sovietTeam: { users: [user?.id] } });
@@ -80,7 +81,8 @@ const handleSocket = (io: ServerType) => {
         if (game && user) {
           const isSovietTeam = team === 'soviet';
           const gameInfo = await game.populate(['sovietTeam.users', 'usaTeam.users']);
-          io.to(socket.id).emit('INIT_DATA', gameInfo, { ...user.toObject(), isSovietTeam });
+          const userData = { ...user.toObject(), isSovietTeam };
+          io.to(socket.id).emit('INIT_DATA', gameInfo, userData);
         }
       } catch (error) {
         console.log(error);
