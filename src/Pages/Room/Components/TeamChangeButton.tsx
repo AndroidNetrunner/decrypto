@@ -1,63 +1,29 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-interface IUser {
-  userId: number;
-  nickname: string;
-}
-
-interface ITeam {
-  firstTeam: {
-    users: IUser[];
-  };
-  secondTeam: {
-    users: IUser[];
-  };
-}
-
-// 테스트용 더미 유저
-// auth 연결하면 currentUser 로 검증 예정
-const dummyUser = {
-  userId: 394998,
-  nickname: 'gamja',
-};
+import { User, ITeam } from '../index';
 
 interface Props {
+  user: User;
   team: ITeam;
-  setTeam: React.Dispatch<React.SetStateAction<ITeam>>;
+  onClickChangeButton: () => void;
 }
 
-export default function TeamChangeButton({ team, setTeam }: Props) {
-  const [isFirstTeamUser, setIsFirstTeamUser] = useState<boolean>(false);
-  const { firstTeam, secondTeam } = team;
+export default function TeamChangeButton({ user, team, onClickChangeButton }: Props) {
+  const [isSovietTeamUser, setIsSovietTeamUser] = useState<boolean>(false);
+  const { sovietTeam } = team;
 
   useEffect(() => {
-    if (team.firstTeam.users.some((user) => user.userId === dummyUser.userId)) {
-      setIsFirstTeamUser(true);
+    if (sovietTeam.users.some((sovietTeamUser) => sovietTeamUser.uid === user.uid)) {
+      setIsSovietTeamUser(true);
+    } else {
+      setIsSovietTeamUser(false);
     }
-  }, []);
-
-  const onClickTeamChangeButton = () => {
-    if (isFirstTeamUser) {
-      const filteredUsers = firstTeam.users.filter((user) => user.userId !== dummyUser.userId);
-      setTeam({
-        firstTeam: { users: [...filteredUsers] },
-        secondTeam: { users: [...secondTeam.users, dummyUser] },
-      });
-    }
-    if (!isFirstTeamUser) {
-      const filteredUsers = secondTeam.users.filter((user) => user.userId !== dummyUser.userId);
-      setTeam({
-        firstTeam: { users: [...firstTeam.users, dummyUser] },
-        secondTeam: { users: [...filteredUsers] },
-      });
-    }
-    setIsFirstTeamUser((prev) => !prev);
-  };
+  }, [team]);
 
   return (
     <Wrapper>
-      <Button type='button' onClick={onClickTeamChangeButton} isFirstTeamUser={isFirstTeamUser}>
+      <Button type='button' onClick={onClickChangeButton} isSovietTeamUser={isSovietTeamUser}>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           xmlnsXlink='http://www.w3.org/1999/xlink'
@@ -78,19 +44,19 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const Button = styled.button<{ isFirstTeamUser: boolean }>`
+const Button = styled.button<{ isSovietTeamUser: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 1rem;
   border: 1px solid white;
   border-radius: 1rem;
-  background-color: ${(props) => (props.isFirstTeamUser ? '#9EBDF0' : '#f15852')};
+  background-color: ${(props) => (props.isSovietTeamUser ? '#9EBDF0' : '#f15852')};
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   cursor: pointer;
   transition: all 0.1s ease-in-out;
   &:hover {
-    background-color: ${(props) => (props.isFirstTeamUser ? '#9EBDF0' : '#f15852')};
+    background-color: ${(props) => (props.isSovietTeamUser ? '#9EBDF0' : '#f15852')};
   }
   &:active {
     transform: scale(0.95);
@@ -98,6 +64,6 @@ const Button = styled.button<{ isFirstTeamUser: boolean }>`
   svg {
     fill: white;
     transition: transform 0.3s ease-in-out;
-    transform: ${(props) => (props.isFirstTeamUser ? 'rotateY(180deg)' : '')};
+    transform: ${(props) => (props.isSovietTeamUser ? 'rotateY(180deg)' : '')};
   }
 `;

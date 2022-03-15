@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly REACT_APP_MESSAGING_SENDER_ID: string;
   readonly REACT_APP_APP_ID: string;
   readonly REACT_APP_MEASUREMENT_ID: string;
+  readonly REACT_APP_BACKEND_BASE_URL: string;
 }
 
 interface ImportMeta {

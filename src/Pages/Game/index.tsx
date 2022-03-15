@@ -73,7 +73,7 @@ const soviet: team = {
 
 export default function Game() {
   const currentUser: user = dummy1;
-  const [gameStage, setStage] = useState(3);
+  const [gameStage, setStage] = useState(0);
   const [resultModal, setResultModal] = useState(false);
   const toggleResult = () => {
     setResultModal((prev) => !prev);
