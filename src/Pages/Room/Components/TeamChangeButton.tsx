@@ -6,24 +6,37 @@ import { User, ITeam } from '../index';
 interface Props {
   user: User;
   team: ITeam;
-  onClickChangeButton: () => void;
+  onClickButton: () => void;
 }
 
-export default function TeamChangeButton({ user, team, onClickChangeButton }: Props) {
+export default function TeamChangeButton({ user, team, onClickButton: changeTeam }: Props) {
   const [isSovietTeamUser, setIsSovietTeamUser] = useState<boolean>(false);
+  const [clickable, setClickable] = useState(true);
   const { sovietTeam } = team;
 
   useEffect(() => {
     if (sovietTeam.users.some((sovietTeamUser) => sovietTeamUser.uid === user.uid)) {
-      setIsSovietTeamUser(true);
-    } else {
-      setIsSovietTeamUser(false);
+      return setIsSovietTeamUser(true);
     }
+    return setIsSovietTeamUser(false);
   }, [team]);
+
+  const handleButtonClick = () => {
+    changeTeam();
+    setClickable(false);
+    setTimeout(() => {
+      setClickable(true);
+    }, 1000);
+  };
 
   return (
     <Wrapper>
-      <Button type='button' onClick={onClickChangeButton} isSovietTeamUser={isSovietTeamUser}>
+      <Button
+        type='button'
+        onClick={handleButtonClick}
+        isSovietTeamUser={isSovietTeamUser}
+        disabled={!clickable}
+      >
         <svg
           xmlns='http://www.w3.org/2000/svg'
           xmlnsXlink='http://www.w3.org/1999/xlink'
