@@ -4,7 +4,7 @@ export default interface RoomState {
   sovietTeam: {
     players: User[];
   };
-  americaTeam: {
+  usaTeam: {
     players: User[];
   };
   captain: { uid: string; nickname: string };

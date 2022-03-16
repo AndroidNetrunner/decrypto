@@ -40,7 +40,7 @@ const initialState: GameState = {
     greenToken: 0,
     redToken: 0,
   },
-  americaTeam: {
+  usaTeam: {
     players: [],
     words: [],
     codes: [0, 0, 0],

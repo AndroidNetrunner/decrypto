@@ -37,15 +37,15 @@ const codeSteal: code = [1, 2, 3];
 
 // 고정된 정보
 const guessTeamName = 'Soviet';
-const stealTeamName = 'America';
+const stealTeamName = 'usa';
 const gameLength = 15;
 // const captain = dummy1;
 
 /*
-Class Game -> interface america, interface Svoiet, interface Turn, gamelength, captain
+Class Game -> interface usa, interface Svoiet, interface Turn, gamelength, captain
 */
 
-const america: team = {
+const usa: team = {
   word: ['비트코인', '감자', '수건', '침대'],
   hints: [
     ['떡상', '강원도', '', '쿨쿨'],
@@ -84,11 +84,11 @@ export default function Game() {
   };
   const currentStage = gameStage % 4;
 
-  function renderByStage(stage: number, sovietLeader: user, americaLeader: user, me: user) {
-    if (stage === 0 && americaLeader === me)
+  function renderByStage(stage: number, sovietLeader: user, usaLeader: user, me: user) {
+    if (stage === 0 && usaLeader === me)
       return (
         <RenderingArea>
-          <HintSubmit answer={answerCode} wordList={america.word} stage={nextStage} />{' '}
+          <HintSubmit answer={answerCode} wordList={usa.word} stage={nextStage} />{' '}
           <Timer gameTime={gameLength} />
         </RenderingArea>
       );
@@ -101,7 +101,7 @@ export default function Game() {
           <Timer gameTime={gameLength} />
         </RenderingArea>
       );
-    if (stage === 1 && americaLeader === me)
+    if (stage === 1 && usaLeader === me)
       return (
         <RenderingArea>
           <Waiting>
@@ -150,23 +150,19 @@ export default function Game() {
 
   return (
     <Container>
-      {soviet.players.includes(currentUser) ? (
-        <Word wordList={soviet.word} />
-      ) : (
-        <Word wordList={america.word} />
-      )}
+      {soviet.players.includes(currentUser) ? <Word wordList={soviet.word} /> : <Word wordList={usa.word} />}
       <HintTokenArea>
-        {renderByStage(currentStage, soviet.leader, america.leader, currentUser)}
+        {renderByStage(currentStage, soviet.leader, usa.leader, currentUser)}
         <ScoreTable
           sovietDecode={soviet.greenToken}
           sovietMistake={soviet.redToken}
-          americaDecode={america.greenToken}
-          americaMistake={america.redToken}
+          usaDecode={usa.greenToken}
+          usaMistake={usa.redToken}
         />
       </HintTokenArea>
       <HintRecordArea>
         <Hints team='Soviet' hintRecord={soviet.hints} />
-        <Hints team='America' hintRecord={america.hints} />
+        <Hints team='usa' hintRecord={usa.hints} />
       </HintRecordArea>
       <button name='Result' onClick={toggleResult} type='button'>
         result
@@ -192,13 +188,13 @@ export default function Game() {
 1. USA, Soviet 나눠서 뭘 보여줄지 결정 
   a. 내가 어떤팀에 속해있는지 확인
   b. 몇번째 라운드인지 확인
-Stage 0 : America Leader 가 Hint 제출
+Stage 0 : usa Leader 가 Hint 제출
 -----> Server에 제출
-Stage 1 : America Team이 Code guess 및 Soviet Team Interrupt
+Stage 1 : usa Team이 Code guess 및 Soviet Team Interrupt
 -----> Round 결과 모달창 + Hint 내역에 추가
 Stage 2 : Soviet Leader 가 Hint 제출
 -----> Server
-Stage 3 : Soviet Team code guess 및 america team interrupt
+Stage 3 : Soviet Team code guess 및 usa team interrupt
 -----> 결과
 */
 

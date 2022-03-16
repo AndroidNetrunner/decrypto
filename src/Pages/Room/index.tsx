@@ -1,51 +1,29 @@
-import { useState } from 'react';
 import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+import { enterRoom, changeTeam, changeTimer, leaveRoom } from '../../Redux/reducer/roomReducer';
+import { userEnter } from '../../Redux/reducer/userReducer';
+import { RootState } from '../../Redux/store/rootStore';
 import socket from '../../Utils/socket';
 import GameStartButton from './Components/GameStartButton';
 import TeamChangeButton from './Components/TeamChangeButton';
 import SetGameLength from './Components/SetGameLength';
 
-export interface User {
-  _id: string;
-  uid: string;
-  nickname: string;
-  isOwner: string;
-  isSovietTeam: boolean;
-}
-
-export interface ITeam {
-  sovietTeam: {
-    users: User[];
-  };
-  usaTeam: {
-    users: User[];
-  };
-}
-
 export default function Room() {
-  const [user, setUser] = useState<User>({
-    _id: '',
-    uid: '',
-    nickname: '',
-    isOwner: '',
-    isSovietTeam: true,
-  });
-  const [team, setTeam] = useState<ITeam>({
-    sovietTeam: {
-      users: [],
-    },
-    usaTeam: {
-      users: [],
-    },
-  });
-
-  const { sovietTeam, usaTeam } = team;
+  const { sovietTeam, usaTeam, gameTime, captain } = useSelector((state: RootState) => ({
+    sovietTeam: state.room.sovietTeam,
+    usaTeam: state.room.usaTeam,
+    gameTime: state.room.timer,
+    captain: state.room.captain,
+  }));
+  const user = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
 
   /*
     ! 방장이 게임 시작 버튼을 눌렀을 때의 로직
   */
+
   const onClickStartButton = () => {
-    if (sovietTeam.users.length < 2 || usaTeam.users.length < 2 || !user.isOwner) {
+    if (sovietTeam.players.length < 2 || usaTeam.players.length < 2 || !user.isOwner) {
       return;
     }
     console.log('나는 방장이지롱');
@@ -59,24 +37,10 @@ export default function Room() {
     ! 사용자가 팀 변경을 요청하는 로직
   */
   const onClickChangeButton = () => {
-    const { uid } = user;
     const to = user.isSovietTeam ? 'soviet' : 'usa';
-    socket.emit('CHANGE_TEAM', uid, to, () => {
-      const afterChangedUserData = { ...user, isSovietTeam: !user.isSovietTeam };
-      if (to === 'soviet') {
-        const filteredUser = team.usaTeam.users.filter((usaTeamUser) => usaTeamUser.uid !== uid);
-        setTeam({
-          sovietTeam: { users: [...team.sovietTeam.users, afterChangedUserData] },
-          usaTeam: { users: [...filteredUser] },
-        });
-      } else if (to === 'usa') {
-        const filteredUser = team.sovietTeam.users.filter((sovietTeamUser) => sovietTeamUser.uid !== uid);
-        setTeam({
-          sovietTeam: { users: [...filteredUser] },
-          usaTeam: { users: [...team.usaTeam.users, afterChangedUserData] },
-        });
-      }
-      setUser(afterChangedUserData);
+    socket.emit('CHANGE_TEAM', user.uid, to, () => {
+      if (to === 'soviet') dispatch(changeTeam(user, 'sovietTeam'));
+      else dispatch(changeTeam(user, 'usaTeam'));
     });
   };
 
@@ -89,38 +53,23 @@ export default function Room() {
   */
   socket.off('ENTER_ROOM').on('ENTER_ROOM', (userData, userTeam) => {
     if (userTeam === 'soviet') {
-      setTeam({
-        sovietTeam: { users: [...sovietTeam.users, userData] },
-        usaTeam: { users: [...usaTeam.users] },
-      });
+      dispatch(enterRoom(userData, 'sovietTeam'));
     } else {
-      setTeam({
-        sovietTeam: { users: [...sovietTeam.users] },
-        usaTeam: { users: [...usaTeam.users, userData] },
-      });
+      dispatch(enterRoom(userData, 'usaTeam'));
     }
-    console.log('🚀 들어온 유저 🚀', userData);
+    console.log('🚀 들어온 유저 🚀');
   });
 
-  /* 
+  /*
     ! 누군가 팀을 바꿨을 때 로직
     *@param userData = 변경을 한 유저의 데이터
     *@param to = 팀 변경 목적지, ex)red 일 경우 해당 유저의 기존 팀은 blue 팀이고, red 팀으로 변경 요청을 한 것
   */
   socket.off('CHANGE_TEAM').on('CHANGE_TEAM', (userData, to) => {
-    const { uid } = userData;
     if (to === 'soviet') {
-      const filteredUser = team.usaTeam.users.filter((usaTeamUser) => usaTeamUser.uid !== uid);
-      setTeam({
-        sovietTeam: { users: [...team.sovietTeam.users, userData] },
-        usaTeam: { users: [...filteredUser] },
-      });
+      dispatch(changeTeam(user, 'sovietTeam'));
     } else {
-      const filteredUser = team.sovietTeam.users.filter((sovietTeamUser) => sovietTeamUser.uid !== uid);
-      setTeam({
-        sovietTeam: { users: [...filteredUser] },
-        usaTeam: { users: [...team.usaTeam.users, userData] },
-      });
+      dispatch(changeTeam(user, 'usaTeam'));
     }
     console.log('🔄 팀을 바꾼 유저 🔄', userData);
   });
@@ -133,17 +82,9 @@ export default function Room() {
   socket.off('LEAVE_ROOM').on('LEAVE_ROOM', (userData, userTeam) => {
     const { uid } = userData;
     if (userTeam === 'soviet') {
-      const filteredUser = team.sovietTeam.users.filter((sovietTeamUser) => sovietTeamUser.uid !== uid);
-      setTeam({
-        ...team,
-        sovietTeam: { users: [...filteredUser] },
-      });
+      dispatch(leaveRoom(user, 'sovietTeam'));
     } else {
-      const filteredUser = team.usaTeam.users.filter((sovietTeamUser) => sovietTeamUser.uid !== uid);
-      setTeam({
-        ...team,
-        usaTeam: { users: [...filteredUser] },
-      });
+      dispatch(leaveRoom(user, 'usaTeam'));
     }
     console.log('👋🏻 나간 유저 👋🏻', userData);
   });
@@ -157,10 +98,15 @@ export default function Room() {
     * 해당 정보는 서버에서 검증된 정보이므로 이 정보를 가지고 state 를 업데이트 시켜줘야 할 것 같습니다~!
    */
   socket.off('INIT_DATA').on('INIT_DATA', (gameInfo, userInfo) => {
+    console.log('INIT');
     console.log(gameInfo);
     console.log(userInfo);
-  });
+    //REDUX 동기화
 
+    dispatch(userEnter(userInfo));
+  });
+  console.log(usaTeam);
+  console.log(sovietTeam);
   console.log('🙌🏻 이건 저에요 🙌🏻', user);
 
   return (
@@ -174,14 +120,14 @@ export default function Room() {
             </span>
           </TeamName>
           <UserList className='Soviet'>
-            {sovietTeam.users.length ? (
-              sovietTeam.users.map((user) => <User key={user.uid}>{user.nickname}</User>)
+            {sovietTeam.players.length ? (
+              sovietTeam.players.map((player) => <User key={player.uid}>{player.nickname}</User>)
             ) : (
               <User>참가하세오,,!</User>
             )}
           </UserList>
         </TeamContainer>
-        <TeamChangeButton user={user} team={team} onClickChangeButton={onClickChangeButton} />
+        {/* <TeamChangeButton user={user} team={} onClickChangeButton={onClickChangeButton} /> */}
         <TeamContainer className='USA'>
           <TeamName className='USA'>
             <span>
@@ -190,8 +136,8 @@ export default function Room() {
             </span>
           </TeamName>
           <UserList className='USA'>
-            {usaTeam.users.length ? (
-              usaTeam.users.map((user) => <User key={user.uid}>{user.nickname}</User>)
+            {usaTeam.players.length ? (
+              usaTeam.players.map((player) => <User key={player.uid}>{player.nickname}</User>)
             ) : (
               <User>참가하세오,,!</User>
             )}
@@ -199,8 +145,8 @@ export default function Room() {
         </TeamContainer>
       </Teams>
       <Control>
-        <GameStartButton team={team} onClickStartButton={onClickStartButton} />
-        {/* <SetGameLength captain={captain} /> */}
+        {/* <GameStartButton team={team} onClickStartButton={onClickStartButton} /> */}
+        <SetGameLength captain={captain} />
       </Control>
     </Container>
   );

@@ -8,23 +8,36 @@ const actions = {
   ENTER_ROOM,
 } as const;
 
+interface Action<T, P> {
+  readonly type: T;
+  readonly payload?: P;
+}
+type enterRoomAction = Action<typeof ENTER_ROOM, User>;
+
 // Action Creator
-export const enterRoom = (payload: any) => ({
-  type: ENTER_ROOM,
-  payload,
-});
+export const userEnter = (userInfo: User): enterRoomAction => {
+  return {
+    type: ENTER_ROOM,
+    payload: userInfo,
+  };
+};
 
 // Initial State
 const initialState: User = {
-  uid: 'InitialUID',
-  nickname: 'Decrypto',
+  _id: 'initial_id',
+  uid: 'initial_uid',
+  nickname: 'initial_nickname',
+  isOwner: false,
+  isSovietTeam: false,
 };
 
 // 리듀서로 상태 변경
 const userReducer: Reducer = (state: User = initialState, action: AnyAction) => {
   switch (action.type) {
-    case actions.ENTER_ROOM:
-      return state;
+    case actions.ENTER_ROOM: {
+      const newUser = action.payload;
+      return newUser;
+    }
     case actions.LEAVE_ROOM:
       return state;
     case actions.CHANGE_TEAM:

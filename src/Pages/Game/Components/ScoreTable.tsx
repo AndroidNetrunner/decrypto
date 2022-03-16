@@ -3,11 +3,11 @@ import styled from 'styled-components';
 interface Scores {
   sovietDecode: number;
   sovietMistake: number;
-  americaDecode: number;
-  americaMistake: number;
+  usaDecode: number;
+  usaMistake: number;
 }
 
-export default function ScoreTable({ sovietDecode, sovietMistake, americaDecode, americaMistake }: Scores) {
+export default function ScoreTable({ sovietDecode, sovietMistake, usaDecode, usaMistake }: Scores) {
   return (
     <ScoreTableArea>
       <tr>
@@ -35,9 +35,9 @@ export default function ScoreTable({ sovietDecode, sovietMistake, americaDecode,
         </CircleContainer>
       </tr>
       <tr>
-        <th className='labelArea'>America</th>
+        <th className='labelArea'>usa</th>
         <CircleContainer>
-          {americaDecode > 0 ? (
+          {usaDecode > 0 ? (
             <img src='../../img/my-coin-green.gif' alt='green' style={{ width: '2rem', height: '2rem' }} />
           ) : (
             <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
@@ -45,7 +45,7 @@ export default function ScoreTable({ sovietDecode, sovietMistake, americaDecode,
           <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
         </CircleContainer>
         <CircleContainer>
-          {americaMistake > 0 ? (
+          {usaMistake > 0 ? (
             <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
           ) : (
             <img src='../../img/my-coin-pink.gif' alt='pink' style={{ width: '2rem', height: '2rem' }} />

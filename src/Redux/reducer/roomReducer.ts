@@ -2,7 +2,7 @@ import { Reducer } from 'redux';
 import RoomState from '../../Interfaces/Room.interface';
 import User from '../../Interfaces/User.interface';
 
-type team = 'sovietTeam' | 'americaTeam';
+type team = 'sovietTeam' | 'usaTeam';
 
 // 액션 타입 지정
 const ENTER_ROOM = 'room/ENTER_ROOM';
@@ -59,7 +59,7 @@ const initialState: RoomState = {
   sovietTeam: {
     players: [],
   },
-  americaTeam: {
+  usaTeam: {
     players: [],
   },
   captain: { uid: '', nickname: '' },

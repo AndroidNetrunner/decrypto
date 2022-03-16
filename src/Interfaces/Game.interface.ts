@@ -3,7 +3,7 @@ import { Team } from './Team.interface';
 
 export interface GameState {
   sovietTeam: Team;
-  americaTeam: Team;
+  usaTeam: Team;
   captain: User;
   isPlaying: boolean;
   stage: number;
