@@ -3,7 +3,7 @@ import { ClientToServerEvents, ServerToClientEvents } from '../Interfaces/io.int
 
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
   import.meta.env.REACT_APP_BACKEND_BASE_URL,
-  { autoConnect: false },
+  { autoConnect: false, transports: ['websocket'] },
 );
 
 export default socket;
