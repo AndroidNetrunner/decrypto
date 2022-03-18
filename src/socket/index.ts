@@ -39,7 +39,8 @@ const handleSocket = (io: ServerType) => {
         let game = await Game.findOne({ roomId });
         if (game?.isPlaying) {
           console.log('isPlaying');
-          return socket.to(socket.id).emit('ALREADY_START');
+          socket.to(socket.id).emit('ALREADY_START');
+          return;
         }
         let user = await User.findOne({ uid });
         if (user) {
