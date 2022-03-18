@@ -1,12 +1,9 @@
 import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
-import { instrument } from '@socket.io/admin-ui';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
-import mongoStore from 'connect-mongo';
-import session from 'express-session';
 import cookeParser from 'cookie-parser';
 import routes from './routes';
 import {
@@ -46,7 +43,5 @@ const io = new Server<ServerToClientEvents, ClientToServerEvents, InterServerEve
 );
 
 io.on('connection', handleSocket(io));
-
-// instrument(io, { auth: false });
 
 export default httpServer;
