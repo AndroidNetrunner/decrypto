@@ -1,9 +1,6 @@
-interface User {
+export default interface User {
   _id: string;
-  uid: string;
   nickname: string;
-  isOwner: boolean;
-  isSovietTeam: boolean;
+  uid: string;
+  captain: boolean;
 }
-
-export default User;

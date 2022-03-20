@@ -1,49 +1,35 @@
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { enterRoom, changeTeam, changeTimer, leaveRoom } from '../../Redux/reducer/roomReducer';
-import { userEnter } from '../../Redux/reducer/userReducer';
+import { updateDB } from '../../Redux/reducer/updateDB';
+import { updateUser } from '../../Redux/reducer/updateUser';
 import { RootState } from '../../Redux/store/rootStore';
 import socket from '../../Utils/socket';
+import Game from '../../Interfaces/Game.interface';
+import UserInterface from '../../Interfaces/User.interface';
 import GameStartButton from './Components/GameStartButton';
 import TeamChangeButton from './Components/TeamChangeButton';
 import SetGameLength from './Components/SetGameLength';
 
 export default function Room() {
-  const { sovietTeam, usaTeam, gameTime, captain } = useSelector((state: RootState) => ({
-    sovietTeam: state.room.sovietTeam,
-    usaTeam: state.room.usaTeam,
-    gameTime: state.room.timer,
-    captain: state.room.captain,
-  }));
-  const user = useSelector((state: RootState) => state.user);
+  const game: Game = useSelector((state: RootState) => state.game);
+  const user: UserInterface = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  console.log('🎮 game 🎮', game);
 
   /*
-    ! 방장이 게임 시작 버튼을 눌렀을 때의 로직
+    ! 방장이 게임을 시작시켰을 때 로직
+    * @param gameInfo
+    * 모든 유저가 준비 됐는지 확인 후 게임 시작 
+    * navigation 으로 다음 페이지로 이동
   */
 
-  const onClickStartButton = () => {
-    if (sovietTeam.players.length < 2 || usaTeam.players.length < 2 || !user.isOwner) {
-      return;
-    }
-    console.log('나는 방장이지롱');
-    // socket.emit('GAME_START', team, (confirmTeam) => {
-    //   console.log('GAME_START | 방장');
-    //   console.log(confirmTeam);
-    // });
-  };
-
-  /*
-    ! 사용자가 팀 변경을 요청하는 로직
-  */
-  const onClickChangeButton = () => {
-    const to = user.isSovietTeam ? 'soviet' : 'usa';
-    socket.emit('CHANGE_TEAM', user.uid, to, () => {
-      if (to === 'soviet') dispatch(changeTeam(user, 'sovietTeam'));
-      else dispatch(changeTeam(user, 'usaTeam'));
-    });
-  };
-
+  socket.off('GAME_START').on('GAME_START', (gameInfo) => {
+    dispatch(updateDB(gameInfo));
+    console.log('game start');
+    navigate(`/room/${game.roomId}/start`);
+  });
   /*
     ! 누군가 들어왔을 때 로직
     * @param userData = 들어온 유저의 데이터
@@ -51,13 +37,10 @@ export default function Room() {
     * 들어온 유저의 데이터와 배정된 팀 정보를 받는다 userData = (isOwner, nickname, uid, _id), 'red' | 'blue'
     * 해당 정보를 바탕으로 팀 state 를 변경한다.
   */
-  socket.off('ENTER_ROOM').on('ENTER_ROOM', (userData, userTeam) => {
-    if (userTeam === 'soviet') {
-      dispatch(enterRoom(userData, 'sovietTeam'));
-    } else {
-      dispatch(enterRoom(userData, 'usaTeam'));
-    }
-    console.log('🚀 들어온 유저 🚀');
+
+  socket.off('ENTER_ROOM').on('ENTER_ROOM', (gameInfo) => {
+    dispatch(updateDB(gameInfo));
+    console.log('Somebody entered');
   });
 
   /*
@@ -65,13 +48,9 @@ export default function Room() {
     *@param userData = 변경을 한 유저의 데이터
     *@param to = 팀 변경 목적지, ex)red 일 경우 해당 유저의 기존 팀은 blue 팀이고, red 팀으로 변경 요청을 한 것
   */
-  socket.off('CHANGE_TEAM').on('CHANGE_TEAM', (userData, to) => {
-    if (to === 'soviet') {
-      dispatch(changeTeam(user, 'sovietTeam'));
-    } else {
-      dispatch(changeTeam(user, 'usaTeam'));
-    }
-    console.log('🔄 팀을 바꾼 유저 🔄', userData);
+  socket.off('CHANGE_TEAM').on('CHANGE_TEAM', (gameInfo) => {
+    dispatch(updateDB(gameInfo));
+    console.log('somebody changed team');
   });
 
   /*
@@ -79,18 +58,13 @@ export default function Room() {
     *@param userData = 떠난 유저의 데이터
     *@param userTeam = 떠난 유저가 속해있던 팀
   */
-  socket.off('LEAVE_ROOM').on('LEAVE_ROOM', (userData, userTeam) => {
-    const { uid } = userData;
-    if (userTeam === 'soviet') {
-      dispatch(leaveRoom(user, 'sovietTeam'));
-    } else {
-      dispatch(leaveRoom(user, 'usaTeam'));
-    }
-    console.log('👋🏻 나간 유저 👋🏻', userData);
+  socket.off('LEAVE_ROOM').on('LEAVE_ROOM', (gameInfo) => {
+    dispatch(updateDB(gameInfo));
+    console.log('somebody left the room');
   });
 
   /*
-    ! 접속 시 초기 1회 데이터 받는 이벤트
+    ! 접속 시 초기 1회 데userInfo이터 받는 이벤트
     *@param gameInfo = 게임에 관한 정보
     ex) 소련팀, 미국팀, 룸아이디, 현재 플레이 현황
     *@param userInfo = 접속한 유저의 정보
@@ -98,22 +72,11 @@ export default function Room() {
     * 해당 정보는 서버에서 검증된 정보이므로 이 정보를 가지고 state 를 업데이트 시켜줘야 할 것 같습니다~!
    */
   socket.off('INIT_DATA').on('INIT_DATA', (gameInfo, userInfo) => {
-    console.log('INIT');
-    console.log(gameInfo);
-    console.log(userInfo);
-    // REDUX 동기화
-
-    dispatch(userEnter(userInfo));
-    console.log(user);
-    // if (user.isSovietTeam === 'soviet') {
-    //   dispatch(enterRoom(user, 'sovietTeam'));
-    // } else {
-    //   dispatch(enterRoom(user, 'usaTeam'));
-    // }
+    dispatch(updateUser(userInfo));
+    console.log();
+    dispatch(updateDB(gameInfo));
   });
-  console.log(usaTeam);
-  console.log(sovietTeam);
-  console.log('🙌🏻 이건 저에요 🙌🏻', user);
+  console.log('I entered the room', user);
 
   return (
     <Container>
@@ -126,14 +89,14 @@ export default function Room() {
             </span>
           </TeamName>
           <UserList className='Soviet'>
-            {sovietTeam.players.length ? (
-              sovietTeam.players.map((player) => <User key={player.uid}>{player.nickname}</User>)
+            {game.sovietTeam.players.length ? (
+              game.sovietTeam.players.map((player) => <User key={player.uid}>{player.nickname}</User>)
             ) : (
               <User>참가하세오,,!</User>
             )}
           </UserList>
         </TeamContainer>
-        {/* <TeamChangeButton user={user} team={} onClickChangeButton={onClickChangeButton} /> */}
+        <TeamChangeButton />
         <TeamContainer className='USA'>
           <TeamName className='USA'>
             <span>
@@ -142,8 +105,8 @@ export default function Room() {
             </span>
           </TeamName>
           <UserList className='USA'>
-            {usaTeam.players.length ? (
-              usaTeam.players.map((player) => <User key={player.uid}>{player.nickname}</User>)
+            {game.usaTeam.players.length ? (
+              game.usaTeam.players.map((player) => <User key={player.uid}>{player.nickname}</User>)
             ) : (
               <User>참가하세오,,!</User>
             )}
@@ -151,8 +114,8 @@ export default function Room() {
         </TeamContainer>
       </Teams>
       <Control>
-        {/* <GameStartButton team={team} onClickStartButton={onClickStartButton} /> */}
-        <SetGameLength captain={captain} />
+        <GameStartButton />
+        <SetGameLength />
       </Control>
     </Container>
   );

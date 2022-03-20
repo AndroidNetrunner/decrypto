@@ -1,9 +1,8 @@
-import { combineReducers, createStore, Reducer } from 'redux';
-import gameReducer from '../reducer/gameReducer';
-import roomReducer from '../reducer/roomReducer';
-import userReducer from '../reducer/userReducer';
+import { combineReducers, createStore } from 'redux';
+import updateDBReducer from '../reducer/updateDB';
+import updateUserReducer from '../reducer/updateUser';
 
-const rootReducer = combineReducers({ game: gameReducer, room: roomReducer, user: userReducer });
+const rootReducer = combineReducers({ game: updateDBReducer, user: updateUserReducer });
 
 const store = createStore(rootReducer);
 

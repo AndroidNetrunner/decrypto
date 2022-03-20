@@ -1,13 +1,13 @@
 import User from './User.interface';
-import { Team } from './Team.interface';
+import Team from './Team.interface';
 
-export interface GameState {
+export default interface Game {
+  roomId: string;
+  isPlaying: boolean;
+  captain: User;
+  stageNumber: number;
+  answerCode: number[];
+  timer: number;
   sovietTeam: Team;
   usaTeam: Team;
-  captain: User;
-  isPlaying: boolean;
-  stage: number;
-  answerCode: [number, number, number];
-  roomNumber: number;
-  timer: number;
 }

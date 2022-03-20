@@ -1,14 +1,18 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { RootState } from '../../../Redux/store/rootStore';
 import TV from '../../../Assets/img/tv-fullsz.gif';
 
-interface Props {
-  wordList: [string, string, string, string];
-}
-
-function Word({ wordList }: Props) {
+function Word() {
+  const user = useSelector((rootState: RootState) => rootState.user);
+  const wordList = useSelector((rootState: RootState) =>
+    rootState.game.sovietTeam.players.include(user)
+      ? rootState.game.sovietTeam.words
+      : rootState.game.usaTeam.words,
+  );
   return (
     <Container>
-      {wordList.map((word, index) => (
+      {wordList.map((word: string, index: number) => (
         <div>
           <Number>{index + 1}</Number>
           <WordContainer>

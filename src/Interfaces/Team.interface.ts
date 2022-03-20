@@ -1,10 +1,13 @@
 import User from './User.interface';
 
-export interface Team {
-  players: User[];
+interface Team {
   words: string[];
-  codes: [number, number, number];
+  codes: number[];
   hints: string[][];
-  greenToken: 0 | 1 | 2;
-  redToken: 0 | 1 | 2;
+  leader: User;
+  players: User[];
+  greenToken: number;
+  redToken: number;
 }
+
+export default Team;

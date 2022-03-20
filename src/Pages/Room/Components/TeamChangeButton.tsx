@@ -1,28 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateDB } from '../../../Redux/reducer/updateDB';
+import { RootState } from '../../../Redux/store/rootStore';
+import { updateUser } from '../../../Redux/reducer/updateUser';
+import socket from '../../../Utils/socket';
+import Game from '../../../Interfaces/Game.interface';
+import User from '../../../Interfaces/User.interface';
 
-import { User, ITeam } from '../index';
-
-interface Props {
-  user: User;
-  team: ITeam;
-  onClickButton: () => void;
-}
-
-export default function TeamChangeButton({ user, team, onClickButton: changeTeam }: Props) {
-  const [isSovietTeamUser, setIsSovietTeamUser] = useState<boolean>(false);
+export default function TeamChangeButton() {
+  const user: User = useSelector((state: RootState) => state.user);
+  const game: Game = useSelector((state: RootState) => state.game);
   const [clickable, setClickable] = useState(true);
-  const { sovietTeam } = team;
-
-  useEffect(() => {
-    if (sovietTeam.users.some((sovietTeamUser) => sovietTeamUser.uid === user.uid)) {
-      return setIsSovietTeamUser(true);
-    }
-    return setIsSovietTeamUser(false);
-  }, [team]);
+  const dispatch = useDispatch();
+  const isSovietTeamUser = Boolean(game.sovietTeam.players.find((player) => player.uid === user.uid));
 
   const handleButtonClick = () => {
-    changeTeam();
+    socket.emit('CHANGE_TEAM', user, (gameInfo, userInfo) => {
+      dispatch(updateDB(gameInfo));
+      dispatch(updateUser(userInfo));
+    });
     setClickable(false);
     setTimeout(() => {
       setClickable(true);

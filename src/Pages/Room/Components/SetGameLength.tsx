@@ -1,36 +1,20 @@
-import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { RootState } from '../../../Redux/store/rootStore';
+import socket from '../../../Utils/socket';
+import User from '../../../Interfaces/User.interface';
 
-interface Props {
-  captain: {
-    uid: string;
-    username: string;
-  };
-}
-
-const currentUser = {
-  uid: '0909',
-  username: 'yeooyoon',
-};
-
-export default function SetGameLength({ captain }: Props) {
-  const [gameTime, setGameTime] = useState(30);
+export default function SetGameLength() {
+  const user: User = useSelector((state: RootState) => state.user);
 
   const onChangeTime = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const {
-      target: { value },
-    } = event;
-    setGameTime(Number(value));
+    const gameTime = Number(event.target.value);
+    console.log(gameTime);
+    socket.emit('SET_TIMER', gameTime);
   };
-  console.log(gameTime);
   return (
     <SelectBoxWrapper>
-      <Select
-        id='timer-select'
-        defaultValue='DEFAULT'
-        onChange={onChangeTime}
-        disabled={currentUser.uid !== captain.uid}
-      >
+      <Select id='timer-select' defaultValue='DEFAULT' onChange={onChangeTime} disabled={!user.captain}>
         <option value='DEFAULT' disabled>
           👑게임 속도 정하기👑
         </option>

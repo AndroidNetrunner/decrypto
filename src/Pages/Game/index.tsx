@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import CodeGuess from './Components/CodeGuess';
 import Hints from './Components/Hints';
@@ -8,71 +9,57 @@ import ScoreTable from './Components/ScoreTable';
 import Timer from './Components/Timer';
 import Word from './Components/Word';
 import Overlay from '../../Components/Common/Overlay';
+import { RootState } from '../../Redux/store/rootStore';
 
-type code = [number, number, number];
-type hints = [string, string, string];
-interface user {
-  uid: string;
-  nickname: string;
-}
-interface team {
-  word: [string, string, string, string];
-  hints: string[][];
-  leader: user;
-  players: user[];
-  greenToken: number;
-  redToken: number;
-}
-
-const dummy1: user = { uid: '0909', nickname: 'yeoyoon' };
-const dummy2: user = { uid: '12341234', nickname: 'sjo' };
-const dummy3: user = { uid: '351235', nickname: 'byukim' };
-const dummy4: user = { uid: '561364', nickname: 'junseo' };
+// const dummy1: user = { uid: '0909', nickname: 'yeoyoon' };
+// const dummy2: user = { uid: '12341234', nickname: 'sjo' };
+// const dummy3: user = { uid: '351235', nickname: 'byukim' };
+// const dummy4: user = { uid: '561364', nickname: 'junseo' };
 
 // 변하는 정보 Game 여기
-const answerCode: code = [3, 1, 4];
-const hints: hints = ['힌트3번', '힌트1번', '힌트4번'];
-const codeGuess: code = [2, 1, 4];
-const codeSteal: code = [1, 2, 3];
+// const answerCode: code = [3, 1, 4];
+// const hints: hints = ['힌트3번', '힌트1번', '힌트4번'];
+// const codeGuess: code = [2, 1, 4];
+// const codeSteal: code = [1, 2, 3];
 
-// 고정된 정보
-const guessTeamName = 'Soviet';
-const stealTeamName = 'usa';
-const gameLength = 15;
+// // 고정된 정보
+// const guessTeamName = 'Soviet';
+// const stealTeamName = 'usa';
+// const gameLength = 15;
 // const captain = dummy1;
 
 /*
 Class Game -> interface usa, interface Svoiet, interface Turn, gamelength, captain
 */
 
-const usa: team = {
-  word: ['비트코인', '감자', '수건', '침대'],
-  hints: [
-    ['떡상', '강원도', '', '쿨쿨'],
-    ['0x', '', '샤워', '수면'],
-    ['금전', '', '물', '내방'],
-  ],
-  leader: dummy1,
-  players: [dummy1, dummy2],
-  greenToken: 1,
-  redToken: 1,
-};
+// const usa: team = {
+//   word: ['비트코인', '감자', '수건', '침대'],
+//   hints: [
+//     ['떡상', '강원도', '', '쿨쿨'],
+//     ['0x', '', '샤워', '수면'],
+//     ['금전', '', '물', '내방'],
+//   ],
+//   leader: dummy1,
+//   players: [dummy1, dummy2],
+//   greenToken: 1,
+//   redToken: 1,
+// };
 
-const soviet: team = {
-  word: ['제주도', '소화기', '단무지', '할아버지'],
-  hints: [
-    ['여행', '불', '', '허허'],
-    ['대한민국', '빨강', '김밥', ''],
-    ['', '안전', '노란색', '흰머리'],
-  ],
-  leader: dummy3,
-  players: [dummy3, dummy4],
-  greenToken: 1,
-  redToken: 0,
-};
+// const soviet: team = {
+//   word: ['제주도', '소화기', '단무지', '할아버지'],
+//   hints: [
+//     ['여행', '불', '', '허허'],
+//     ['대한민국', '빨강', '김밥', ''],
+//     ['', '안전', '노란색', '흰머리'],
+//   ],
+//   leader: dummy3,
+//   players: [dummy3, dummy4],
+//   greenToken: 1,
+//   redToken: 0,
+// };
 
 export default function Game() {
-  const currentUser: user = dummy1;
+  const currentUser = useSelector((rootState: RootState) => rootState.user);
   const [gameStage, setStage] = useState(0);
   const [resultModal, setResultModal] = useState(false);
   const toggleResult = () => {
@@ -84,12 +71,16 @@ export default function Game() {
   };
   const currentStage = gameStage % 4;
 
-  function renderByStage(stage: number, sovietLeader: user, usaLeader: user, me: user) {
+  function renderByStage() {
+    const stage = useSelector((rootState: RootState) => rootState.game.stageNumber);
+    const sovietLeader = useSelector((rootState: RootState) => rootState.game.sovietTeam.leader);
+    const usaLeader = useSelector((rootState: RootState) => rootState.game.usaTeam.leader);
+    const me = useSelector((rootState: RootState) => rootState.user);
     if (stage === 0 && usaLeader === me)
       return (
         <RenderingArea>
-          <HintSubmit answer={answerCode} wordList={usa.word} stage={nextStage} />{' '}
-          <Timer gameTime={gameLength} />
+          <HintSubmit />
+          <Timer />
         </RenderingArea>
       );
     if (stage === 0)
@@ -98,7 +89,7 @@ export default function Game() {
           <Waiting>
             <p>Waiting...</p>
           </Waiting>{' '}
-          <Timer gameTime={gameLength} />
+          <Timer />
         </RenderingArea>
       );
     if (stage === 1 && usaLeader === me)
@@ -107,20 +98,19 @@ export default function Game() {
           <Waiting>
             <p>Waiting...</p>
           </Waiting>{' '}
-          <Timer gameTime={gameLength} />
+          <Timer />
         </RenderingArea>
       );
     if (stage === 1)
       return (
         <RenderingArea>
-          <CodeGuess hints={hints} /> <Timer gameTime={gameLength} />
+          <CodeGuess /> <Timer />
         </RenderingArea>
       );
     if (stage === 2 && sovietLeader === me)
       return (
         <RenderingArea>
-          <HintSubmit answer={answerCode} wordList={soviet.word} stage={nextStage} />{' '}
-          <Timer gameTime={gameLength} />
+          <HintSubmit /> <Timer />
         </RenderingArea>
       );
     if (stage === 2)
@@ -129,7 +119,7 @@ export default function Game() {
           <Waiting>
             <p>Waiting...</p>
           </Waiting>{' '}
-          <Timer gameTime={gameLength} />
+          <Timer />
         </RenderingArea>
       );
     if (stage === 3 && sovietLeader === me)
@@ -138,45 +128,33 @@ export default function Game() {
           <Waiting>
             <p>Waiting...</p>
           </Waiting>{' '}
-          <Timer gameTime={gameLength} />
+          <Timer />
         </RenderingArea>
       );
     return (
       <RenderingArea>
-        <CodeGuess hints={hints} /> <Timer gameTime={gameLength} />
+        <CodeGuess /> <Timer />
       </RenderingArea>
     );
   }
 
   return (
     <Container>
-      {soviet.players.includes(currentUser) ? <Word wordList={soviet.word} /> : <Word wordList={usa.word} />}
+      <Word />
       <HintTokenArea>
-        {renderByStage(currentStage, soviet.leader, usa.leader, currentUser)}
-        <ScoreTable
-          sovietDecode={soviet.greenToken}
-          sovietMistake={soviet.redToken}
-          usaDecode={usa.greenToken}
-          usaMistake={usa.redToken}
-        />
+        {renderByStage()}
+        <ScoreTable />
       </HintTokenArea>
       <HintRecordArea>
-        <Hints team='Soviet' hintRecord={soviet.hints} />
-        <Hints team='usa' hintRecord={usa.hints} />
+        <Hints team='Soviet' />
+        <Hints team='usa' />
       </HintRecordArea>
       <button name='Result' onClick={toggleResult} type='button'>
         result
       </button>
       {resultModal && (
         <Overlay onClickOverlay={toggleResult}>
-          <RoundResult
-            answerCode={answerCode}
-            hints={hints}
-            codeGuess={codeGuess}
-            guessTeamName={guessTeamName}
-            codeSteal={codeSteal}
-            stealTeamName={stealTeamName}
-          />
+          <RoundResult />
         </Overlay>
       )}
       {/* Will turn into Modal */}

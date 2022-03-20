@@ -1,12 +1,15 @@
 import { useRef, useEffect } from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../Redux/store/rootStore';
 
-export default function Timer({ gameTime }: { gameTime: number }) {
+export default function Timer() {
   const progressRef = useRef<HTMLDivElement>(null);
   const progressValueRef = useRef<HTMLDivElement>(null);
 
   let progressValue = 0;
   const progressEndValue = 100;
+  const gameTime = useSelector((rootState: RootState) => rootState.game.timer);
   const setTimer = gameTime * 10;
 
   useEffect(() => {

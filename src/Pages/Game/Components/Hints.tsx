@@ -1,6 +1,10 @@
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../Redux/store/rootStore';
 
-function Hints({ team, hintRecord }: { team: string; hintRecord: string[][] }) {
+function Hints({ team }: { team: string }) {
+  const recordFrom = team === 'Soviet' ? 'sovietTeam' : 'usaTeam';
+  const hintRecord = useSelector((rootState: RootState) => rootState.game[recordFrom].hints);
   return (
     <Container>
       <Title>{team}</Title>

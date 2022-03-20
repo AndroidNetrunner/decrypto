@@ -9,5 +9,6 @@ export default defineConfig({
     watch: {
       usePolling: true,
     },
+    host: true,
   },
 });
