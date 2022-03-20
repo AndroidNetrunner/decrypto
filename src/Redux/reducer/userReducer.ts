@@ -12,6 +12,7 @@ interface Action<T, P> {
   readonly type: T;
   readonly payload?: P;
 }
+
 type enterRoomAction = Action<typeof ENTER_ROOM, User>;
 
 // Action Creator

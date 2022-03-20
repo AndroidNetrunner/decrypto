@@ -101,9 +101,15 @@ export default function Room() {
     console.log('INIT');
     console.log(gameInfo);
     console.log(userInfo);
-    //REDUX 동기화
+    // REDUX 동기화
 
     dispatch(userEnter(userInfo));
+    console.log(user);
+    // if (user.isSovietTeam === 'soviet') {
+    //   dispatch(enterRoom(user, 'sovietTeam'));
+    // } else {
+    //   dispatch(enterRoom(user, 'usaTeam'));
+    // }
   });
   console.log(usaTeam);
   console.log(sovietTeam);
