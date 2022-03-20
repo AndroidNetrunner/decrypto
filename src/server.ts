@@ -21,7 +21,7 @@ app.use(logger);
 app.use(helmet());
 app.use(
   cors({
-    origin: process.env.CLIENT_URL, // FIXME: 정확한 주소로 수정 필요
+    origin: true, // FIXME: 정확한 주소로 수정 필요
     credentials: true,
   })
 );
