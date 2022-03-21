@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Hints from './Components/Hints';
 import GameInterface from '../../Interfaces/Game.interface';
 import User from '../../Interfaces/User.interface';
 import RoundResult from './Components/RoundResult';
 import ScoreTable from './Components/ScoreTable';
+import socket from '../../Utils/socket';
+import { updateDB } from '../../Redux/reducer/updateDB';
 import Word from './Components/Word';
 import Overlay from '../../Components/Common/Overlay';
 import RenderByStage from './Components/RenderByStage';
@@ -15,8 +17,38 @@ export default function Game() {
   const game: GameInterface = useSelector((state: RootState) => state.game);
   const user: User = useSelector((state: RootState) => state.user);
   const [resultModal, setResultModal] = useState(false);
+  const dispatch = useDispatch();
   const toggleResult = () => {
     setResultModal((prev) => !prev);
+  };
+  socket.off('SUBMIT_HINT').on('SUBMIT_HINT', (gameInfo) => {
+    dispatch(updateDB(gameInfo));
+  });
+  socket.off('SUBMIT_CODE').on('SUBMIT_CODE', (gameInfo) => {
+    dispatch(updateDB(gameInfo));
+  });
+  socket.off('SHOW_RESULT').on('SHOW_RESULT', (gameInfo) => {
+    console.log('need to show modal');
+    dispatch(updateDB(gameInfo));
+    toggleResult();
+  });
+  socket.off('NEW_ROUND').on('NEW_ROUND', (gameInfo) => {
+    dispatch(updateDB(gameInfo));
+    if (
+      game.sovietTeam.greenToken === 2 ||
+      game.sovietTeam.redToken === 2 ||
+      game.usaTeam.greenToken === 2 ||
+      game.usaTeam.redToken === 2
+    ) {
+      socket.emit('END_GAME');
+      if (game.sovietTeam.greenToken === 2 || game.usaTeam.redToken === 2) alert('SOVIET WINS!!');
+      else alert('USA WINS!!!');
+    } else {
+      toggleResult();
+    }
+  });
+  const doNothing = () => {
+    console.log('doing nothing');
   };
   console.log('GAME PAGE USER', user);
   console.log('🎮 GAME PAGE game 🎮', game);
@@ -31,15 +63,11 @@ export default function Game() {
         <Hints team='Soviet' />
         <Hints team='usa' />
       </HintRecordArea>
-      <button name='Result' onClick={toggleResult} type='button'>
-        result
-      </button>
       {resultModal && (
-        <Overlay onClickOverlay={toggleResult}>
+        <Overlay onClickOverlay={doNothing}>
           <RoundResult />
         </Overlay>
       )}
-      {/* Will turn into Modal */}
     </Container>
   );
 }
