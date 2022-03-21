@@ -1,16 +1,32 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { ITeam } from '..';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateDB } from '../../../Redux/reducer/updateDB';
+import { RootState } from '../../../Redux/store/rootStore';
+import socket from '../../../Utils/socket';
+import Game from '../../../Interfaces/Game.interface';
+import User from '../../../Interfaces/User.interface';
 
-interface Props {
-  team: ITeam;
-  onClickStartButton: () => void;
-}
+export default function GameStartButton() {
+  const game: Game = useSelector((state: RootState) => state.game);
+  const user: User = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-export default function GameStartButton({ team, onClickStartButton }: Props) {
-  const { sovietTeam, usaTeam } = team;
+  const onClickStartButton = () => {
+    if (game.sovietTeam.players.length < 2 || game.usaTeam.players.length < 2 || !user.captain) {
+      return;
+    }
+    socket.emit('GAME_START', (gameInfo) => {
+      dispatch(updateDB(gameInfo));
+      navigate(`/room/${game.roomId}/start`);
+      console.log('나는 방장이지롱');
+    });
+  };
+
   return (
     <Button
-      disabled={sovietTeam.users.length < 2 || usaTeam.users.length < 2}
+      disabled={game.sovietTeam.players.length < 2 || game.usaTeam.players.length < 2}
       type='button'
       onClick={onClickStartButton}
     >

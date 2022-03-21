@@ -1,19 +1,20 @@
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../Redux/store/rootStore';
 
-type code = [number, number, number];
-
-interface Props {
-  answerCode: code;
-  hints: [string, string, string];
-  codeGuess: code;
-  guessTeamName: string;
-  codeSteal: code;
-  stealTeamName: string;
-}
-
-function RoundResult({ answerCode, hints, codeGuess, guessTeamName, codeSteal, stealTeamName }: Props) {
+function RoundResult() {
+  const answerCode = useSelector((rootState: RootState) => rootState.game.answerCode);
+  const stealTeam = useSelector((rootState: RootState) =>
+    rootState.game.stageNumber % 4 === 3 ? 'sovietTeam' : 'usaTeam',
+  );
+  const guessTeam = stealTeam === 'sovietTeam' ? 'usaTeam' : 'sovietTeam';
+  const codeSteal = useSelector((rootState: RootState) => rootState.game[stealTeam].codes);
+  const codeGuess = useSelector((rootState: RootState) => rootState.game[guessTeam].codes);
   const stealSuccess = answerCode.toString() === codeSteal.toString();
   const guessSuccess = answerCode.toString() === codeGuess.toString();
+  const stealTeamName = stealTeam === 'sovietTeam' ? '소련' : '미국';
+  const guessTeamName = stealTeamName === '소련' ? '미국' : '소련';
+  const hints = useSelector((rootState: RootState) => rootState.game[guessTeam].hints);
   return (
     <Container>
       <Result>
@@ -23,7 +24,7 @@ function RoundResult({ answerCode, hints, codeGuess, guessTeamName, codeSteal, s
         </h2>
         <HintContainer>
           힌트:
-          {hints.map((hint) => (
+          {hints.map((hint: string) => (
             <Hint key={hint}>{hint}</Hint>
           ))}
         </HintContainer>

@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../Redux/store/rootStore';
+import socket from '../../../Utils/socket';
 
 function makeEmptyOptionTag() {
   const emptyOptionTag = document.createElement('option');
@@ -40,9 +43,22 @@ function handleChange() {
   makeNewOptions(thirdCode, possibleThirdCode, selectedIndex[2]);
 }
 
-function CodeGuess({ hints }: { hints: string[] }) {
+function handleSubmit() {
+  const firstSelect = document.getElementById('guessFirstCode') as HTMLSelectElement;
+  const firstCode = Number(firstSelect.options[firstSelect.selectedIndex].value);
+  const secondSelect = document.getElementById('guessSecondCode') as HTMLSelectElement;
+  const secondCode = Number(secondSelect.options[secondSelect.selectedIndex].value);
+  const thirdSelect = document.getElementById('guessThirdCode') as HTMLSelectElement;
+  const thirdCode = Number(thirdSelect.options[thirdSelect.selectedIndex].value);
+  socket.emit('SUBMIT_CODE', [firstCode, secondCode, thirdCode]);
+}
+
+function CodeGuess() {
+  const currentTeam =
+    useSelector((rootState: RootState) => rootState.game.stageNumber) % 4 === 1 ? 'sovietTeam' : 'usaTeam';
+  const hints = useSelector((rootState: RootState) => rootState.game[currentTeam].hints);
   return (
-    <GuessForm onChange={handleChange}>
+    <GuessForm onChange={handleChange} onSubmit={handleSubmit}>
       <div className='formArea'>
         <table>
           <tr>

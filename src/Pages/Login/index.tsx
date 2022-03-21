@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
 import { v4 as uuidV4 } from 'uuid';
 import styled from 'styled-components';
@@ -8,6 +8,7 @@ import socket from '../../Utils/socket';
 
 export default function Login() {
   const [nickname, onChangeNickname] = useInput(localStorage.getItem('nick') ?? '');
+  const [toggleButton, setToggleButton] = useState(false);
   const [roomId, onChangeRoomId] = useInput();
   const navigate = useNavigate();
 
@@ -18,6 +19,8 @@ export default function Login() {
   };
 
   const enterRoom = () => {
+    if (toggleButton === true) return;
+    setToggleButton(true);
     // * 방 만들기 or 방 참가하기 했을 때 로직입니다.
     // * 방 만들기 : nanoid 로 random 한 str 만들어서 보냅니다.
     // * 방 참가하기 : 입력된 roomId 를 사용합니다.

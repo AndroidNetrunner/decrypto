@@ -1,32 +1,59 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import Game from '../../../Interfaces/Game.interface';
+import socket from '../../../Utils/socket';
+import { RootState } from '../../../Redux/store/rootStore';
 
-type answerCode = [number, number, number];
-type ourTeamWord = [string, string, string, string];
+function handleSubmit() {
+  const hintformFirst = (document.getElementById('hintform-first') as HTMLInputElement).value;
+  const hintformSecond = (document.getElementById('hintform-second') as HTMLInputElement).value;
+  const hintformThird = (document.getElementById('hintform-third') as HTMLInputElement).value;
+  const hintList: [string, string, string] = [hintformFirst, hintformSecond, hintformThird];
+  socket.emit('SUBMIT_HINT', hintList);
+}
 
-function HintSubmit({
-  answer,
-  wordList,
-  stage,
-}: {
-  answer: answerCode;
-  wordList: ourTeamWord;
-  stage: () => void;
-}) {
+function getWords(currentTeam: string, game: Game) {
+  if (currentTeam === 'sovietTeam') return game.sovietTeam.words;
+  return game.usaTeam.words;
+}
+
+export default function HintSubmit() {
+  const answer = useSelector((rootState: RootState) => rootState.game.answerCode);
+  const game = useSelector((rootState: RootState) => rootState.game);
+  const stage = useSelector((rootState: RootState) => rootState.game.stageNumber);
+  const currentTeam = stage % 4 === 0 ? 'sovietTeam' : 'usaTeam';
+
+  const wordList = getWords(currentTeam, game);
   return (
     <Container>
       <AnswerCode>
         CODE <br /> {answer[0]} - {answer[1]} - {answer[2]}{' '}
       </AnswerCode>
-      <HintForm onSubmit={stage}>
+      <HintForm onSubmit={handleSubmit}>
         <div>
           <label htmlFor='hintform-first'>#{answer[0]}</label>
-          <input type='text' id='hintform-first' placeholder={`${wordList[answer[0] - 1]}의 힌트...`} />{' '}
+          <input
+            type='text'
+            name='hints'
+            id='hintform-first'
+            placeholder={`${wordList[answer[0] - 1]}의 힌트...`}
+          />{' '}
           <br />
           <label htmlFor='hintform-second'>#{answer[1]}</label>
-          <input type='text' id='hintform-second' placeholder={`${wordList[answer[1] - 1]}의 힌트...`} />{' '}
+          <input
+            type='text'
+            name='hints'
+            id='hintform-second'
+            placeholder={`${wordList[answer[1] - 1]}의 힌트...`}
+          />{' '}
           <br />
           <label htmlFor='hintform-third'>#{answer[2]}</label>
-          <input type='text' id='hintform-third' placeholder={`${wordList[answer[2] - 1]}의 힌트...`} />{' '}
+          <input
+            type='text'
+            name='hints'
+            id='hintform-third'
+            placeholder={`${wordList[answer[2] - 1]}의 힌트...`}
+          />{' '}
           <br />
         </div>
         <div className='buttonArea'>
@@ -101,5 +128,3 @@ const AnswerCode = styled.span`
   border: 0.3rem white solid;
   margin-right: 2rem;
 `;
-
-export default HintSubmit;

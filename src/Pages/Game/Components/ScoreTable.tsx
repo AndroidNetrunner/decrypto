@@ -1,13 +1,12 @@
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../Redux/store/rootStore';
 
-interface Scores {
-  sovietDecode: number;
-  sovietMistake: number;
-  americaDecode: number;
-  americaMistake: number;
-}
-
-export default function ScoreTable({ sovietDecode, sovietMistake, americaDecode, americaMistake }: Scores) {
+export default function ScoreTable() {
+  const { sovietTeam, usaTeam } = useSelector((state: RootState) => ({
+    sovietTeam: state.game.sovietTeam,
+    usaTeam: state.game.usaTeam,
+  }));
   return (
     <ScoreTableArea>
       <tr>
@@ -18,7 +17,7 @@ export default function ScoreTable({ sovietDecode, sovietMistake, americaDecode,
       <tr>
         <th className='labelArea'>Soviet</th>
         <CircleContainer>
-          {sovietDecode > 0 ? (
+          {sovietTeam.greenToken > 0 ? (
             <img src='../../img/my-coin-green.gif' alt='green' style={{ width: '2rem', height: '2rem' }} />
           ) : (
             <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
@@ -26,7 +25,7 @@ export default function ScoreTable({ sovietDecode, sovietMistake, americaDecode,
           <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
         </CircleContainer>
         <CircleContainer>
-          {sovietMistake > 0 ? (
+          {sovietTeam.redToken > 0 ? (
             <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
           ) : (
             <img src='../../img/my-coin-pink.gif' alt='pink' style={{ width: '2rem', height: '2rem' }} />
@@ -35,9 +34,9 @@ export default function ScoreTable({ sovietDecode, sovietMistake, americaDecode,
         </CircleContainer>
       </tr>
       <tr>
-        <th className='labelArea'>America</th>
+        <th className='labelArea'>usa</th>
         <CircleContainer>
-          {americaDecode > 0 ? (
+          {usaTeam.greenToken > 0 ? (
             <img src='../../img/my-coin-green.gif' alt='green' style={{ width: '2rem', height: '2rem' }} />
           ) : (
             <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
@@ -45,7 +44,7 @@ export default function ScoreTable({ sovietDecode, sovietMistake, americaDecode,
           <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
         </CircleContainer>
         <CircleContainer>
-          {americaMistake > 0 ? (
+          {usaTeam.redToken > 0 ? (
             <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
           ) : (
             <img src='../../img/my-coin-pink.gif' alt='pink' style={{ width: '2rem', height: '2rem' }} />

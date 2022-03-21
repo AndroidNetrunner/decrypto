@@ -1,14 +1,21 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import Game from '../../../Interfaces/Game.interface';
+import User from '../../../Interfaces/User.interface';
+import { RootState } from '../../../Redux/store/rootStore';
 import TV from '../../../Assets/img/tv-fullsz.gif';
 
-interface Props {
-  wordList: [string, string, string, string];
-}
-
-function Word({ wordList }: Props) {
+function Word() {
+  const user: User = useSelector((rootState: RootState) => rootState.user);
+  const game: Game = useSelector((rootState: RootState) => rootState.game);
+  console.log(game.sovietTeam.words);
+  const wordList = game.sovietTeam.players.find((player) => player.uid === user.uid)
+    ? game.sovietTeam.words
+    : game.usaTeam.words;
+  console.log(wordList);
   return (
     <Container>
-      {wordList.map((word, index) => (
+      {wordList.map((word: string, index: number) => (
         <div>
           <Number>{index + 1}</Number>
           <WordContainer>
