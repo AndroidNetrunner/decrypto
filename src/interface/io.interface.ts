@@ -1,15 +1,6 @@
-import mongoose, { Types } from 'mongoose';
-import { IGame } from '../models/Game';
-import IUser from './user.interface';
-
-interface ITeam {
-  firstTeam: {
-    users: IUser[];
-  };
-  secondTeam: {
-    users: IUser[];
-  };
-}
+import { Types } from 'mongoose';
+import GameInterface from './game.interface';
+import UserInterface from './user.interface';
 
 // * 이벤트를 받을 때
 export interface ServerToClientEvents {
@@ -17,58 +8,29 @@ export interface ServerToClientEvents {
     userData: { nickname: string; roomId: string; uid: string },
     callback: (e: string) => void
   ) => void;
-
-  CHANGE_TEAM: (uid: string, to: 'soviet' | 'usa', done: () => void) => void;
-
-  GAME_START: (players: ITeam, done: (confirmTeam: ITeam) => void) => void;
+  CHANGE_TEAM: (
+    userData: UserInterface,
+    done: (gameData: GameInterface, userData: UserInterface) => void
+  ) => void;
+  SET_TIMER: (gameTime: number) => void;
+  GAME_START: (done: (gameData: GameInterface) => void) => void;
+  SUBMIT_HINT: (hints: [string, string, string], done: (gameData: GameInterface) => void) => void;
+  SUBMIT_CODE: (codes: [number, number, number]) => void;
 }
 
 // * 이벤트를 보낼 때
 export interface ClientToServerEvents {
-  USER_INFO: (userData?: {
-    nickname: string;
-    isOwner: boolean;
-    uid: string;
-    id: Types.ObjectId;
-    isSovietTeam: boolean;
-  }) => void;
   ALREADY_START: () => void;
-  ENTER_ROOM: (
-    userData?: {
-      nickname: string;
-      isOwner: boolean;
-      uid: string;
-      id: Types.ObjectId;
-      isSovietTeam: boolean;
-    },
-    team?: string
-  ) => void;
-  CHANGE_TEAM: (
-    userData?: {
-      nickname: string;
-      isOwner: boolean;
-      uid: string;
-      id: Types.ObjectId;
-      isSovietTeam: boolean;
-    },
-    to?: string
-  ) => void;
-  LEAVE_ROOM: (
-    userData?: {
-      nickname: string;
-      isOwner: boolean;
-      uid: string;
-      id: Types.ObjectId;
-      isSovietTeam: boolean;
-    },
-    team?: string
-  ) => void;
-  GAME_START: (players: ITeam) => void;
-  JOIN_USER: (userData: string) => void;
-  INIT_DATA: (
-    gameData: IGame,
-    userData: { nickname: string; uid: string; isOwner: boolean; isSovietTeam: boolean }
-  ) => void;
+  ENTER_ROOM: (gameData: GameInterface) => void;
+  CHANGE_TEAM: (gameData: GameInterface) => void;
+  LEAVE_ROOM: (gameData: GameInterface) => void;
+  INIT_DATA: (gameData: GameInterface, userData: UserInterface) => void;
+  SET_TIMER: (gameData: GameInterface) => void;
+  GAME_START: (gameData: GameInterface) => void;
+  SUBMIT_HINT: (gameData: GameInterface) => void;
+  SUBMIT_CODE: (gameData: GameInterface) => void;
+  SHOW_RESULT: (gameData: GameInterface) => void;
+  NEW_ROUND: (gameData: GameInterface) => void;
 }
 
 export interface InterServerEvents {
@@ -79,7 +41,7 @@ export interface SocketData {
   roomId: string;
   user: {
     nickname: string;
-    isOwner: boolean;
+    captain: boolean;
     uid: string;
     id: Types.ObjectId;
     isSovietTeam: boolean;

@@ -1,5 +1,8 @@
-export default interface IUser {
+import mongoose from 'mongoose';
+
+export default interface User {
+  _id: mongoose.Types.ObjectId;
   nickname: string;
   uid: string;
-  isOwner: boolean;
+  captain: boolean;
 }
