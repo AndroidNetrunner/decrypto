@@ -3,14 +3,7 @@ import styled from 'styled-components';
 import Game from '../../../Interfaces/Game.interface';
 import socket from '../../../Utils/socket';
 import { RootState } from '../../../Redux/store/rootStore';
-
-function handleSubmit() {
-  const hintformFirst = (document.getElementById('hintform-first') as HTMLInputElement).value;
-  const hintformSecond = (document.getElementById('hintform-second') as HTMLInputElement).value;
-  const hintformThird = (document.getElementById('hintform-third') as HTMLInputElement).value;
-  const hintList: [string, string, string] = [hintformFirst, hintformSecond, hintformThird];
-  socket.emit('SUBMIT_HINT', hintList);
-}
+import useInput from '../../../Hooks/useInput';
 
 function getWords(currentTeam: string, game: Game) {
   if (currentTeam === 'sovietTeam') return game.sovietTeam.words;
@@ -22,6 +15,14 @@ export default function HintSubmit() {
   const game = useSelector((rootState: RootState) => rootState.game);
   const stage = useSelector((rootState: RootState) => rootState.game.stageNumber);
   const currentTeam = stage % 4 === 0 ? 'sovietTeam' : 'usaTeam';
+  const [firstHint, onChangeFirstHint] = useInput();
+  const [secondHint, onChangeSecondHint] = useInput();
+  const [thirdHint, onChangeThirdHint] = useInput();
+
+  const handleSubmit = () => {
+    const hintList: [string, string, string] = [firstHint, secondHint, thirdHint];
+    socket.emit('SUBMIT_HINT', hintList);
+  };
 
   const wordList = getWords(currentTeam, game);
   return (
@@ -36,6 +37,7 @@ export default function HintSubmit() {
             type='text'
             name='hints'
             id='hintform-first'
+            onChange={onChangeFirstHint}
             placeholder={`${wordList[answer[0] - 1]}의 힌트...`}
           />{' '}
           <br />
@@ -44,6 +46,7 @@ export default function HintSubmit() {
             type='text'
             name='hints'
             id='hintform-second'
+            onChange={onChangeSecondHint}
             placeholder={`${wordList[answer[1] - 1]}의 힌트...`}
           />{' '}
           <br />
@@ -52,6 +55,7 @@ export default function HintSubmit() {
             type='text'
             name='hints'
             id='hintform-third'
+            onChange={onChangeThirdHint}
             placeholder={`${wordList[answer[2] - 1]}의 힌트...`}
           />{' '}
           <br />
