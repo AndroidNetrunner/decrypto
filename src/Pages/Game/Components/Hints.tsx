@@ -15,7 +15,6 @@ function Hints({ team }: { team: string }) {
           <Item className='num'>3</Item>
           <Item className='num'>4</Item>
         </ItemList>
-
         {hintRecord.map((item: string[]) => (
           <ItemList>
             <Item>{item[0]}</Item>

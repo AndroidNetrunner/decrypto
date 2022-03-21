@@ -4,7 +4,6 @@ interface Team {
   words: string[];
   codes: number[];
   hints: string[][];
-  leader: User;
   players: User[];
   greenToken: number;
   redToken: number;

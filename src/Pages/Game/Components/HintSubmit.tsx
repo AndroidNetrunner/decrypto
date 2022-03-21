@@ -1,10 +1,8 @@
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import Game from '../../../Interfaces/Game.interface';
 import socket from '../../../Utils/socket';
 import { RootState } from '../../../Redux/store/rootStore';
-
-type answerCode = [number, number, number];
-type ourTeamWord = [string, string, string, string];
 
 function handleSubmit() {
   const hintformFirst = (document.getElementById('hintform-first') as HTMLInputElement).value;
@@ -14,13 +12,18 @@ function handleSubmit() {
   socket.emit('SUBMIT_HINT', hintList);
 }
 
-function HintSubmit() {
+function getWords(currentTeam: string, game: Game) {
+  if (currentTeam === 'sovietTeam') return game.sovietTeam.words;
+  return game.usaTeam.words;
+}
+
+export default function HintSubmit() {
   const answer = useSelector((rootState: RootState) => rootState.game.answerCode);
+  const game = useSelector((rootState: RootState) => rootState.game);
   const stage = useSelector((rootState: RootState) => rootState.game.stageNumber);
-  const currentTeam = useSelector((rootState: RootState) =>
-    rootState.game.stageNumber % 4 === 1 ? 'sovietTeam' : 'usaTeam',
-  );
-  const wordList = useSelector((rootState: RootState) => rootState.game[currentTeam].words);
+  const currentTeam = stage % 4 === 0 ? 'sovietTeam' : 'usaTeam';
+
+  const wordList = getWords(currentTeam, game);
   return (
     <Container>
       <AnswerCode>
@@ -125,5 +128,3 @@ const AnswerCode = styled.span`
   border: 0.3rem white solid;
   margin-right: 2rem;
 `;
-
-export default HintSubmit;

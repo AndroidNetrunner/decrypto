@@ -35,11 +35,9 @@ const initialUser: User = {
   uid: 'initialUid',
   nickname: 'initialNickname',
   captain: false,
-  isSovietTeam: true,
 };
 
 const initialTeam: Team = {
-  leader: initialUser,
   players: [initialUser],
   words: ['word1', 'word2', 'word3', 'word4'],
   codes: [1, 2, 3],
@@ -53,7 +51,6 @@ const initialTeam: Team = {
 
 const initialGame: Game = {
   roomId: '3',
-  isPlaying: false,
   captain: initialUser,
   stageNumber: -1,
   answerCode: [1, 3, 4],
