@@ -16,7 +16,6 @@ export default function Room() {
   const user: UserInterface = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log('🎮 game 🎮', game);
 
   /*
     ! 방장이 게임을 시작시켰을 때 로직
@@ -40,7 +39,6 @@ export default function Room() {
 
   socket.off('ENTER_ROOM').on('ENTER_ROOM', (gameInfo) => {
     dispatch(updateDB(gameInfo));
-    console.log('Somebody entered');
   });
 
   /*
@@ -50,7 +48,6 @@ export default function Room() {
   */
   socket.off('CHANGE_TEAM').on('CHANGE_TEAM', (gameInfo) => {
     dispatch(updateDB(gameInfo));
-    console.log('somebody changed team');
   });
 
   /*
@@ -60,7 +57,6 @@ export default function Room() {
   */
   socket.off('LEAVE_ROOM').on('LEAVE_ROOM', (gameInfo) => {
     dispatch(updateDB(gameInfo));
-    console.log('somebody left the room');
   });
 
   /*
@@ -73,10 +69,10 @@ export default function Room() {
    */
   socket.off('INIT_DATA').on('INIT_DATA', (gameInfo, userInfo) => {
     dispatch(updateUser(userInfo));
-    console.log();
     dispatch(updateDB(gameInfo));
   });
-  console.log('I entered the room', user);
+  console.log('ROOM PAGE USER', user);
+  console.log('🎮 ROOM PAGE game 🎮', game);
 
   return (
     <Container>

@@ -1,6 +1,9 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Hints from './Components/Hints';
+import GameInterface from '../../Interfaces/Game.interface';
+import User from '../../Interfaces/User.interface';
 import RoundResult from './Components/RoundResult';
 import ScoreTable from './Components/ScoreTable';
 import Word from './Components/Word';
@@ -9,11 +12,14 @@ import RenderByStage from './Components/RenderByStage';
 import { RootState } from '../../Redux/store/rootStore';
 
 export default function Game() {
+  const game: GameInterface = useSelector((state: RootState) => state.game);
+  const user: User = useSelector((state: RootState) => state.user);
   const [resultModal, setResultModal] = useState(false);
   const toggleResult = () => {
     setResultModal((prev) => !prev);
   };
-
+  console.log('GAME PAGE USER', user);
+  console.log('🎮 GAME PAGE game 🎮', game);
   return (
     <Container>
       <Word />
