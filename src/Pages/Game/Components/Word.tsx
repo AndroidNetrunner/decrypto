@@ -8,11 +8,9 @@ import TV from '../../../Assets/img/tv-fullsz.gif';
 function Word() {
   const user: User = useSelector((rootState: RootState) => rootState.user);
   const game: Game = useSelector((rootState: RootState) => rootState.game);
-  console.log(game.sovietTeam.words);
   const wordList = game.sovietTeam.players.find((player) => player.uid === user.uid)
     ? game.sovietTeam.words
     : game.usaTeam.words;
-  console.log(wordList);
   return (
     <Container>
       {wordList.map((word: string, index: number) => (

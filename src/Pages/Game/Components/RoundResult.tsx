@@ -25,7 +25,7 @@ function RoundResult() {
         <HintContainer>
           힌트:
           {hints.map((hint: string) => (
-            <Hint key={hint}>{hint}</Hint>
+            <Hint key={hint}>{hint} </Hint>
           ))}
         </HintContainer>
       </Result>
