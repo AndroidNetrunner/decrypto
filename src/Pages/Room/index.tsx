@@ -70,7 +70,6 @@ export default function Room() {
     dispatch(updateUser(userInfo));
     dispatch(updateDB(gameInfo));
   });
-  console.log('🎮 ROOM PAGE game 🎮', game);
 
   return (
     <Container>
