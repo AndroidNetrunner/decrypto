@@ -7,7 +7,6 @@ const gameSchema = new mongoose.Schema({
   captain: { type: mongoose.Types.ObjectId, ref: 'User' },
   stageNumber: { type: Number, default: -1 },
   answerCode: { type: Array, default: [] },
-  roomNumber: { type: Number },
   timer: { type: Number, default: 30 },
   sovietTeam: {
     words: { type: Array, default: [] },

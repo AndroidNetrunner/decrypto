@@ -8,10 +8,7 @@ export interface ServerToClientEvents {
     userData: { nickname: string; roomId: string; uid: string },
     callback: (e: string) => void
   ) => void;
-  CHANGE_TEAM: (
-    userData: UserInterface,
-    done: (gameData: GameInterface, userData: UserInterface) => void
-  ) => void;
+  CHANGE_TEAM: (userData: UserInterface, done: (gameData: GameInterface) => void) => void;
   SET_TIMER: (gameTime: number) => void;
   GAME_START: (done: (gameData: GameInterface) => void) => void;
   SUBMIT_HINT: (hints: [string, string, string], done: (gameData: GameInterface) => void) => void;

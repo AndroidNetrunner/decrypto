@@ -15,7 +15,6 @@ export default interface Game {
   captain: mongoose.Types.ObjectId;
   stageNumber: number;
   answerCode: number[];
-  roomNumber: number;
   timer: number;
   sovietTeam: Team;
   usaTeam: Team;
