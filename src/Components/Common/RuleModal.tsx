@@ -45,8 +45,8 @@ export default function RuleModal({ toggleModal }: Props) {
         <Title>Decrypto</Title>
         <SemiTitle>개요</SemiTitle>
         <Paragraph showOn>
-          Decrypto(이하 디크립토)는 우리 팀의 코드는 안전하게 전달하고, 상대방의 코드는 훔쳐 점수를 획득하는
-          게임입니다.
+          Decrypto(이하 디크립토)는 냉전 시기의 <SovietSpan>소련</SovietSpan>과 <UsaSpan>미국</UsaSpan>의
+          첩보전을 그린 게임입니다. 우리 팀의 암호는 숨기고, 상대 팀의 암호를 알아내어 게임에서 승리하세요!
         </Paragraph>
         <SemiTitle id='main' onClick={toggleParagraph}>
           메인 페이지
@@ -110,10 +110,11 @@ export default function RuleModal({ toggleModal }: Props) {
           </IconSVG>
         </SemiTitle>
         <Paragraph showOn={isToggle.guess}>
-          우리팀과 상대팀은 이제 정답 코드가 무엇인지 논의 후 추측을 하게 됩니다. 대부분의 경우, 비밀 단어를
-          우리팀만 알고 있으므로 우리 팀은 맞히고, 상대 팀은 틀리게 될 것입니다. <Enter> </Enter>추측이 끝나면
-          정답 코드를 공개하며, 라운드 결과를 정산합니다. <Enter> </Enter>만약 <b>우리 팀이</b> 비밀 단어를
-          알고 있었음에도 정답 코드를 못 맞혔다면 우리 팀은 <b>오답 토큰</b>을 하나 받습니다.
+          <SovietSpan>소련</SovietSpan>과 <UsaSpan>미국</UsaSpan> 양팀은 이제 정답 코드가 무엇인지 논의 후
+          추측을 하게 됩니다. 대부분의 경우, 비밀 단어를 우리팀만 알고 있으므로 우리 팀은 맞히고, 상대팀은
+          틀리게 될 것입니다. <Enter> </Enter>추측이 끝나면 정답 코드를 공개하며, 라운드 결과를 정산합니다.{' '}
+          <Enter> </Enter>만약 <b>우리 팀이</b> 비밀 단어를 알고 있었음에도 정답 코드를 못 맞혔다면 우리 팀은{' '}
+          <b>오답 토큰</b>을 하나 받습니다.
           <b>
             오답 토큰을 2개 얻는 팀은 게임에서 즉시 패배합니다. <Enter> </Enter>
           </b>
@@ -198,3 +199,11 @@ const RuleWrapper = styled.div`
 `;
 
 const IconSVG = styled.svg``;
+
+const SovietSpan = styled.span`
+  color: #cd0000;
+`;
+
+const UsaSpan = styled.span`
+  color: #00468e;
+`;
