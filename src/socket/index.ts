@@ -232,15 +232,25 @@ const handleSocket = (io: ServerType) => {
       if (roomId && user) {
         const submitTeam = user.isSovietTeam ? 'sovietTeam.codes' : 'usaTeam.codes';
         console.log(hints);
+        let gameInfo = await Game.findOne({ roomId }).populate([
+          'sovietTeam.players',
+          'usaTeam.players',
+        ]);
         try {
-          let gameInfo = await Game.findOneAndUpdate(
-            { roomId },
-            { $push: { [submitTeam]: hints } },
-            { new: true }
-          );
+          if (gameInfo?.$isEmpty(submitTeam)) {
+            gameInfo = await Game.findOneAndUpdate(
+              { roomId },
+              { $push: { [submitTeam]: hints } },
+              { new: true }
+            ).populate(['sovietTeam.players', 'usaTeam.players']);
+          }
           if (gameInfo) {
             const passCondition =
               !gameInfo.$isEmpty('sovietTeam.codes') && !gameInfo.$isEmpty('usaTeam.codes');
+            if (!passCondition) {
+              socket.to(roomId).emit('SUBMIT_CODE', gameInfo);
+              io.to(socket.id).emit('SUBMIT_CODE', gameInfo);
+            }
             if (passCondition) {
               // soviet 힌트 제출 상황
               let sovietWrong = 0;
