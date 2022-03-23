@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Hints from './Components/Hints';
 import GameInterface from '../../Interfaces/Game.interface';
@@ -21,6 +22,10 @@ export default function Game() {
   const toggleResult = () => {
     setResultModal((prev) => !prev);
   };
+  const navigate = useNavigate();
+  const myTeam = game.sovietTeam.players.some((player: User) => player.uid === user.uid)
+    ? 'sovietTeam'
+    : 'usaTeam';
   socket.off('SUBMIT_HINT').on('SUBMIT_HINT', (gameInfo) => {
     dispatch(updateDB(gameInfo));
   });
@@ -34,19 +39,20 @@ export default function Game() {
   });
   socket.off('NEW_ROUND').on('NEW_ROUND', (gameInfo) => {
     dispatch(updateDB(gameInfo));
-    if (
-      game.sovietTeam.greenToken === 2 ||
-      game.sovietTeam.redToken === 2 ||
-      game.usaTeam.greenToken === 2 ||
-      game.usaTeam.redToken === 2
-    ) {
-      socket.emit('END_GAME');
-      if (game.sovietTeam.greenToken === 2 || game.usaTeam.redToken === 2) alert('SOVIET WINS!!');
-      else alert('USA WINS!!!');
-    } else {
-      toggleResult();
-    }
+    toggleResult();
   });
+  if (
+    game.sovietTeam.greenToken === 2 ||
+    game.sovietTeam.redToken === 2 ||
+    game.usaTeam.greenToken === 2 ||
+    game.usaTeam.redToken === 2
+  ) {
+    console.log('END GAME');
+    socket.emit('END_GAME');
+    if (game.sovietTeam.greenToken === 2 || game.usaTeam.redToken === 2) alert('SOVIET WINS!!');
+    else alert('USA WINS!!!');
+    navigate(`/`);
+  }
   const doNothing = () => {
     console.log('doing nothing');
   };
@@ -54,6 +60,9 @@ export default function Game() {
   console.log('🎮 GAME PAGE game 🎮', game);
   return (
     <Container>
+      <ShowTeam>
+        <img alt='img' src={myTeam === 'sovietTeam' ? '../../img/soviet.png' : '../../img/usa.png'} />{' '}
+      </ShowTeam>
       <Word />
       <HintTokenArea>
         <RenderByStage />
@@ -87,12 +96,16 @@ export default function Game() {
   -----> 결과
 */
 
+const ShowTeam = styled.div`
+  text-align: left;
+  font-size: 5rem;
+`;
+
 const Container = styled.div`
   color: black;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #2e3c7e;
   justify-content: center;
 `;
 

@@ -13,7 +13,6 @@ export default function GameLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPlayingBgm, setIsPlayingBgm] = useState(false);
   const bgmRef = useRef<HTMLAudioElement>(null);
-
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev);
   };

@@ -14,8 +14,6 @@ function RoundResult() {
   const guessSuccess = answerCode.toString() === codeGuess.toString();
   const stealTeamName = stealTeam === 'sovietTeam' ? '소련' : '미국';
   const guessTeamName = stealTeamName === '소련' ? '미국' : '소련';
-  const hints = useSelector((rootState: RootState) => rootState.game[guessTeam].hints);
-  console.log(hints);
   return (
     <Container>
       <Result>
@@ -23,12 +21,7 @@ function RoundResult() {
         <h2>
           정답 코드: <AnswerCode>{answerCode.join(' - ')}</AnswerCode>{' '}
         </h2>
-        <HintContainer>
-          힌트:
-          {hints.map((hint: string) => <Hint key={hint}>{hint} </Hint>).join('-')}
-        </HintContainer>
       </Result>
-
       <TeamResultContainer>
         <TeamResult isSuccess={stealSuccess} successColor='green' failureColor='grey'>
           <h2>
@@ -93,19 +86,6 @@ const AnswerCode = styled(Code)`
 `;
 
 const SubmitCode = styled(Code)``;
-
-const HintContainer = styled.div`
-  margin-bottom: 2rem;
-`;
-
-const Hint = styled.span`
-  display: inline-block;
-  min-width: 4rem;
-  color: white;
-  padding: 0.5rem;
-  border-radius: 5rem;
-  background-color: #005666;
-`;
 
 const TeamResultContainer = styled.div`
   display: flex;
