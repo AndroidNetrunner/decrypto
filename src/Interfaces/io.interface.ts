@@ -11,7 +11,7 @@ export interface ServerToClientEvents {
   GAME_START: (gameInfo: Game) => void;
   INIT_DATA: (gameInfo: Game, userData: User) => void;
   SUBMIT_HINT: (gameInfo: Game) => void;
-  SUBMIT_CODE: () => void;
+  SUBMIT_CODE: (gameInfo: Game) => void;
   NEW_ROUND: (gameInfo: Game) => void;
   SHOW_RESULT: (gameInfo: Game) => void;
 }
