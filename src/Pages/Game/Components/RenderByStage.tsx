@@ -15,9 +15,11 @@ function getLeader(game: Game, stage: number) {
 
 export default function RenderByStage() {
   const game = useSelector((rootState: RootState) => rootState.game);
-  const stage = useSelector((rootState: RootState) => rootState.game.stageNumber);
+  const stage = game.stageNumber;
   const leader = getLeader(game, stage);
   const me: User = useSelector((rootState: RootState) => rootState.user);
+  const myTeam = game.sovietTeam.players.includes(me) ? 'sovietTeam' : 'usaTeam';
+  const myTeamCode = game[myTeam].codes;
   if (stage % 4 === 0 && leader.uid === me.uid)
     return (
       <RenderingArea>
@@ -43,7 +45,13 @@ export default function RenderByStage() {
   if (stage % 4 === 1)
     return (
       <RenderingArea>
-        <CodeGuess />
+        {myTeamCode ? (
+          <CodeGuess />
+        ) : (
+          <Waiting>
+            <p>Waiting...</p>
+          </Waiting>
+        )}
       </RenderingArea>
     );
   if (stage % 4 === 2 && leader.uid === me.uid)
@@ -57,7 +65,7 @@ export default function RenderByStage() {
       <RenderingArea>
         <Waiting>
           <p>Waiting...</p>
-        </Waiting>{' '}
+        </Waiting>
       </RenderingArea>
     );
   if (stage % 4 === 3 && leader.uid === me.uid)
