@@ -46,7 +46,7 @@ export default function BaseLayout() {
     <Wrapper>
       <Container>
         <Header ref={headerRef}>
-          <img src='img/pacMan.gif' alt='pacMan' style={{ width: '10rem', height: '10rem' }} />
+          <img src='img/pacman.gif' alt='pacMan' style={{ width: '10rem', height: '10rem' }} />
           <h1>Decrypto</h1>
         </Header>
         <ButtonControl>

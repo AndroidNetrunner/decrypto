@@ -26,7 +26,6 @@ export default function Room() {
 
   socket.off('GAME_START').on('GAME_START', (gameInfo) => {
     dispatch(updateDB(gameInfo));
-    console.log('game start');
     navigate(`/room/${game.roomId}/start`);
   });
   /*
@@ -71,7 +70,6 @@ export default function Room() {
     dispatch(updateUser(userInfo));
     dispatch(updateDB(gameInfo));
   });
-  console.log('ROOM PAGE USER', user);
   console.log('🎮 ROOM PAGE game 🎮', game);
 
   return (

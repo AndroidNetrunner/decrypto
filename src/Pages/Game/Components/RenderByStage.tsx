@@ -21,10 +21,7 @@ export default function RenderByStage() {
   const myTeam = game.sovietTeam.players.some((player: User) => player.uid === me.uid)
     ? 'sovietTeam'
     : 'usaTeam';
-  console.log(game);
-  console.log(`myTeam: ${myTeam}`);
   const myTeamCode = game[myTeam].codes;
-  console.log(myTeamCode);
   if (stage % 4 === 0 && leader.uid === me.uid)
     return (
       <RenderingArea>
