@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../Redux/store/rootStore';
 import socket from '../../../Utils/socket';
 
@@ -43,20 +43,26 @@ function handleChange() {
   makeNewOptions(thirdCode, possibleThirdCode, selectedIndex[2]);
 }
 
-function handleSubmit() {
-  const firstSelect = document.getElementById('guessFirstCode') as HTMLSelectElement;
-  const firstCode = Number(firstSelect.options[firstSelect.selectedIndex].value);
-  const secondSelect = document.getElementById('guessSecondCode') as HTMLSelectElement;
-  const secondCode = Number(secondSelect.options[secondSelect.selectedIndex].value);
-  const thirdSelect = document.getElementById('guessThirdCode') as HTMLSelectElement;
-  const thirdCode = Number(thirdSelect.options[thirdSelect.selectedIndex].value);
-  socket.emit('SUBMIT_CODE', [firstCode, secondCode, thirdCode]);
-}
-
 function CodeGuess() {
-  const currentTeam =
-    useSelector((rootState: RootState) => rootState.game.stageNumber) % 4 === 1 ? 'sovietTeam' : 'usaTeam';
-  const hints = useSelector((rootState: RootState) => rootState.game[currentTeam].hints);
+  const { stageNumber } = useSelector((rootState: RootState) => rootState.game);
+  const currentTeam = stageNumber % 4 === 1 ? 'sovietTeam' : 'usaTeam';
+  const { hints } = useSelector((rootState: RootState) => rootState.game[currentTeam]);
+  const { answerCode } = useSelector((rootState: RootState) => rootState.game);
+  const dispatch = useDispatch();
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const firstSelect = document.getElementById('guessFirstCode') as HTMLSelectElement;
+    const firstCode = Number(firstSelect.options[firstSelect.selectedIndex].value);
+    const secondSelect = document.getElementById('guessSecondCode') as HTMLSelectElement;
+    const secondCode = Number(secondSelect.options[secondSelect.selectedIndex].value);
+    const thirdSelect = document.getElementById('guessThirdCode') as HTMLSelectElement;
+    const thirdCode = Number(thirdSelect.options[thirdSelect.selectedIndex].value);
+    socket.emit('SUBMIT_CODE', [firstCode, secondCode, thirdCode], (gameInfo) => {
+      dispatch(gameInfo);
+    });
+  };
+
   return (
     <GuessForm onChange={handleChange} onSubmit={handleSubmit}>
       <div className='formArea'>
@@ -67,7 +73,7 @@ function CodeGuess() {
           </tr>
           <tr>
             <td className='labelArea'>
-              <label htmlFor='guessFirstCode'>{hints[0]}</label>
+              <label htmlFor='guessFirstCode'>{hints[Math.floor(stageNumber / 4)][answerCode[0] - 1]}</label>
             </td>
             <td>
               <select name='guessFirstCode' id='guessFirstCode' required>
@@ -83,7 +89,7 @@ function CodeGuess() {
           </tr>
           <tr>
             <td className='labelArea'>
-              <label htmlFor='guessSecondCode'>{hints[1]}</label>
+              <label htmlFor='guessSecondCode'>{hints[Math.floor(stageNumber / 4)][answerCode[1] - 1]}</label>
             </td>
             <td>
               <select name='guessSecondCode' id='guessSecondCode' required>
@@ -93,7 +99,7 @@ function CodeGuess() {
           </tr>
           <tr>
             <td className='labelArea'>
-              <label htmlFor='guessThirdCode'>{hints[2]}</label>
+              <label htmlFor='guessThirdCode'>{hints[Math.floor(stageNumber / 4)][answerCode[2] - 1]}</label>
             </td>
             <td>
               <select name='guessThirdCode' id='guessThirdCode' required>

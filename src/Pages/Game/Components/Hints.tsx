@@ -4,16 +4,23 @@ import { RootState } from '../../../Redux/store/rootStore';
 
 function Hints({ team }: { team: string }) {
   const recordFrom = team === 'Soviet' ? 'sovietTeam' : 'usaTeam';
-  const hintRecord = useSelector((rootState: RootState) => rootState.game[recordFrom].hints);
+  let hintRecord = useSelector((rootState: RootState) => rootState.game[recordFrom].hints);
+  const stageNumber = useSelector((rootState: RootState) => rootState.game.stageNumber);
+
+  if (
+    (stageNumber % 4 === 1 && recordFrom === 'sovietTeam') ||
+    (stageNumber % 4 === 3 && recordFrom === 'usaTeam')
+  )
+    hintRecord = hintRecord.slice(0, -1);
   return (
     <Container>
       <Title>{team}</Title>
       <HintArea>
         <ItemList>
-          <Item className='num'>1</Item>
-          <Item className='num'>2</Item>
-          <Item className='num'>3</Item>
-          <Item className='num'>4</Item>
+          <Item>1</Item>
+          <Item>2</Item>
+          <Item>3</Item>
+          <Item>4</Item>
         </ItemList>
         {hintRecord.map((item: string[]) => (
           <ItemList>
@@ -31,11 +38,6 @@ function Hints({ team }: { team: string }) {
 const Container = styled.div`
   width: 35rem;
   margin: 2rem;
-
-  .num {
-    font-size: 1.5rem;
-    color: #2e3c7e;
-  }
 `;
 
 const Title = styled.p`
@@ -56,6 +58,8 @@ const Item = styled.div`
   margin-top: 5px;
   font-weight: bold;
   text-align: center;
+  font-size: 1.5rem;
+  color: #2e3c7e;
 `;
 
 const HintArea = styled.div`

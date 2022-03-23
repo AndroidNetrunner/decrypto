@@ -26,9 +26,9 @@ export default function ScoreTable() {
         </CircleContainer>
         <CircleContainer>
           {sovietTeam.redToken > 0 ? (
-            <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
-          ) : (
             <img src='../../img/my-coin-pink.gif' alt='pink' style={{ width: '2rem', height: '2rem' }} />
+          ) : (
+            <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
           )}
           <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
         </CircleContainer>
@@ -45,9 +45,9 @@ export default function ScoreTable() {
         </CircleContainer>
         <CircleContainer>
           {usaTeam.redToken > 0 ? (
-            <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
-          ) : (
             <img src='../../img/my-coin-pink.gif' alt='pink' style={{ width: '2rem', height: '2rem' }} />
+          ) : (
+            <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
           )}
           <img src='../../img/empty-coin.gif' alt='empty' style={{ width: '2rem', height: '2rem' }} />
         </CircleContainer>
@@ -72,17 +72,4 @@ const ScoreTableArea = styled.table`
 
 const CircleContainer = styled.td`
   text-align: center;
-`;
-
-const Circle = styled.div<{ filled: boolean; color: string }>`
-  border-radius: 8px;
-  width: 10px;
-  height: 10px;
-  border-style: solid;
-  border-color: ${(props) => props.color};
-  background-color: ${(props) => (props.filled ? props.color : 'white')};
-  display: inline-block;
-  &:first-child {
-    margin-right: 3px;
-  }
 `;

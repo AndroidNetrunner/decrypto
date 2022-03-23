@@ -10,6 +10,10 @@ export interface ServerToClientEvents {
   LEAVE_ROOM: (gameInfo: Game) => void;
   GAME_START: (gameInfo: Game) => void;
   INIT_DATA: (gameInfo: Game, userData: User) => void;
+  SUBMIT_HINT: (gameInfo: Game) => void;
+  SUBMIT_CODE: () => void;
+  NEW_ROUND: (gameInfo: Game) => void;
+  SHOW_RESULT: (gameInfo: Game) => void;
 }
 
 // * 이벤트를 보낼 때
@@ -21,6 +25,7 @@ export interface ClientToServerEvents {
     done: (confirmRoomId: string) => void,
   ) => void;
   GAME_START: (done: (gameInfo: Game) => void) => void;
-  SUBMIT_HINT: (hints: [string, string, string]) => void;
-  SUBMIT_CODE: (code: number[]) => void;
+  SUBMIT_HINT: (hints: [string, string, string, string], done: (gameInfo: Game) => void) => void;
+  SUBMIT_CODE: (code: [number, number, number], done: (gameInfo: Game) => void) => void;
+  END_GAME: () => void;
 }

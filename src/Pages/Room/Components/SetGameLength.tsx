@@ -9,7 +9,6 @@ export default function SetGameLength() {
 
   const onChangeTime = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const gameTime = Number(event.target.value);
-    console.log(gameTime);
     socket.emit('SET_TIMER', gameTime);
   };
   return (
