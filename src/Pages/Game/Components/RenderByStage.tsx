@@ -18,8 +18,13 @@ export default function RenderByStage() {
   const stage = game.stageNumber;
   const leader = getLeader(game, stage);
   const me: User = useSelector((rootState: RootState) => rootState.user);
-  const myTeam = game.sovietTeam.players.includes(me) ? 'sovietTeam' : 'usaTeam';
+  const myTeam = game.sovietTeam.players.some((player: User) => player.uid === me.uid)
+    ? 'sovietTeam'
+    : 'usaTeam';
+  console.log(game);
+  console.log(`myTeam: ${myTeam}`);
   const myTeamCode = game[myTeam].codes;
+  console.log(myTeamCode);
   if (stage % 4 === 0 && leader.uid === me.uid)
     return (
       <RenderingArea>
@@ -45,7 +50,7 @@ export default function RenderByStage() {
   if (stage % 4 === 1)
     return (
       <RenderingArea>
-        {myTeamCode ? (
+        {!myTeamCode.length ? (
           <CodeGuess />
         ) : (
           <Waiting>
@@ -76,11 +81,18 @@ export default function RenderByStage() {
         </Waiting>{' '}
       </RenderingArea>
     );
-  return (
-    <RenderingArea>
-      <CodeGuess />
-    </RenderingArea>
-  );
+  if (stage % 4 === 3)
+    return (
+      <RenderingArea>
+        {!myTeamCode.length ? (
+          <CodeGuess />
+        ) : (
+          <Waiting>
+            <p>Waiting...</p>
+          </Waiting>
+        )}
+      </RenderingArea>
+    );
 }
 
 const RenderingArea = styled.div`

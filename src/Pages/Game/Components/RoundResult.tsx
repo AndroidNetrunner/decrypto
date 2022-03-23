@@ -15,6 +15,7 @@ function RoundResult() {
   const stealTeamName = stealTeam === 'sovietTeam' ? '소련' : '미국';
   const guessTeamName = stealTeamName === '소련' ? '미국' : '소련';
   const hints = useSelector((rootState: RootState) => rootState.game[guessTeam].hints);
+  console.log(hints);
   return (
     <Container>
       <Result>
@@ -24,9 +25,7 @@ function RoundResult() {
         </h2>
         <HintContainer>
           힌트:
-          {hints.map((hint: string) => (
-            <Hint key={hint}>{hint} </Hint>
-          ))}
+          {hints.map((hint: string) => <Hint key={hint}>{hint} </Hint>).join('-')}
         </HintContainer>
       </Result>
 
