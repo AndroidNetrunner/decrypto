@@ -22,7 +22,6 @@ export default function Timer() {
           #ccc2c9 ${progressValue * 3.6}deg
           )`;
         if (progressValue === progressEndValue) {
-          console.log('done'); // 추후에 서버에 제출하는 코드로 변경
           clearInterval(progress);
         }
       }

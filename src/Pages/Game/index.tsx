@@ -33,7 +33,6 @@ export default function Game() {
     dispatch(updateDB(gameInfo));
   });
   socket.off('SHOW_RESULT').on('SHOW_RESULT', (gameInfo) => {
-    console.log('need to show modal');
     dispatch(updateDB(gameInfo));
     toggleResult();
   });
@@ -47,17 +46,14 @@ export default function Game() {
     game.usaTeam.greenToken === 2 ||
     game.usaTeam.redToken === 2
   ) {
-    console.log('END GAME');
     socket.emit('END_GAME');
     if (game.sovietTeam.greenToken === 2 || game.usaTeam.redToken === 2) alert('SOVIET WINS!!');
     else alert('USA WINS!!!');
     navigate(`/`);
   }
   const doNothing = () => {
-    console.log('doing nothing');
+    console.log(' ');
   };
-  console.log('GAME PAGE USER', user);
-  console.log('🎮 GAME PAGE game 🎮', game);
   return (
     <Container>
       <ShowTeam>

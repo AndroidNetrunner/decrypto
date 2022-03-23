@@ -20,7 +20,6 @@ export default function GameStartButton() {
     socket.emit('GAME_START', (gameInfo) => {
       dispatch(updateDB(gameInfo));
       navigate(`/room/${game.roomId}/start`);
-      console.log('나는 방장이지롱');
     });
   };
 
