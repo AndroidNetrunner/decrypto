@@ -191,16 +191,18 @@ const handleSocket = (io: ServerType) => {
       }
       const submitTeam = user.isSovietTeam ? 'sovietTeam.codes' : 'usaTeam.codes';
       let gameInfo = await Game.findOne({ roomId });
+      console.log(codes);
       try {
         if (!gameInfo?.$isEmpty(submitTeam)) {
           return;
         }
         gameInfo = await Game.findOneAndUpdate(
           { roomId },
-          { $push: { [submitTeam]: codes } },
+          { $set: { [submitTeam]: codes } },
           { new: true }
         ).populate(['sovietTeam.players', 'usaTeam.players']);
         if (gameInfo) {
+          const tempStageNumber = gameInfo.stageNumber;
           const passCondition =
             !gameInfo.$isEmpty('sovietTeam.codes') && !gameInfo.$isEmpty('usaTeam.codes');
           if (!passCondition) {
@@ -237,13 +239,13 @@ const handleSocket = (io: ServerType) => {
               { roomId },
               {
                 $inc: {
-                  'stageNumber': 1,
                   'usaTeam.greenToken': usaInterrupt,
                   'usaTeam.redToken': usaWrong,
                   'sovietTeam.greenToken': sovietInterrupt,
                   'sovietTeam.redToken': sovietWrong,
                 },
                 $set: {
+                  'stageNumber': tempStageNumber + 1,
                   'answerCode': answerCode[0].code,
                   'sovietTeam.codes': [],
                   'usaTeam.codes': [],
