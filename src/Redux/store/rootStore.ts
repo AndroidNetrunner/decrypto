@@ -1,8 +1,15 @@
 import { combineReducers, createStore } from 'redux';
 import updateDBReducer from '../reducer/updateDB';
 import updateUserReducer from '../reducer/updateUser';
+import Game from '../../Interfaces/Game.interface';
+import User from '../../Interfaces/User.interface';
 
-const rootReducer = combineReducers({ game: updateDBReducer, user: updateUserReducer });
+interface rootReducer {
+  game: Game;
+  user: User;
+}
+
+const rootReducer = combineReducers<rootReducer>({ game: updateDBReducer, user: updateUserReducer });
 
 const store = createStore(rootReducer);
 

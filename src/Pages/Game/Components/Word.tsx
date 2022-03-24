@@ -14,7 +14,7 @@ function Word() {
   return (
     <Container>
       {wordList.map((word: string, index: number) => (
-        <div>
+        <div key={word}>
           <Number>{index + 1}</Number>
           <WordContainer>
             <div>{word}</div>
@@ -39,6 +39,7 @@ const WordContainer = styled.div`
   div {
     margin-right: 2rem;
     padding-bottom: 0.5rem;
+    width: 80px;
   }
 `;
 const Container = styled.div`

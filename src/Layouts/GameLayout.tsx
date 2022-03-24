@@ -70,6 +70,7 @@ export default function GameLayout() {
 
 const Main = styled.main`
   width: 100%;
+  height: 100%;
   padding: 0rem 5rem;
   margin: 0 auto;
   background-color: #2e3c7e;

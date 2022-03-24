@@ -18,17 +18,16 @@ function Hints({ team }: { team: string }) {
       <Flag nation={team === 'Soviet' ? 'soviet' : 'usa'} />
       <HintArea>
         <ItemList>
-          <Item>1</Item>
-          <Item>2</Item>
-          <Item>3</Item>
-          <Item>4</Item>
+          <Item key='one'>1</Item>
+          <Item key='two'>2</Item>
+          <Item key='three'>3</Item>
+          <Item key='four'>4</Item>
         </ItemList>
-        {hintRecord.map((item: string[]) => (
-          <ItemList>
-            <Item>{item[0]}</Item>
-            <Item>{item[1]}</Item>
-            <Item>{item[2]}</Item>
-            <Item>{item[3]}</Item>
+        {hintRecord.map((hintList: string[]) => (
+          <ItemList key={hintList.join()}>
+            {hintList.map((hint) => (
+              <Item key={hint}>{hint}</Item>
+            ))}
           </ItemList>
         ))}
       </HintArea>
@@ -37,11 +36,10 @@ function Hints({ team }: { team: string }) {
 }
 
 const Container = styled.div`
-  width: 35rem;
-  margin: 2rem;
+  width: 50rem;
+  margin: 0.5rem;
+  display: flex;
 `;
-
-const Title = styled.img``;
 
 const ItemList = styled.div`
   display: flex;
@@ -59,6 +57,7 @@ const Item = styled.div`
 `;
 
 const HintArea = styled.div`
+  width: 40rem;
   padding: 1.5rem;
   background-color: #b4bce3;
   border-radius: 15px;

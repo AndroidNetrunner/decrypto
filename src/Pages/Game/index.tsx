@@ -7,6 +7,7 @@ import GameInterface from '../../Interfaces/Game.interface';
 import User from '../../Interfaces/User.interface';
 import RoundResult from './Components/RoundResult';
 import ScoreTable from './Components/ScoreTable';
+import CurrentLeader from './Components/CurrentLeader';
 import Flag from '../../Components/Common/Flag';
 import socket from '../../Utils/socket';
 import { updateDB } from '../../Redux/reducer/updateDB';
@@ -15,14 +16,16 @@ import Overlay from '../../Components/Common/Overlay';
 import RenderByStage from './Components/RenderByStage';
 import { RootState } from '../../Redux/store/rootStore';
 
+function getLeader(game: GameInterface, stage: number) {
+  const { players } = Math.floor(stage / 2) % 2 ? game.usaTeam : game.sovietTeam;
+  return players[Math.floor(stage / 4) % players.length];
+}
+
 export default function Game() {
   const game: GameInterface = useSelector((state: RootState) => state.game);
   const user: User = useSelector((state: RootState) => state.user);
   const [resultModal, setResultModal] = useState(false);
   const dispatch = useDispatch();
-  const toggleResult = () => {
-    setResultModal((prev) => !prev);
-  };
   const navigate = useNavigate();
   const myTeam = game.sovietTeam.players.some((player: User) => player.uid === user.uid)
     ? 'sovietTeam'
@@ -35,11 +38,11 @@ export default function Game() {
   });
   socket.off('SHOW_RESULT').on('SHOW_RESULT', (gameInfo) => {
     dispatch(updateDB(gameInfo));
-    toggleResult();
+    setResultModal(true);
   });
   socket.off('NEW_ROUND').on('NEW_ROUND', (gameInfo) => {
     dispatch(updateDB(gameInfo));
-    toggleResult();
+    setResultModal(false);
   });
   if (
     game.sovietTeam.greenToken === 2 ||
@@ -55,13 +58,15 @@ export default function Game() {
   const doNothing = () => {
     console.log(' ');
   };
-  console.log('GAME ', game);
-  console.log('USER ', user);
+
   return (
     <Container>
-      <ShowTeam>
-        <Flag nation={myTeam === 'sovietTeam' ? 'soviet' : 'usa'} />{' '}
-      </ShowTeam>
+      <TopArea>
+        <CurrentLeader leader={getLeader(game, game.stageNumber).nickname} />
+        <ShowTeam>
+          <Flag nation={myTeam === 'sovietTeam' ? 'soviet' : 'usa'} />
+        </ShowTeam>
+      </TopArea>
       <Word />
       <HintTokenArea>
         <RenderByStage />
@@ -95,17 +100,22 @@ export default function Game() {
   -----> 결과
 */
 
+const TopArea = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
 const ShowTeam = styled.div`
   text-align: left;
   font-size: 5rem;
 `;
 
 const Container = styled.div`
-  color: black;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  color: black;
 `;
 
 const HintTokenArea = styled.div`

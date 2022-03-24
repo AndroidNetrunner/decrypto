@@ -11,15 +11,12 @@ import Game from '../../Interfaces/Game.interface';
 import UserInterface from '../../Interfaces/User.interface';
 import GameStartButton from './Components/GameStartButton';
 import TeamChangeButton from './Components/TeamChangeButton';
-import SetGameLength from './Components/SetGameLength';
 
 export default function Room() {
   const game = useSelector((state: RootState) => state.game);
   const user: UserInterface = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(user);
-
   /*
     ! 방장이 게임을 시작시켰을 때 로직
     * @param gameInfo
@@ -76,7 +73,7 @@ export default function Room() {
 
   return (
     <Container>
-      Room No: {game.roomNumber}
+      <RoomNumber>Room No: {game.roomId}</RoomNumber>
       <Teams>
         <TeamContainer className='Soviet'>
           <TeamName className='Soviet'>
@@ -87,10 +84,12 @@ export default function Room() {
           </TeamName>
           <UserList className='Soviet'>
             {game.sovietTeam.players.length ? (
-              game.sovietTeam.players.map((player: User) => (
+              game.sovietTeam.players.map((player: UserInterface) => (
                 <User key={player.uid}>
-                  {player.nickname}
-                  {player.captain && <Star />}
+                  <span>
+                    {player.nickname}
+                    {player.captain && <Star />}
+                  </span>
                 </User>
               ))
             ) : (
@@ -110,8 +109,10 @@ export default function Room() {
             {game.usaTeam.players.length ? (
               game.usaTeam.players.map((player) => (
                 <User key={player.uid}>
-                  {player.nickname}
-                  {player.captain && <Star />}
+                  <span>
+                    {player.nickname}
+                    {player.captain && <Star />}
+                  </span>
                 </User>
               ))
             ) : (
@@ -122,15 +123,21 @@ export default function Room() {
       </Teams>
       <Control>
         <GameStartButton />
-        <SetGameLength />
       </Control>
     </Container>
   );
 }
 
+const RoomNumber = styled.div`
+  margin-top: 1rem;
+  font-size: 5rem;
+  color: white;
+`;
+
 const TeamName = styled.div`
   display: flex;
-  height: 8rem;
+  width: 100%;
+  height: 9rem;
   justify-content: center;
   align-items: center;
   padding: 0.5rem 1rem;
@@ -156,11 +163,13 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   color: black;
-  flex-wrap: wrap;
+  height: 100%;
 `;
 
 const TeamContainer = styled.div`
-  margin: 3rem;
+  display: flex;
+  flex-direction: column;
+  margin: 0rem 3rem;
   width: 100%;
   height: 100%;
   min-width: 40rem;
@@ -182,12 +191,19 @@ const UserList = styled.ul`
 
 const User = styled.li`
   position: relative;
+  display: flex;
+  flex-direction: center;
+  justify-content: center;
   margin: 1rem 1rem;
   padding: 2rem 1rem;
   font-size: 2rem;
   text-align: center;
   border-radius: 1rem;
   background-color: rgb(255, 255, 255, 0.3);
+  align-items: center;
+  span {
+    height: fit-content;
+  }
   svg {
     position: absolute;
     right: 15px;
@@ -195,14 +211,15 @@ const User = styled.li`
 `;
 
 const Control = styled.div`
-  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  margin-bottom: 2rem;
 `;
 
 const Teams = styled.div`
   display: flex;
-  margin-top: 7%;
+  height: 100%;
+  margin-top: 3%;
 `;

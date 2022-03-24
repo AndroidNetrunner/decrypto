@@ -54,7 +54,6 @@ export default function Login() {
               placeholder='Enter nickname'
               id='nickname'
             />
-            <Button disabled={!nickname.length}>Creat Game</Button>
           </InputWrapper>
           <InputWrapper>
             <span>Room</span>
@@ -65,9 +64,9 @@ export default function Login() {
               placeholder='Enter room number'
               id='room'
             />
-            <Button disabled={!(nickname.length && roomId.length)}>Enter Game</Button>
           </InputWrapper>
         </InputContainer>
+        <Button disabled={!(nickname.length && roomId.length)}>Enter Game</Button>
       </Form>
     </Container>
   );
@@ -96,6 +95,8 @@ const Button = styled.button`
   padding: 1rem;
   font-size: 1.5rem;
   box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+  margin: auto;
+  margin-top: 8rem;
 `;
 
 const InputContainer = styled.div`
