@@ -7,6 +7,7 @@ import GameInterface from '../../Interfaces/Game.interface';
 import User from '../../Interfaces/User.interface';
 import RoundResult from './Components/RoundResult';
 import ScoreTable from './Components/ScoreTable';
+import Flag from '../../Components/Common/Flag';
 import socket from '../../Utils/socket';
 import { updateDB } from '../../Redux/reducer/updateDB';
 import Word from './Components/Word';
@@ -54,10 +55,12 @@ export default function Game() {
   const doNothing = () => {
     console.log(' ');
   };
+  console.log('GAME ', game);
+  console.log('USER ', user);
   return (
     <Container>
       <ShowTeam>
-        <img alt='img' src={myTeam === 'sovietTeam' ? '../../img/soviet.png' : '../../img/usa.png'} />{' '}
+        <Flag nation={myTeam === 'sovietTeam' ? 'soviet' : 'usa'} />{' '}
       </ShowTeam>
       <Word />
       <HintTokenArea>

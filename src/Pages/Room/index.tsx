@@ -5,6 +5,7 @@ import { updateDB } from '../../Redux/reducer/updateDB';
 import { updateUser } from '../../Redux/reducer/updateUser';
 import { RootState } from '../../Redux/store/rootStore';
 import socket from '../../Utils/socket';
+import Star from './Components/Star';
 import Game from '../../Interfaces/Game.interface';
 import UserInterface from '../../Interfaces/User.interface';
 import GameStartButton from './Components/GameStartButton';
@@ -16,6 +17,7 @@ export default function Room() {
   const user: UserInterface = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  console.log(user);
 
   /*
     ! 방장이 게임을 시작시켰을 때 로직
@@ -83,7 +85,12 @@ export default function Room() {
           </TeamName>
           <UserList className='Soviet'>
             {game.sovietTeam.players.length ? (
-              game.sovietTeam.players.map((player) => <User key={player.uid}>{player.nickname}</User>)
+              game.sovietTeam.players.map((player) => (
+                <User key={player.uid}>
+                  {player.nickname}
+                  {player.captain && <Star />}
+                </User>
+              ))
             ) : (
               <User>참가하세오,,!</User>
             )}
@@ -99,7 +106,12 @@ export default function Room() {
           </TeamName>
           <UserList className='USA'>
             {game.usaTeam.players.length ? (
-              game.usaTeam.players.map((player) => <User key={player.uid}>{player.nickname}</User>)
+              game.usaTeam.players.map((player) => (
+                <User key={player.uid}>
+                  {player.nickname}
+                  {player.captain && <Star />}
+                </User>
+              ))
             ) : (
               <User>참가하세오,,!</User>
             )}
@@ -167,13 +179,17 @@ const UserList = styled.ul`
 `;
 
 const User = styled.li`
+  position: relative;
   margin: 1rem 1rem;
-  padding: 3rem 1rem;
-  border: 1rem 1rem;
+  padding: 2rem 1rem;
   font-size: 2rem;
   text-align: center;
   border-radius: 1rem;
   background-color: rgb(255, 255, 255, 0.3);
+  svg {
+    position: absolute;
+    right: 15px;
+  }
 `;
 
 const Control = styled.div`
