@@ -46,7 +46,11 @@ const handleSocket = (io: ServerType) => {
         }
         let user = await User.findOne({ uid });
         if (user) {
-          user = await User.findOneAndUpdate({ uid }, { $set: { nickname } }, { new: true });
+          user = await User.findOneAndUpdate(
+            { uid },
+            { $set: { nickname, captain: false } },
+            { new: true }
+          );
         } else {
           user = await User.create({ nickname, uid });
         }
@@ -195,7 +199,7 @@ const handleSocket = (io: ServerType) => {
           { roomId },
           { $push: { [submitTeam]: codes } },
           { new: true }
-        );
+        ).populate(['sovietTeam.players', 'usaTeam.players']);
         if (gameInfo) {
           const passCondition =
             !gameInfo.$isEmpty('sovietTeam.codes') && !gameInfo.$isEmpty('usaTeam.codes');
