@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import Flag from '../../../Components/Common/Flag';
 import { RootState } from '../../../Redux/store/rootStore';
 
 export default function ScoreTable() {
@@ -15,7 +16,9 @@ export default function ScoreTable() {
         <th className='labelArea'>오답 토큰</th>
       </tr>
       <tr>
-        <th className='labelArea'>Soviet</th>
+        <th className='labelArea'>
+          <Flag nation='soviet' />
+        </th>
         <CircleContainer>
           {sovietTeam.greenToken > 0 ? (
             <img src='../../img/my-coin-green.gif' alt='green' style={{ width: '2rem', height: '2rem' }} />
@@ -34,7 +37,9 @@ export default function ScoreTable() {
         </CircleContainer>
       </tr>
       <tr>
-        <th className='labelArea'>usa</th>
+        <th className='labelArea'>
+          <Flag nation='usa' />
+        </th>
         <CircleContainer>
           {usaTeam.greenToken > 0 ? (
             <img src='../../img/my-coin-green.gif' alt='green' style={{ width: '2rem', height: '2rem' }} />

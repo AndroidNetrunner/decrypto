@@ -6,6 +6,7 @@ import { updateUser } from '../../Redux/reducer/updateUser';
 import { RootState } from '../../Redux/store/rootStore';
 import socket from '../../Utils/socket';
 import Star from './Components/Star';
+import Flag from '../../Components/Common/Flag';
 import Game from '../../Interfaces/Game.interface';
 import UserInterface from '../../Interfaces/User.interface';
 import GameStartButton from './Components/GameStartButton';
@@ -13,7 +14,7 @@ import TeamChangeButton from './Components/TeamChangeButton';
 import SetGameLength from './Components/SetGameLength';
 
 export default function Room() {
-  const game: Game = useSelector((state: RootState) => state.game);
+  const game = useSelector((state: RootState) => state.game);
   const user: UserInterface = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -75,17 +76,18 @@ export default function Room() {
 
   return (
     <Container>
+      Room No: {game.roomNumber}
       <Teams>
         <TeamContainer className='Soviet'>
           <TeamName className='Soviet'>
             <span>
               Soviet
-              <img src='../../img/soviet.png' alt='soviet' />
+              <Flag nation='soviet' />
             </span>
           </TeamName>
           <UserList className='Soviet'>
             {game.sovietTeam.players.length ? (
-              game.sovietTeam.players.map((player) => (
+              game.sovietTeam.players.map((player: User) => (
                 <User key={player.uid}>
                   {player.nickname}
                   {player.captain && <Star />}
@@ -101,7 +103,7 @@ export default function Room() {
           <TeamName className='USA'>
             <span>
               USA
-              <img src='../../img/usa.png' alt='USA' />
+              <Flag nation='usa' />
             </span>
           </TeamName>
           <UserList className='USA'>
