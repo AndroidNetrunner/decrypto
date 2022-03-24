@@ -79,7 +79,7 @@ const Container = styled.div`
   position: relative;
   border: 0.5rem solid white;
   height: 100%;
-  overflow-y: auto;
+  overflow-y: none;
 `;
 
 const Wrapper = styled.div`

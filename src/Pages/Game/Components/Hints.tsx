@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import Flag from '../../../Components/Common/Flag';
 import { RootState } from '../../../Redux/store/rootStore';
 
 function Hints({ team }: { team: string }) {
@@ -14,7 +15,7 @@ function Hints({ team }: { team: string }) {
     hintRecord = hintRecord.slice(0, -1);
   return (
     <Container>
-      <Title>{team}</Title>
+      <Flag nation={team === 'Soviet' ? 'soviet' : 'usa'} />
       <HintArea>
         <ItemList>
           <Item>1</Item>
@@ -40,12 +41,7 @@ const Container = styled.div`
   margin: 2rem;
 `;
 
-const Title = styled.p`
-  font-size: 1.3rem;
-  color: white;
-  text-align: center;
-  margin-bottom: 5px;
-`;
+const Title = styled.img``;
 
 const ItemList = styled.div`
   display: flex;
