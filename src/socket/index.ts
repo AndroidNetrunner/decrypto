@@ -236,11 +236,10 @@ const handleSocket = (io: ServerType) => {
         }
         gameInfo = await Game.findOneAndUpdate(
           { roomId },
-          { $set: { [submitTeam]: codes } },
+          { $push: { [submitTeam]: codes } },
           { new: true }
         ).populate(['sovietTeam.players', 'usaTeam.players']);
         if (gameInfo) {
-          const tempStageNumber = gameInfo.stageNumber;
           const passCondition =
             !gameInfo.$isEmpty('sovietTeam.codes') && !gameInfo.$isEmpty('usaTeam.codes');
           if (!passCondition) {
@@ -285,13 +284,13 @@ const handleSocket = (io: ServerType) => {
               { roomId },
               {
                 $inc: {
+                  'stageNumber': 1,
                   'usaTeam.greenToken': usaInterrupt,
                   'usaTeam.redToken': usaWrong,
                   'sovietTeam.greenToken': sovietInterrupt,
                   'sovietTeam.redToken': sovietWrong,
                 },
                 $set: {
-                  'stageNumber': tempStageNumber + 1,
                   'answerCode': answerCode[0].code,
                   'sovietTeam.codes': [],
                   'usaTeam.codes': [],
