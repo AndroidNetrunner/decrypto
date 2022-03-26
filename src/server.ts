@@ -42,9 +42,6 @@ const io = new Server<ServerToClientEvents, ClientToServerEvents, InterServerEve
   }
 );
 
-io.of(process.env.NODE_ENV === 'development' ? '/api/game' : '/game').on(
-  'connection',
-  handleSocket(io)
-);
+io.on('connection', handleSocket(io));
 
 export default httpServer;
