@@ -1,5 +1,4 @@
 import { Server, Socket } from 'socket.io';
-import logger from '../config/winston';
 import {
   ClientToServerEvents,
   InterServerEvents,
@@ -32,9 +31,7 @@ const getPublicRooms = (io: ServerType) => {
 const handleSocket = (io: ServerType) => {
   return (socket: SocketType) => {
     socket.onAny((event) => {
-      logger.info(
-        `📡 Socket Event : ${event} | ${socket.data.user?.nickname} | ${socket.data.user?.uid}`
-      );
+      console.log('📡 Socket Event : ', event);
     });
 
     socket.on('ENTER_ROOM', async (userInfo, done) => {
@@ -43,9 +40,7 @@ const handleSocket = (io: ServerType) => {
         let gameInfo;
         const game = await Game.findOne({ roomId });
         if (game?.isPlaying) {
-          logger.error(
-            `❌ FAIL | ENTER_ROOM : ALREADY_START | roomId : ${roomId} | ${userInfo.nickname} | ${userInfo.uid}`
-          );
+          console.log('isPlaying');
           socket.to(socket.id).emit('ALREADY_START');
           return;
         }
@@ -85,17 +80,9 @@ const handleSocket = (io: ServerType) => {
         if (user && gameInfo) {
           socket.broadcast.to(roomId).emit('ENTER_ROOM', gameInfo);
           io.to(socket.id).emit('INIT_DATA', gameInfo, user);
-          logger.info(
-            `✅ SUCCESS | ENTER_ROOM | roomId : ${roomId} | ${user.nickname} | ${user.uid} | to ${
-              socket.data.user?.isSovietTeam ? 'soviet' : 'usa'
-            }`
-          );
         }
       } catch (error) {
         console.log(error);
-        logger.error(
-          `❌ FAIL | ENTER_ROOM | roomId : ${roomId} | ${userInfo.nickname} | ${userInfo.uid} `
-        );
       }
     });
 
@@ -122,41 +109,26 @@ const handleSocket = (io: ServerType) => {
           user.isSovietTeam = !user.isSovietTeam;
           socket.broadcast.to(roomId).emit('CHANGE_TEAM', gameInfo);
           done(gameInfo);
-          logger.info(
-            `✅ SUCCESS | CHANGE_TEAM | roomId : ${roomId} | ${user.nickname} | ${user.uid} | to ${
-              user.isSovietTeam ? 'soviet' : 'usa'
-            }`
-          );
         }
       } catch (error) {
         console.log(error);
-        logger.error(
-          `❌ FAIL | CHANGE_TEAM | roomId : ${roomId} | ${user.nickname} | ${user.uid} | to ${
-            user.isSovietTeam ? 'soviet' : 'usa'
-          }`
-        );
       }
     });
 
     socket.on('SET_TIMER', async (gameTime) => {
-      const { roomId, user } = socket.data;
+      const { roomId } = socket.data;
       try {
         const game = await Game.findOne({ roomId });
         if (game) {
           await game.updateOne({ $set: { timer: gameTime } }, { new: true });
-          logger.info(
-            `✅ SUCCESS | SET_TIMER | roomId : ${roomId} | ${user?.nickname} | ${user?.uid}`
-          );
         }
       } catch (error) {
-        logger.error(
-          `❌ FAIL | CHANGE_TEAM | roomId : ${roomId} | ${user?.nickname} | ${user?.uid}`
-        );
+        console.log(error);
       }
     });
 
     socket.on('GAME_START', async (done) => {
-      const { roomId, user } = socket.data;
+      const { roomId } = socket.data;
       if (typeof roomId !== 'string') {
         return;
       }
@@ -173,7 +145,6 @@ const handleSocket = (io: ServerType) => {
             { roomId },
             {
               $set: {
-                'isPlaying': true,
                 'sovietTeam.words': sovietWords,
                 'usaTeam.words': usaWords,
                 'answerCode': answerCode[0].code,
@@ -185,15 +156,10 @@ const handleSocket = (io: ServerType) => {
           if (gameInfo) {
             socket.to(roomId).emit('GAME_START', gameInfo);
             done(gameInfo);
-            logger.info(
-              `✅ SUCCESS | GAME_START | roomId : ${roomId} | CAPTAIN : ${user?.nickname} | ${user?.uid}`
-            );
           }
         }
       } catch (error) {
-        logger.error(
-          `❌ FAIL | GAME_START | roomId : ${roomId} | CAPTAIN : ${user?.nickname} | ${user?.uid}`
-        );
+        console.log(error);
       }
     });
 
@@ -212,14 +178,9 @@ const handleSocket = (io: ServerType) => {
         if (gameInfo) {
           socket.to(roomId).emit('SUBMIT_HINT', gameInfo);
           done(gameInfo);
-          logger.info(
-            `✅ SUCCESS | SUBMIT_HINT | roomId : ${roomId} | ${user?.nickname} | ${user?.uid} | ${hints}`
-          );
         }
       } catch (error) {
-        logger.error(
-          `❌ FAIL | SUBMIT_HINT | roomId : ${roomId} | ${user?.nickname} | ${user?.uid} | ${hints}`
-        );
+        console.log(error);
       }
     });
 
@@ -230,6 +191,7 @@ const handleSocket = (io: ServerType) => {
       }
       const submitTeam = user.isSovietTeam ? 'sovietTeam.codes' : 'usaTeam.codes';
       let gameInfo = await Game.findOne({ roomId });
+      console.log(codes);
       try {
         if (!gameInfo?.$isEmpty(submitTeam)) {
           return;
@@ -245,11 +207,6 @@ const handleSocket = (io: ServerType) => {
           if (!passCondition) {
             socket.to(roomId).emit('SUBMIT_CODE', gameInfo);
             io.to(socket.id).emit('SUBMIT_CODE', gameInfo);
-            logger.info(
-              `✅ SUCCESS | SUBMIT_CODE | roomId : ${roomId} | ${user?.nickname} | ${user?.uid} | ${
-                user?.isSovietTeam ? 'soviet' : 'usa'
-              } | ${codes}}`
-            );
             return;
           }
           // 양 팀 모두 코드를 제출하여 passCondition 상황
@@ -275,9 +232,6 @@ const handleSocket = (io: ServerType) => {
           gameInfo = await gameInfo.populate(['sovietTeam.players', 'usaTeam.players']);
           io.to(socket.id).emit('SHOW_RESULT', gameInfo);
           socket.to(roomId).emit('SHOW_RESULT', gameInfo);
-          logger.info(
-            `✅ SUCCESS | SUBMIT_HINT : PASS_CONDITION | roomId : ${roomId} | ${user?.nickname} | ${user?.uid}`
-          );
           setTimeout(async () => {
             const answerCode = await Code.aggregate([{ $sample: { size: 1 } }]);
             gameInfo = await Game.findOneAndUpdate(
@@ -301,16 +255,11 @@ const handleSocket = (io: ServerType) => {
             if (gameInfo) {
               io.to(socket.id).emit('NEW_ROUND', gameInfo);
               socket.to(roomId).emit('NEW_ROUND', gameInfo);
-              logger.info(
-                `✅ SUCCESS | NEW_ROUND | roomId : ${roomId} | ${user?.nickname} | ${user?.uid}`
-              );
             }
           }, 5000);
         }
       } catch (error) {
-        logger.info(
-          `❌ FAIL | SUBMIT_HINT | roomId : ${roomId} | ${user?.nickname} | ${user?.uid} | ${codes}`
-        );
+        console.log(error);
       }
     });
 
@@ -335,14 +284,9 @@ const handleSocket = (io: ServerType) => {
         if (game) {
           const gameInfo = await game.populate(['sovietTeam.players', 'usaTeam.players']);
           socket.broadcast.to(roomId).emit('LEAVE_ROOM', gameInfo);
-          logger.info(
-            `✅ SUCCESS | NEW_ROUND | roomId : ${roomId} | ${user?.nickname} | ${user?.uid}`
-          );
         }
       } catch (error) {
-        logger.error(
-          `❌ FAIL | DISCONNECTING | roomId : ${roomId} | ${user?.nickname} | ${user?.uid}`
-        );
+        console.log(error);
       }
     });
   };

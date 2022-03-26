@@ -15,9 +15,9 @@ import {
 import handleSocket from './socket';
 
 const app = express();
-const httpLogger = morgan('dev');
+const logger = morgan('dev');
 
-app.use(httpLogger);
+app.use(logger);
 app.use(helmet());
 app.use(
   cors({
