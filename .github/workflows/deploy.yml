@@ -31,8 +31,9 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
-          username: ec2-user
+          username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
           script: mkdir -p /home/ubuntu/srv/ubuntu
 
 #       - name: Copy source via ssh key
