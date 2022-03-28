@@ -19,14 +19,14 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v2
 
-      - name: Create env files
-        run: |
-          touch frontend/.env
-          echo "${{ secrets.ENV_FRONT}}" >> frontend/.env
-          touch db/.env
-          echo "${{ secrets.ENV_DB}}" >> db/.env
-          touch backend/.env
-          echo "${{ secrets.ENV_BACKEND}}" >> backend/.env
+#       - name: Create env files
+#         run: |
+#           touch frontend/.env
+#           echo "${{ secrets.ENV_FRONT}}" >> frontend/.env
+#           touch db/.env
+#           echo "${{ secrets.ENV_DB}}" >> db/.env
+#           touch backend/.env
+#           echo "${{ secrets.ENV_BACKEND}}" >> backend/.env
 
       - name: Create remote directory
         uses: appleboy/ssh-action@master
