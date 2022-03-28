@@ -6,13 +6,8 @@ import CodeGuess from './CodeGuess';
 import HintSubmit from './HintSubmit';
 import User from '../../../Interfaces/User.interface';
 import Waiting from './Waiting';
+import getLeader from '../../../Utils/getLeader';
 
-// leader를 stage 로 구할 수 있는 함수.
-// leader/2 가 짝수면 soviet, 홀수면 usa, leader/4 가 해당 팀의 리더
-function getLeader(game: Game, stage: number) {
-  const { players } = Math.floor(stage / 2) % 2 ? game.usaTeam : game.sovietTeam;
-  return players[Math.floor(stage / 4) % players.length];
-}
 export default function RenderByStage() {
   const game = useSelector((rootState: RootState) => rootState.game);
   const stage = game.stageNumber;

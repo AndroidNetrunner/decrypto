@@ -7,14 +7,12 @@ import { RootState } from '../../Redux/store/rootStore';
 import socket from '../../Utils/socket';
 import Star from './Components/Star';
 import Flag from '../../Components/Common/Flag';
-import Game from '../../Interfaces/Game.interface';
 import UserInterface from '../../Interfaces/User.interface';
 import GameStartButton from './Components/GameStartButton';
 import TeamChangeButton from './Components/TeamChangeButton';
 
 export default function Room() {
   const game = useSelector((state: RootState) => state.game);
-  const user: UserInterface = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   /*

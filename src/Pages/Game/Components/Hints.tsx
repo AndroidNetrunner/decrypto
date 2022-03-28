@@ -15,7 +15,9 @@ function Hints({ team }: { team: string }) {
     hintRecord = hintRecord.slice(0, -1);
   return (
     <Container>
-      <Flag nation={team === 'Soviet' ? 'soviet' : 'usa'} />
+      <ResizeFlag>
+        <Flag nation={team === 'Soviet' ? 'soviet' : 'usa'} />
+      </ResizeFlag>
       <HintArea>
         <ItemList>
           <Item key='one'>1</Item>
@@ -61,6 +63,10 @@ const HintArea = styled.div`
   padding: 1.5rem;
   background-color: #b4bce3;
   border-radius: 15px;
+`;
+
+const ResizeFlag = styled.div`
+  position: relative;
 `;
 
 export default Hints;
