@@ -19,8 +19,10 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v2
 
-#       - name: Create env files
-#         run: |
+      - name: Create env files
+        run: |
+            touch .env
+            echo "${{ secrets.ENV_FRONT}}" >> .env            
 #           touch frontend/.env
 #           echo "${{ secrets.ENV_FRONT}}" >> frontend/.env
 #           touch db/.env
