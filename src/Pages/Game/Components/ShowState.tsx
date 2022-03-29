@@ -2,12 +2,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../Redux/store/rootStore';
 import User from '../../../Interfaces/User.interface';
-import Game from '../../../Interfaces/Game.interface';
-
-function getLeader(game: Game, stage: number) {
-  const { players } = Math.floor(stage / 2) % 2 ? game.usaTeam : game.sovietTeam;
-  return players[Math.floor(stage / 4) % players.length];
-}
+import getLeader from '../../../Utils/getLeader';
 
 function getCurrentState(player: User) {
   const game = useSelector((rootState: RootState) => rootState.game);

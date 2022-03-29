@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../../Redux/store/rootStore';
 import socket from '../../../Utils/socket';

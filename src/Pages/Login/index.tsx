@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { nanoid } from 'nanoid';
 import { v4 as uuidV4 } from 'uuid';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';

@@ -15,11 +15,7 @@ import Word from './Components/Word';
 import Overlay from '../../Components/Common/Overlay';
 import RenderByStage from './Components/RenderByStage';
 import { RootState } from '../../Redux/store/rootStore';
-
-function getLeader(game: GameInterface, stage: number) {
-  const { players } = Math.floor(stage / 2) % 2 ? game.usaTeam : game.sovietTeam;
-  return players[Math.floor(stage / 4) % players.length];
-}
+import getLeader from '../../Utils/getLeader';
 
 export default function Game() {
   const game: GameInterface = useSelector((state: RootState) => state.game);
