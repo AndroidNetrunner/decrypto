@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../Redux/store/rootStore';
 import socket from '../../../Utils/socket';
@@ -10,21 +11,20 @@ function CodeGuess() {
   const { hints } = useSelector((rootState: RootState) => rootState.game[currentTeam]);
   const { answerCode } = useSelector((rootState: RootState) => rootState.game);
   const dispatch = useDispatch();
+  const [firstCode, setFirstCode] = useState(0);
+  const [secondCode, setSecondCode] = useState(0);
+  const [thirdCode, setThirdCode] = useState(0);
+
+  const isValidCode = (): boolean => {
+    if (!(firstCode && secondCode && thirdCode)) return false;
+    return new Set([firstCode, secondCode, thirdCode]).size === 3;
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const firstSelect = document.getElementById('guessFirstCode') as HTMLSelectElement;
-    const firstCode = Number(firstSelect.options[firstSelect.selectedIndex].value);
-    const secondSelect = document.getElementById('guessSecondCode') as HTMLSelectElement;
-    const secondCode = Number(secondSelect.options[secondSelect.selectedIndex].value);
-    const thirdSelect = document.getElementById('guessThirdCode') as HTMLSelectElement;
-    const thirdCode = Number(thirdSelect.options[thirdSelect.selectedIndex].value);
-    if (new Set([firstCode, secondCode, thirdCode]).size == 3)
-      socket.emit('SUBMIT_CODE', [firstCode, secondCode, thirdCode], (gameInfo: Game) => {
-        dispatch(gameInfo);
-      });
-    else
-      alert('정답 코드에는 똑같은 숫자가 존재하지 않습니다.')
+    socket.emit('SUBMIT_CODE', [firstCode, secondCode, thirdCode], (gameInfo: Game) => {
+      dispatch(gameInfo);
+    });
   };
 
   return (
@@ -40,7 +40,7 @@ function CodeGuess() {
               <label htmlFor='guessFirstCode'>{hints[Math.floor(stageNumber / 4)][answerCode[0] - 1]}</label>
             </td>
             <td>
-              <select name='guessFirstCode' id='guessFirstCode' required>
+              <select required onChange={(event) => setFirstCode(Number(event.target.value))}>
                 <option disabled selected>
                   {' '}
                 </option>
@@ -56,8 +56,14 @@ function CodeGuess() {
               <label htmlFor='guessSecondCode'>{hints[Math.floor(stageNumber / 4)][answerCode[1] - 1]}</label>
             </td>
             <td>
-              <select name='guessSecondCode' id='guessSecondCode' required>
-                {' '}
+              <select required onChange={(event) => setSecondCode(Number(event.target.value))}>
+                <option disabled selected>
+                  {' '}
+                </option>
+                <option value='1'>1</option>
+                <option value='2'>2</option>
+                <option value='3'>3</option>
+                <option value='4'>4</option>
               </select>
             </td>
           </tr>
@@ -66,14 +72,22 @@ function CodeGuess() {
               <label htmlFor='guessThirdCode'>{hints[Math.floor(stageNumber / 4)][answerCode[2] - 1]}</label>
             </td>
             <td>
-              <select name='guessThirdCode' id='guessThirdCode' required>
-                {' '}
+              <select required onChange={(event) => setThirdCode(Number(event.target.value))}>
+                <option disabled selected>
+                  {' '}
+                </option>
+                <option value='1'>1</option>
+                <option value='2'>2</option>
+                <option value='3'>3</option>
+                <option value='4'>4</option>
               </select>
             </td>
           </tr>
         </table>
         <div className='buttonArea'>
-          <button type='submit'>Submit</button>
+          <button type='submit' disabled={!isValidCode()}>
+            Submit
+          </button>
         </div>
       </div>
     </GuessForm>
