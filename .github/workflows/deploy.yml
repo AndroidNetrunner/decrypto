@@ -1,5 +1,7 @@
 name: Deploy
 on:
+  push:
+    branches: [test]
   pull_request:
     branches: [main]
     types: [closed]
