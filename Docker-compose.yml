@@ -1,0 +1,53 @@
+version: "3"
+services:
+  nginx:
+    container_name: nginx
+    build:
+      context: ./
+      dockerfile: nginx/Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+    networks:
+      - decrypto-app
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+  certbot:
+    image: certbot/certbot
+    container_name: certbot_service
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+  backend:
+    container_name: backend
+    build: ./backend
+    depends_on:
+      - mongo
+    ports:
+      - "8080:8080"
+    restart: always
+    networks:
+      - decrypto-app
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - 27017:27017
+    env_file:
+      - ./db/.env
+    restart: always
+    networks:
+      - decrypto-app
+    volumes:
+      - mongo-data:/data/db
+networks:
+  decrypto-app:
+    driver: bridge
+volumes:
+  mongo-data:
+    driver: local
