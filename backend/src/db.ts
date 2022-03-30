@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const connectionString = `mongodb://${process.env.MONGO_DB_HOST}:27017/Decrypto`;
+const connectionString = `mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@${process.env.MONGO_DB_HOST}:27017/Decrypto`;
 
 mongoose.connect(connectionString);
 
