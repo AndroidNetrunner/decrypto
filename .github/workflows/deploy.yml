@@ -1,0 +1,53 @@
+name: Deploy
+on:
+  pull_request:
+    branches: [main]
+    types: [closed]
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+      tags:
+        description: 'Test scenario tags'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Create env files
+        run: |
+          touch frontend/.env
+          echo "${{ secrets.ENV_FRONT}}" >> frontend/.env
+          touch db/.env
+          echo "${{ secrets.ENV_DB}}" >> db/.env
+          touch backend/.env
+          echo "${{ secrets.ENV_BACKEND}}" >> backend/.env
+      - name: Create remote directory
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: mkdir -p /home/ubuntu/decrypto
+      - name: Copy source via ssh key
+        uses: burnett01/rsync-deployments@4.1
+        with:
+          switches: -avzr --delete
+          remote_host: ${{ secrets.HOST }}
+          remote_user: ${{ secrets.USERNAME }}
+          remote_key: ${{ secrets.KEY }}
+          remote_path: /home/ubuntu/decrypto/
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            sh /home/ubuntu/decrypto/scripts/deploy.sh
