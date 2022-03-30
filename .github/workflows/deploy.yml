@@ -27,7 +27,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
-          script: mkdir -p /home/ubuntu/decrypto
+          # script: mkdir -p /home/ubuntu/decrypto
+          script: mkdir -p /home/ubuntu/test
       - name: Copy source via ssh key
         uses: burnett01/rsync-deployments@4.1
         with:
@@ -35,7 +36,8 @@ jobs:
           remote_host: ${{ secrets.HOST }}
           remote_user: ${{ secrets.USERNAME }}
           remote_key: ${{ secrets.KEY }}
-          remote_path: /home/ubuntu/decrypto/
+          # remote_path: /home/ubuntu/decrypto/
+          script: mkdir -p /home/ubuntu/test
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
