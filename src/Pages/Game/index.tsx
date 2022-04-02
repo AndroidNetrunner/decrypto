@@ -14,6 +14,7 @@ import { updateDB } from '../../Redux/reducer/updateDB';
 import Word from './Components/Word';
 import Overlay from '../../Components/Common/Overlay';
 import RenderByStage from './Components/RenderByStage';
+import TeamMemberList from './Components/TeamMemberList';
 import { RootState } from '../../Redux/store/rootStore';
 
 function getLeader(game: GameInterface, stage: number) {
@@ -66,6 +67,7 @@ export default function Game() {
         <ShowTeam>
           <Flag nation={myTeam === 'sovietTeam' ? 'soviet' : 'usa'} />
         </ShowTeam>
+        <TeamMemberList />
       </TopArea>
       <Word />
       <HintTokenArea>
