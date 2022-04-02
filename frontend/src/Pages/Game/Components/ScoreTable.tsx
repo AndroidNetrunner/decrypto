@@ -20,22 +20,22 @@ export default function ScoreTable() {
           <th className='labelArea'>Soviet</th>
           <CircleContainer>
             <Coin color='green' count={sovietTeam.greenToken} />
-            <Coin color='empty' count={0} />
+            <Coin color='green' count={sovietTeam.greenToken - 1} />
           </CircleContainer>
           <CircleContainer>
             <Coin color='red' count={sovietTeam.redToken} />
-            <Coin color='empty' count={0} />
+            <Coin color='red' count={sovietTeam.redToken - 1} />
           </CircleContainer>
         </tr>
         <tr>
           <th className='labelArea'>USA</th>
           <CircleContainer>
             <Coin color='green' count={usaTeam.greenToken} />
-            <Coin color='empty' count={0} />
+            <Coin color='green' count={usaTeam.greenToken - 1} />
           </CircleContainer>
           <CircleContainer>
             <Coin color='red' count={usaTeam.redToken} />
-            <Coin color='empty' count={0} />
+            <Coin color='red' count={usaTeam.redToken - 1} />
           </CircleContainer>
         </tr>
       </tbody>
