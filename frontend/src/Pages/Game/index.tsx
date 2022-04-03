@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -16,6 +16,7 @@ import Overlay from '../../Components/Common/Overlay';
 import RenderByStage from './Components/RenderByStage';
 import { RootState } from '../../Redux/store/rootStore';
 import getLeader from '../../Utils/getLeader';
+import usePreventLeave from '../../Hooks/usePreventLeave';
 
 export default function Game() {
   const game: GameInterface = useSelector((state: RootState) => state.game);
@@ -23,6 +24,7 @@ export default function Game() {
   const [resultModal, setResultModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { enablePrevent, disablePrevent } = usePreventLeave();
   const myTeam = game.sovietTeam.players.some((player: User) => player.uid === user.uid)
     ? 'sovietTeam'
     : 'usaTeam';
@@ -55,6 +57,10 @@ export default function Game() {
     console.log(' ');
   };
 
+  useEffect(() => {
+    enablePrevent();
+    return disablePrevent;
+  }, []);
   return (
     <Container>
       <TopArea>
