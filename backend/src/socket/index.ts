@@ -253,6 +253,17 @@ const handleSocket = (io: ServerType) => {
               { new: true }
             ).populate(['sovietTeam.players', 'usaTeam.players']);
             if (gameInfo) {
+              const { sovietTeam, usaTeam } = gameInfo;
+              if (
+                sovietTeam.greenToken === 2 ||
+                sovietTeam.redToken === 2 ||
+                usaTeam.greenToken === 2 ||
+                usaTeam.redToken === 2
+              ) {
+                io.to(socket.id).emit('END_GAME');
+                socket.to(roomId).emit('END_GAME');
+                return;
+              }
               io.to(socket.id).emit('NEW_ROUND', gameInfo);
               socket.to(roomId).emit('NEW_ROUND', gameInfo);
             }
