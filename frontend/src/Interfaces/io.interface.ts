@@ -14,7 +14,7 @@ export interface ServerToClientEvents {
   SUBMIT_CODE: (gameInfo: Game) => void;
   NEW_ROUND: (gameInfo: Game) => void;
   SHOW_RESULT: (gameInfo: Game) => void;
-  END_GAME: () => void;
+  END_GAME: (gameInfo: Game) => void;
 }
 
 // * 이벤트를 보낼 때

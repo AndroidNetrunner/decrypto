@@ -28,7 +28,7 @@ export interface ClientToServerEvents {
   SUBMIT_CODE: (gameData: GameInterface) => void;
   SHOW_RESULT: (gameData: GameInterface) => void;
   NEW_ROUND: (gameData: GameInterface) => void;
-  END_GAME: () => void;
+  END_GAME: (gameData: GameInterface) => void;
 }
 
 export interface InterServerEvents {
