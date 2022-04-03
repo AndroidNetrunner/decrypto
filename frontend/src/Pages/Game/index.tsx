@@ -46,7 +46,8 @@ export default function Game() {
     setRoundResultModal(false);
   });
 
-  socket.off('END_GAME').on('END_GAME', () => {
+  socket.off('END_GAME').on('END_GAME', (gameInfo) => {
+    dispatch(updateDB(gameInfo));
     setGameResultModal(true);
   });
   const doNothing = () => {
