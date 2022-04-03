@@ -260,8 +260,8 @@ const handleSocket = (io: ServerType) => {
                 usaTeam.greenToken === 2 ||
                 usaTeam.redToken === 2
               ) {
-                io.to(socket.id).emit('END_GAME');
-                socket.to(roomId).emit('END_GAME');
+                io.to(socket.id).emit('END_GAME', gameInfo);
+                socket.to(roomId).emit('END_GAME', gameInfo);
                 return;
               }
               io.to(socket.id).emit('NEW_ROUND', gameInfo);

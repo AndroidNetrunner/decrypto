@@ -32,11 +32,11 @@ export default function GameResult() {
       };
     if (game.sovietTeam.redToken === 2)
       return {
-        sovietWin: true,
+        sovietWin: false,
         description: `소련팀의 오답 토큰 2개 획득으로 인한 패배`,
       };
     return {
-      sovietWin: false,
+      sovietWin: true,
       description: `미국팀의 오답 토큰 2개 획득으로 인한 패배`,
     };
   };
