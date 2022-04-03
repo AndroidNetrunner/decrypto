@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Hints from './Components/Hints';
 import GameInterface from '../../Interfaces/Game.interface';
 import User from '../../Interfaces/User.interface';
 import RoundResult from './Components/RoundResult';
+import GameResult from './Components/GameResult';
 import ScoreTable from './Components/ScoreTable';
 import CurrentLeader from './Components/CurrentLeader';
 import Flag from '../../Components/Common/Flag';
@@ -14,6 +14,7 @@ import { updateDB } from '../../Redux/reducer/updateDB';
 import Word from './Components/Word';
 import Overlay from '../../Components/Common/Overlay';
 import RenderByStage from './Components/RenderByStage';
+import TeamMemberList from './Components/TeamMemberList';
 import { RootState } from '../../Redux/store/rootStore';
 import getLeader from '../../Utils/getLeader';
 import usePreventLeave from '../../Hooks/usePreventLeave';
@@ -21,9 +22,9 @@ import usePreventLeave from '../../Hooks/usePreventLeave';
 export default function Game() {
   const game: GameInterface = useSelector((state: RootState) => state.game);
   const user: User = useSelector((state: RootState) => state.user);
-  const [resultModal, setResultModal] = useState(false);
+  const [roundResultModal, setRoundResultModal] = useState(false);
+  const [gameResultModal, setGameResultModal] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { enablePrevent, disablePrevent } = usePreventLeave();
   const myTeam = game.sovietTeam.players.some((player: User) => player.uid === user.uid)
     ? 'sovietTeam'
@@ -36,23 +37,18 @@ export default function Game() {
   });
   socket.off('SHOW_RESULT').on('SHOW_RESULT', (gameInfo) => {
     dispatch(updateDB(gameInfo));
-    setResultModal(true);
+    setRoundResultModal(true);
   });
+  // 서버가 endCondition 판단 후 클라이언트에게 NEW_ROUND or
+
   socket.off('NEW_ROUND').on('NEW_ROUND', (gameInfo) => {
     dispatch(updateDB(gameInfo));
-    setResultModal(false);
+    setRoundResultModal(false);
   });
-  if (
-    game.sovietTeam.greenToken === 2 ||
-    game.sovietTeam.redToken === 2 ||
-    game.usaTeam.greenToken === 2 ||
-    game.usaTeam.redToken === 2
-  ) {
-    socket.emit('END_GAME');
-    if (game.sovietTeam.greenToken === 2 || game.usaTeam.redToken === 2) alert('SOVIET WINS!!');
-    else alert('USA WINS!!!');
-    navigate(`/`);
-  }
+
+  socket.off('END_GAME').on('END_GAME', () => {
+    setGameResultModal(true);
+  });
   const doNothing = () => {
     console.log(' ');
   };
@@ -61,6 +57,7 @@ export default function Game() {
     enablePrevent();
     return disablePrevent;
   }, []);
+
   return (
     <Container>
       <TopArea>
@@ -68,6 +65,7 @@ export default function Game() {
         <ShowTeam>
           <Flag nation={myTeam === 'sovietTeam' ? 'soviet' : 'usa'} />
         </ShowTeam>
+        <TeamMemberList />
       </TopArea>
       <Word />
       <HintTokenArea>
@@ -78,9 +76,14 @@ export default function Game() {
         <Hints team='Soviet' />
         <Hints team='usa' />
       </HintRecordArea>
-      {resultModal && (
+      {roundResultModal && (
         <Overlay onClickOverlay={doNothing}>
           <RoundResult />
+        </Overlay>
+      )}
+      {gameResultModal && (
+        <Overlay onClickOverlay={doNothing}>
+          <GameResult />
         </Overlay>
       )}
     </Container>

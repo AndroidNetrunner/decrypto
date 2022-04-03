@@ -14,6 +14,7 @@ export interface ServerToClientEvents {
   SUBMIT_CODE: (gameInfo: Game) => void;
   NEW_ROUND: (gameInfo: Game) => void;
   SHOW_RESULT: (gameInfo: Game) => void;
+  END_GAME: () => void;
 }
 
 // * 이벤트를 보낼 때
@@ -27,5 +28,4 @@ export interface ClientToServerEvents {
   GAME_START: (done: (gameInfo: Game) => void) => void;
   SUBMIT_HINT: (hints: [string, string, string, string], done: (gameInfo: Game) => void) => void;
   SUBMIT_CODE: (code: [number, number, number], done: (gameInfo: Game) => void) => void;
-  END_GAME: () => void;
 }
