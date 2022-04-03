@@ -25,7 +25,6 @@ export default function Game() {
   const [roundResultModal, setRoundResultModal] = useState(false);
   const [gameResultModal, setGameResultModal] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { enablePrevent, disablePrevent } = usePreventLeave();
   const myTeam = game.sovietTeam.players.some((player: User) => player.uid === user.uid)
     ? 'sovietTeam'
@@ -53,6 +52,12 @@ export default function Game() {
   const doNothing = () => {
     console.log(' ');
   };
+
+  useEffect(() => {
+    enablePrevent();
+    return disablePrevent;
+  }, []);
+
   return (
     <Container>
       <TopArea>
