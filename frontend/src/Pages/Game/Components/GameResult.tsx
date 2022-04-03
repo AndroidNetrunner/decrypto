@@ -75,74 +75,104 @@ export default function GameResult() {
             <UsaSpan>{gameResult.description}</UsaSpan>
           )}
         </Paragraph>
-        <SemiTitle id='sovietHints' onClick={toggleParagraph}>
-          <SovietSpan>소련</SovietSpan>팀 힌트
-          <IconSVG width='30' height='30' viewBox='0 0 16 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
-            <path d='M10 14L16 6H4L10 14Z' fill='#cd0000' />
-          </IconSVG>
-        </SemiTitle>
-        <Paragraph showOn={isToggle.sovietHints}>
-          <HintTable>
-            <tr>
-              <th>1번</th>
-              <th>2번</th>
-              <th>3번</th>
-              <th>4번</th>
-            </tr>
-            {game.sovietTeam.hints.map((hint) => (
-              <tr>
-                <td>{hint[0]}</td>
-                <td>{hint[1]}</td>
-                <td>{hint[2]}</td>
-                <td>{hint[3]}</td>
-              </tr>
-            ))}
-          </HintTable>
-        </Paragraph>
-        <SemiTitle id='sovietWords' onClick={toggleParagraph}>
-          <SovietSpan>소련</SovietSpan>팀 단어
-          <IconSVG width='30' height='30' viewBox='0 0 16 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
-            <path d='M10 14L16 6H4L10 14Z' fill='#cd0000' />
-          </IconSVG>
-        </SemiTitle>
-        <Paragraph showOn={isToggle.sovietWords}>
-          1번: {game.sovietTeam.words[0]} <br /> 2번: {game.sovietTeam.words[1]} <br /> 3번:{' '}
-          {game.sovietTeam.words[2]} <br /> 4번: {game.sovietTeam.words[3]}
-        </Paragraph>
-        <SemiTitle id='usaHints' onClick={toggleParagraph}>
-          <UsaSpan>미국</UsaSpan>팀 힌트
-          <IconSVG width='30' height='30' viewBox='0 0 16 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
-            <path d='M10 14L16 6H4L10 14Z' fill='#00468e' />
-          </IconSVG>
-        </SemiTitle>
-        <Paragraph showOn={isToggle.usaHints}>
-          <HintTable>
-            <tr>
-              <th>1번</th>
-              <th>2번</th>
-              <th>3번</th>
-              <th>4번</th>
-            </tr>
-            {game.usaTeam.hints.map((hint) => (
-              <tr>
-                <td>{hint[0]}</td>
-                <td>{hint[1]}</td>
-                <td>{hint[2]}</td>
-                <td>{hint[3]}</td>
-              </tr>
-            ))}
-          </HintTable>
-        </Paragraph>
-        <SemiTitle id='usaWords' onClick={toggleParagraph}>
-          <UsaSpan>미국</UsaSpan>팀 단어
-          <IconSVG width='30' height='30' viewBox='0 0 16 15' fill='none' xmlns='http://www.w3.org/2000/svg'>
-            <path d='M10 14L16 6H4L10 14Z' fill='#00468e' />
-          </IconSVG>
-        </SemiTitle>
-        <Paragraph showOn={isToggle.usaWords}>
-          1번: {game.usaTeam.words[0]} <br /> 2번: {game.usaTeam.words[1]} <br /> 3번: {game.usaTeam.words[2]}{' '}
-          <br /> 4번: {game.usaTeam.words[3]}
-        </Paragraph>
+        <TeamContainer>
+          <TeamColumn>
+            <SemiTitle id='sovietHints' onClick={toggleParagraph}>
+              <SovietSpan>소련</SovietSpan>팀 힌트
+              <IconSVG
+                width='30'
+                height='30'
+                viewBox='0 0 16 15'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path d='M10 14L16 6H4L10 14Z' fill='#cd0000' />
+              </IconSVG>
+            </SemiTitle>
+            <Paragraph showOn={isToggle.sovietHints}>
+              <HintTable>
+                <tr>
+                  <th>1번</th>
+                  <th>2번</th>
+                  <th>3번</th>
+                  <th>4번</th>
+                </tr>
+                {game.sovietTeam.hints.map((hint) => (
+                  <tr>
+                    <td>{hint[0]}</td>
+                    <td>{hint[1]}</td>
+                    <td>{hint[2]}</td>
+                    <td>{hint[3]}</td>
+                  </tr>
+                ))}
+              </HintTable>
+            </Paragraph>
+            <SemiTitle id='sovietWords' onClick={toggleParagraph}>
+              <SovietSpan>소련</SovietSpan>팀 단어
+              <IconSVG
+                width='30'
+                height='30'
+                viewBox='0 0 16 15'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path d='M10 14L16 6H4L10 14Z' fill='#cd0000' />
+              </IconSVG>
+            </SemiTitle>
+            <Paragraph showOn={isToggle.sovietWords}>
+              1번: {game.sovietTeam.words[0]} <br /> 2번: {game.sovietTeam.words[1]} <br /> 3번:{' '}
+              {game.sovietTeam.words[2]} <br /> 4번: {game.sovietTeam.words[3]}
+            </Paragraph>
+          </TeamColumn>
+          <TeamColumn>
+            <SemiTitle id='usaHints' onClick={toggleParagraph}>
+              <UsaSpan>미국</UsaSpan>팀 힌트
+              <IconSVG
+                width='30'
+                height='30'
+                viewBox='0 0 16 15'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path d='M10 14L16 6H4L10 14Z' fill='#00468e' />
+              </IconSVG>
+            </SemiTitle>
+            <Paragraph showOn={isToggle.usaHints}>
+              <HintTable>
+                <tr>
+                  <th>1번</th>
+                  <th>2번</th>
+                  <th>3번</th>
+                  <th>4번</th>
+                </tr>
+                {game.usaTeam.hints.map((hint) => (
+                  <tr>
+                    <td>{hint[0]}</td>
+                    <td>{hint[1]}</td>
+                    <td>{hint[2]}</td>
+                    <td>{hint[3]}</td>
+                  </tr>
+                ))}
+              </HintTable>
+            </Paragraph>
+            <SemiTitle id='usaWords' onClick={toggleParagraph}>
+              <UsaSpan>미국</UsaSpan>팀 단어
+              <IconSVG
+                width='30'
+                height='30'
+                viewBox='0 0 16 15'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path d='M10 14L16 6H4L10 14Z' fill='#00468e' />
+              </IconSVG>
+            </SemiTitle>
+            <Paragraph showOn={isToggle.usaWords}>
+              1번: {game.usaTeam.words[0]} <br /> 2번: {game.usaTeam.words[1]} <br /> 3번:{' '}
+              {game.usaTeam.words[2]} <br /> 4번: {game.usaTeam.words[3]}
+            </Paragraph>
+          </TeamColumn>
+        </TeamContainer>
       </ResultText>
     </ResultWrapper>
   );
@@ -166,7 +196,7 @@ const Paragraph = styled.p<{ showOn: boolean }>`
 const SemiTitle = styled.div`
   font-family: neodgm;
   font-size: 300%;
-  margin: 2rem 2rem;
+  margin: 2rem;
 `;
 
 const Title = styled.div`
@@ -215,4 +245,13 @@ const SovietSpan = styled.span`
 
 const UsaSpan = styled.span`
   color: #00468e;
+`;
+
+const TeamContainer = styled.div`
+  display: flex;
+  margin: auto;
+  text-align: center;
+`;
+const TeamColumn = styled.div`
+  width: 50%;
 `;

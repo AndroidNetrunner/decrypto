@@ -37,24 +37,19 @@ export default function Game() {
     dispatch(updateDB(gameInfo));
     setRoundResultModal(true);
   });
+  // 서버가 endCondition 판단 후 클라이언트에게 NEW_ROUND or
+
   socket.off('NEW_ROUND').on('NEW_ROUND', (gameInfo) => {
     dispatch(updateDB(gameInfo));
     setRoundResultModal(false);
   });
+
+  socket.off('END_GAME').on('END_GAME', () => {
+    setGameResultModal(true);
+  });
   const doNothing = () => {
     console.log(' ');
   };
-  useEffect(() => {
-    if (
-      game.sovietTeam.greenToken === 2 ||
-      game.sovietTeam.redToken === 2 ||
-      game.usaTeam.greenToken === 2 ||
-      game.usaTeam.redToken === 2
-    ) {
-      socket.emit('END_GAME');
-      setGameResultModal(true);
-    }
-  }, [roundResultModal]);
   return (
     <Container>
       <TopArea>
