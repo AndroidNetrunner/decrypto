@@ -22,9 +22,13 @@ function CodeGuess() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    socket.emit('SUBMIT_CODE', [firstCode, secondCode, thirdCode], (gameInfo: Game) => {
-      dispatch(gameInfo);
-    });
+    setTimeout(
+      () =>
+        socket.emit('SUBMIT_CODE', [firstCode, secondCode, thirdCode], (gameInfo: Game) => {
+          dispatch(gameInfo);
+        }),
+      0,
+    );
   };
 
   return (
