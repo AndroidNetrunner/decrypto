@@ -25,7 +25,7 @@ function TeamMemberList() {
 }
 
 const TeamContainer = styled.div`
-  width: 10%;
+  width: 15%;
   display: table;
   table-layout: fixed;
   word-break: break-all;
