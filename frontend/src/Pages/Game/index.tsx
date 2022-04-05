@@ -66,9 +66,11 @@ export default function Game() {
         <ShowTeam>
           <Flag nation={myTeam === 'sovietTeam' ? 'soviet' : 'usa'} />
         </ShowTeam>
-        <TeamMemberList />
       </TopArea>
-      <Word />
+      <MiddleArea>
+        <TeamMemberList />
+        <Word />
+      </MiddleArea>
       <HintTokenArea>
         <RenderByStage />
         <ScoreTable />
@@ -107,6 +109,11 @@ export default function Game() {
 */
 
 const TopArea = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+const MiddleArea = styled.div`
   display: flex;
   width: 100%;
 `;
