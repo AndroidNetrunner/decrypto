@@ -39,7 +39,7 @@ export default function HintSubmit() {
       <AnswerCode>
         CODE <br /> {answer[0]} - {answer[1]} - {answer[2]}{' '}
       </AnswerCode>
-      <HintForm onSubmit={handleSubmit}>
+      <HintForm onSubmit={handleSubmit} autoComplete='off'>
         <div>
           <label htmlFor='hintform-first'>#{answer[0]}</label>
           <input
