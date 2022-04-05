@@ -1,16 +1,14 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../../Redux/store/rootStore';
 import socket from '../../../Utils/socket';
-import Game from '../../../Interfaces/Game.interface';
 
 function CodeGuess() {
   const { stageNumber } = useSelector((rootState: RootState) => rootState.game);
   const currentTeam = stageNumber % 4 === 1 ? 'sovietTeam' : 'usaTeam';
   const { hints } = useSelector((rootState: RootState) => rootState.game[currentTeam]);
   const { answerCode } = useSelector((rootState: RootState) => rootState.game);
-  const dispatch = useDispatch();
   const [firstCode, setFirstCode] = useState(0);
   const [secondCode, setSecondCode] = useState(0);
   const [thirdCode, setThirdCode] = useState(0);
@@ -22,13 +20,7 @@ function CodeGuess() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setTimeout(
-      () =>
-        socket.emit('SUBMIT_CODE', [firstCode, secondCode, thirdCode], (gameInfo: Game) => {
-          dispatch(gameInfo);
-        }),
-      0,
-    );
+    setTimeout(() => socket.emit('SUBMIT_CODE', [firstCode, secondCode, thirdCode]), 0);
   };
 
   return (

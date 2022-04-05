@@ -27,5 +27,5 @@ export interface ClientToServerEvents {
   ) => void;
   GAME_START: (done: (gameInfo: Game) => void) => void;
   SUBMIT_HINT: (hints: [string, string, string, string], done: (gameInfo: Game) => void) => void;
-  SUBMIT_CODE: (code: [number, number, number], done: (gameInfo: Game) => void) => void;
+  SUBMIT_CODE: (code: [number, number, number]) => void;
 }
