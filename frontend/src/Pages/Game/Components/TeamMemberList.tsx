@@ -9,13 +9,13 @@ function TeamMemberList() {
   return (
     <TeamContainer>
       <Team color='#f15852'>
-        <div className='Soviet title'>Soviet</div>
+        <div className='title'>Soviet</div>
         {sovietPlayers.map((player: User) => (
           <div className='Soviet'>{player.nickname}</div>
         ))}
       </Team>
       <Team color='#5685d0'>
-        <div className='USA title'>USA</div>
+        <div className='title'>USA</div>
         {usaPlayers.map((player: User) => (
           <div className='USA'>{player.nickname}</div>
         ))}
@@ -32,7 +32,7 @@ const TeamContainer = styled.div`
 `;
 
 const Team = styled.div`
-  font-size: 175%;
+  font-size: 1.75rem;
   text-align: center;
   display: table-cell;
   div {
