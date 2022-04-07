@@ -1,41 +1,48 @@
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../../Redux/store/rootStore';
+import User from '../../../Interfaces/User.interface';
 
 function TeamMemberList() {
   const sovietPlayers = useSelector((rootState: RootState) => rootState.game.sovietTeam.players);
   const usaPlayers = useSelector((rootState: RootState) => rootState.game.usaTeam.players);
   return (
-    <TeamTable>
-      <tr className='Soviet'>
-        <th>Soviet</th>
-        {sovietPlayers.map((player) => (
-          <td>{player.nickname}</td>
+    <TeamContainer>
+      <Team color='#f15852'>
+        <div className='title'>Soviet</div>
+        {sovietPlayers.map((player: User) => (
+          <div className='Soviet'>{player.nickname}</div>
         ))}
-      </tr>
-      <tr className='USA'>
-        <th>USA</th>
-        {usaPlayers.map((player) => (
-          <td>{player.nickname}</td>
+      </Team>
+      <Team color='#5685d0'>
+        <div className='title'>USA</div>
+        {usaPlayers.map((player: User) => (
+          <div className='USA'>{player.nickname}</div>
         ))}
-      </tr>
-    </TeamTable>
+      </Team>
+    </TeamContainer>
   );
 }
 
-const TeamTable = styled.table`
+const TeamContainer = styled.div`
+  width: 15%;
+  display: table;
+  table-layout: fixed;
+  word-break: break-all;
+`;
+
+const Team = styled.div`
+  font-size: 1.75rem;
   text-align: center;
-  /* margin: auto; */
-  font-size: 175%;
-  tr.Soviet {
-    background-color: #f15852;
+  display: table-cell;
+  div {
+    background-color: ${(props) => props.color};
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
   }
-  tr.USA {
-    background-color: #9ebdf0;
-  }
-  th,
-  td {
-    padding: 2rem;
+  .title {
+    font-weight: bold;
   }
 `;
 
