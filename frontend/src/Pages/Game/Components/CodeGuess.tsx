@@ -111,6 +111,9 @@ const GuessForm = styled.form`
     width: 15rem;
     border-radius: 8px;
     padding: 0.6em;
+    label {
+      font-size: 2rem;
+    }
   }
 
   .buttonArea {
