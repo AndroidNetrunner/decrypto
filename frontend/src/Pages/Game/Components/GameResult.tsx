@@ -214,12 +214,12 @@ const ButtonWrapper = styled.div`
 `;
 
 const CloseButton = styled.span`
-  position: absolute;
   top: 0;
   right: 0;
   margin-bottom: 1rem;
   svg {
     cursor: pointer;
+    position: fixed;
   }
 `;
 
